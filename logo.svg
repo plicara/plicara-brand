@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Applied Manifold Labs">
+  <title>Applied Manifold Labs</title>
+  <!-- A patch of a manifold: parallel geodesics curving across a bounded chart. -->
+  <g fill="none" stroke="#3B6EF3" stroke-width="2.5" stroke-linecap="round">
+    <path d="M6 44C18 44 20 20 32 20S46 44 58 44" opacity="1"/>
+    <path d="M6 52C18 52 20 28 32 28S46 52 58 52" opacity="0.6"/>
+    <path d="M6 36C18 36 20 12 32 12S46 36 58 36" opacity="0.3"/>
+  </g>
+  <circle cx="32" cy="20" r="3.5" fill="#3B6EF3"/>
+</svg>
