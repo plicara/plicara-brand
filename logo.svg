@@ -1,10 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Applied Manifold Labs">
-  <title>Applied Manifold Labs</title>
-  <!-- A patch of a manifold: parallel geodesics curving across a bounded chart. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Sheaf Labs">
+  <title>Sheaf Labs</title>
+  <!-- Stalks bound into a sheaf. "Stalk" and "section" are sheaf-theory terms
+       and the parts of a literal sheaf: local pieces, bound into one object. -->
   <g fill="none" stroke="#3B6EF3" stroke-width="2.5" stroke-linecap="round">
-    <path d="M6 44C18 44 20 20 32 20S46 44 58 44" opacity="1"/>
-    <path d="M6 52C18 52 20 28 32 28S46 52 58 52" opacity="0.6"/>
-    <path d="M6 36C18 36 20 12 32 12S46 36 58 36" opacity="0.3"/>
+    <path d="M14 8 L25 58"/>
+    <path d="M23 8 L28.5 58"/>
+    <path d="M32 8 L32 58"/>
+    <path d="M41 8 L35.5 58"/>
+    <path d="M50 8 L39 58"/>
   </g>
-  <circle cx="32" cy="20" r="3.5" fill="#3B6EF3"/>
+  <rect x="19" y="40" width="26" height="7" rx="3.5" fill="#3B6EF3"/>
 </svg>
