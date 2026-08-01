@@ -106,7 +106,7 @@ def polyline(pts, prec=2):
     return "M" + "L".join(f"{f(x)} {f(y)}" for x, y in pts)
 
 
-def contours(H, levels, pad=0.06, samples=40, min_pts=24):
+def contours(H, levels, pad=0.06, samples=56, min_pts=24):
     """Contour paths in a 0-100 box, inset by `pad` so nothing touches the edge."""
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -118,7 +118,7 @@ def contours(H, levels, pad=0.06, samples=40, min_pts=24):
         for poly in lvl.to_polygons(closed_only=True):
             if len(poly) < min_pts:
                 continue
-            n = max(18, min(samples, len(poly) // 3))
+            n = max(26, min(samples, len(poly) // 2))
             rs = resample(poly, n)
             rs = lo + rs * span
             rs[:, 1] = 100.0 - rs[:, 1]
@@ -140,18 +140,18 @@ def place(cx, cy, pad=0.06):
 
 def f_everest():
     """Sharp asymmetric pyramid — three ridges off a small, steep summit."""
-    h = blob(0.50, 0.52, 1.00, 0.105, 0.098, 0.0, 1.15)
-    h += blob(0.655, 0.665, 0.60, 0.235, 0.052, -0.72, 1.35)   # NE ridge
-    h += blob(0.325, 0.455, 0.56, 0.215, 0.050, 0.40, 1.35)    # W ridge
-    h += blob(0.565, 0.315, 0.52, 0.052, 0.205, 0.10, 1.35)    # SE ridge
+    h = blob(0.50, 0.52, 1.00, 0.132, 0.124, 0.0, 2.25)
+    h += blob(0.655, 0.665, 0.60, 0.235, 0.056, -0.72, 1.70)   # NE ridge
+    h += blob(0.325, 0.455, 0.56, 0.215, 0.054, 0.40, 1.70)    # W ridge
+    h += blob(0.565, 0.315, 0.52, 0.056, 0.205, 0.10, 1.70)    # SE ridge
     h += blob(0.665, 0.395, 0.20, 0.070, 0.070, 0.0, 1.8)      # South Col
     return h + noise(11, 13, 0.020)
 
 
 def f_aconcagua():
     """Long massif, main summit north, a distinct south summit below it."""
-    h = blob(0.465, 0.615, 1.00, 0.150, 0.165, 0.10, 1.5)
-    h += blob(0.545, 0.360, 0.86, 0.120, 0.130, 0.0, 1.55)     # south summit
+    h = blob(0.462, 0.628, 1.00, 0.158, 0.172, 0.10, 2.25)
+    h += blob(0.552, 0.348, 0.86, 0.128, 0.138, 0.0, 2.25)     # south summit
     h += blob(0.500, 0.490, 0.44, 0.215, 0.230, 0.0, 2.2)      # shared massif
     h += blob(0.285, 0.640, 0.30, 0.150, 0.080, 0.35, 1.9)     # west shoulder
     return h + noise(23, 14, 0.022)
@@ -159,8 +159,8 @@ def f_aconcagua():
 
 def f_denali():
     """Vast footprint, two named summits, long buttresses off the south side."""
-    h = blob(0.470, 0.470, 1.00, 0.135, 0.130, 0.0, 1.5)       # South Peak
-    h += blob(0.610, 0.620, 0.93, 0.115, 0.110, 0.0, 1.5)      # North Peak
+    h = blob(0.466, 0.462, 1.00, 0.152, 0.147, 0.0, 2.3)       # South Peak
+    h += blob(0.618, 0.630, 0.93, 0.128, 0.123, 0.0, 2.3)      # North Peak
     h += blob(0.520, 0.530, 0.56, 0.290, 0.265, 0.2, 2.4)      # massif
     h += blob(0.330, 0.335, 0.30, 0.140, 0.105, 0.55, 1.9)     # SW buttress
     return h + noise(31, 14, 0.020)
@@ -177,8 +177,8 @@ def f_kilimanjaro():
 
 def f_elbrus():
     """Twin volcanic cones, near-equal, on one shared base."""
-    h = blob(0.370, 0.560, 1.00, 0.108, 0.104, 0.0, 1.45)      # west summit
-    h += blob(0.625, 0.455, 0.96, 0.104, 0.100, 0.0, 1.45)     # east summit
+    h = blob(0.370, 0.560, 1.00, 0.112, 0.108, 0.0, 1.90)      # west summit
+    h += blob(0.625, 0.455, 0.96, 0.108, 0.104, 0.0, 1.90)     # east summit
     h += blob(0.500, 0.505, 0.62, 0.255, 0.215, 0.0, 2.6)      # shared shield
     return h + noise(57, 14, 0.018)
 
@@ -186,8 +186,8 @@ def f_elbrus():
 def f_vinson():
     """A long ridge massif — high aspect ratio, summit toward one end."""
     h = blob(0.500, 0.500, 0.66, 0.335, 0.090, 0.42, 2.1)
-    h += blob(0.625, 0.585, 1.00, 0.110, 0.078, 0.42, 1.5)     # summit
-    h += blob(0.350, 0.420, 0.72, 0.095, 0.070, 0.42, 1.6)     # subsidiary top
+    h += blob(0.625, 0.585, 1.00, 0.115, 0.082, 0.42, 1.9)     # summit
+    h += blob(0.350, 0.420, 0.72, 0.099, 0.074, 0.42, 1.9)     # subsidiary top
     return h + noise(67, 14, 0.018)
 
 
@@ -208,28 +208,28 @@ def f_siwalik():
 MOUNTAINS = [
     dict(key="everest", name="Everest", local="Chomolungma / Sagarmāthā",
          continent="Asia", elev=8849, role="Flagship", field=f_everest,
-         dots=[(0.50, 0.52, 3.2)]),
+         dots=[(0.50, 0.52, 2.5)]),
     dict(key="aconcagua", name="Aconcagua", local="Aconcagua",
          continent="South America", elev=6961, role="Spanish-language", field=f_aconcagua,
-         dots=[(0.465, 0.615, 3.0), (0.545, 0.360, 2.1)]),
+         dots=[(0.462, 0.628, 2.4), (0.552, 0.348, 1.7)]),
     dict(key="denali", name="Denali", local="Denali (Koyukon)",
          continent="North America", elev=6190, role="Reserved", field=f_denali,
-         dots=[(0.470, 0.470, 3.0), (0.610, 0.620, 2.2)]),
+         dots=[(0.466, 0.462, 2.4), (0.618, 0.630, 1.8)]),
     dict(key="kilimanjaro", name="Kilimanjaro", local="Kilimanjaro",
          continent="Africa", elev=5895, role="Fast tier", field=f_kilimanjaro,
-         dots=[(0.455, 0.485, 3.0), (0.760, 0.605, 1.9)]),
+         dots=[(0.455, 0.485, 2.4), (0.760, 0.605, 1.6)]),
     dict(key="elbrus", name="Elbrus", local="Elbrus / Mingi Taw",
          continent="Europe", elev=5642, role="Reserved", field=f_elbrus,
-         dots=[(0.370, 0.560, 2.7), (0.625, 0.455, 2.7)]),
+         dots=[(0.370, 0.560, 2.2), (0.625, 0.455, 2.2)]),
     dict(key="vinson", name="Vinson", local="Vinson Massif",
          continent="Antarctica", elev=4892, role="Reserved", field=f_vinson,
-         dots=[(0.625, 0.585, 2.8), (0.350, 0.420, 2.0)]),
+         dots=[(0.625, 0.585, 2.3), (0.350, 0.420, 1.7)]),
     dict(key="kosciuszko", name="Kosciuszko", local="Kosciuszko / Targangil",
          continent="Oceania", elev=2228, role="Reserved", field=f_kosciuszko,
-         dots=[(0.500, 0.500, 3.0)]),
+         dots=[(0.500, 0.500, 2.4)]),
 ]
 
-STROKE = 2.6
+STROKE = 1.75
 
 
 def svg_body(rings, dots):
@@ -259,9 +259,9 @@ for m in MOUNTAINS:
         fh.write(wrap(svg_body(rings, dots)))
     # Reduced cut for avatars and favicons: outermost ring, summit dots, heavier
     # stroke. Below about 32px the full ring stack fills in and stops reading.
-    small_dots = [(x, y, r * 1.5) for x, y, r in dots]
+    small_dots = [(x, y, r * 1.7) for x, y, r in dots]
     with open(os.path.join(OUT, f"contour-{m['key']}-small.svg"), "w") as fh:
-        fh.write(wrap(svg_body(rings[:1], small_dots), stroke=5.6))
+        fh.write(wrap(svg_body(rings[:1], small_dots), stroke=4.4))
     closed = sum(len(l) for l in rings)
     data.append({**{k: m[k] for k in ("key", "name", "local", "continent", "elev", "role")},
                  "rings": n_rings, "closed": closed, "paths": rings, "dots": dots,
