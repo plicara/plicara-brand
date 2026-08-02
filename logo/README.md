@@ -59,6 +59,11 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 
 - **Clear space** on every side is the height of one ridge band. The mark files
   already carry it inside the artboard, so a flush `64×64` box is correct.
+- **The avatars are circle-safe.** GitHub and Hugging Face mask org avatars into
+  circles, and the band ends sit where an inscribed circle cuts. `avatar-*.svg`
+  keeps the whole drawing inside that circle with 37 px of clearance at 512.
+  Do not reduce their padding to make the mark look bigger in a square preview —
+  the square preview is not where it will be seen.
 - **Two cuts.** The full six-line cut down to about 40 px; below that the
   reduced three-line cut, which drops one line of each pair and carries more
   stroke. Same drawing, fewer lines — not a different mark.

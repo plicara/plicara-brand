@@ -200,7 +200,11 @@ def main():
               mark_svg(small, BOX, STROKE * 1.65, C[tone]))
 
     print("avatars and favicon")
-    A, APAD, ASTROKE = 512, 74, 13.3
+    # Padding is set for a CIRCULAR crop, not a square one: GitHub and
+    # Hugging Face both mask org avatars into circles, and the band ends sit
+    # near the corners where an inscribed circle cuts. 88 keeps the whole
+    # drawing inside that circle with room to spare.
+    A, APAD, ASTROKE = 512, 88, 13.3
     av, _ = reframe(ds_full, bb_full, A, APAD, ASTROKE)
     for name, ground, fg in (("ink", C["ink"], C["signal"]),
                              ("signal", C["signal"], C["ink"]),
