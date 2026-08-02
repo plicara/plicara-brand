@@ -30,8 +30,7 @@ from matplotlib.path import Path as MPath
 
 N = 420
 CI = 1500.0  # contour interval, metres
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "out")
-os.makedirs(OUT, exist_ok=True)
+OUT = os.path.dirname(os.path.abspath(__file__))
 
 xs = np.linspace(0.0, 1.0, N)
 X, Y = np.meshgrid(xs, xs)

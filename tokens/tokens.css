@@ -1,0 +1,115 @@
+/* Foothills Labs — design tokens
+ *
+ * Generated companion: tokens.json. Rules and reasoning live in
+ * docs/brand.md. Change them there first, then here.
+ *
+ * Contrast ratios in the comments are against --fh-ink unless stated.
+ * Every pairing this file sanctions clears WCAG AA for body text.
+ */
+
+:root {
+  /* --- palette ---------------------------------------------------------- */
+
+  /* The one hot colour. A fill, never an ink: it holds dark text on a light
+   * ground but must not set text itself — it manages 1.1:1 on paper. */
+  --fh-signal: #d9f224;
+
+  /* Near-black with a green cast. Primary dark ground; primary text on light. */
+  --fh-ink: #0c1110;
+
+  /* Raised surface on ink. Tiles, table rows, code blocks. */
+  --fh-basalt: #171e1a;
+
+  /* Deep olive. Model cards, editorial panels, anything needing weight
+   * without going to black. A ground, not a second accent. */
+  --fh-moss: #39441f;
+
+  /* Glacier-lake blue. Second ground, and the anchor for chart series. */
+  --fh-alpine: #12688f;
+
+  /* Grey with a green bias. Secondary text, rules, axis labels. 6.2:1. */
+  --fh-scree: #8c9689;
+
+  /* Pale cyan. Second chart series and recessive detail — aerial
+   * perspective, not a third brand hue. 10.5:1. */
+  --fh-glacier: #9cc7d8;
+
+  /* Warm off-white. Light ground; primary text on dark. 17.1:1. */
+  --fh-paper: #f2f3ec;
+
+  --fh-white: #ffffff;
+
+  /* --- semantic, dark ground (default) ---------------------------------- */
+  --fh-bg: var(--fh-ink);
+  --fh-surface: var(--fh-basalt);
+  --fh-text: var(--fh-paper);
+  --fh-text-muted: var(--fh-scree);
+  --fh-rule: #26302a;
+  --fh-accent: var(--fh-signal);
+  --fh-mark: var(--fh-signal);
+
+  /* --- type ------------------------------------------------------------- */
+  /* Archivo is variable: weight 100-900, width 62-125. */
+  --fh-font-sans: "Archivo", "Archivo Variable", "Helvetica Neue", Arial, sans-serif;
+  --fh-font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --fh-display: 800 / 0.92 var(--fh-font-sans);
+  --fh-display-width: 125;
+  --fh-heading-width: 112;
+  --fh-body-width: 100;
+
+  --fh-tracking-label: 0.2em;   /* uppercase mono labels */
+  --fh-tracking-display: -0.005em;
+
+  /* --- scale ------------------------------------------------------------ */
+  --fh-step-0: 1rem;
+  --fh-step-1: 1.125rem;
+  --fh-step-2: 1.35rem;
+  --fh-step-3: 1.7rem;
+  --fh-step-4: 2.2rem;
+  --fh-step-5: 3rem;
+  --fh-step-6: 4.4rem;
+}
+
+/* --- semantic, light ground --------------------------------------------- */
+/* Note the accent swap: signal cannot set text on paper, so the mark and any
+ * accent ink become moss. Signal survives here only as a fill. */
+@media (prefers-color-scheme: light) {
+  :root {
+    --fh-bg: var(--fh-paper);
+    --fh-surface: var(--fh-white);
+    --fh-text: var(--fh-ink);
+    --fh-text-muted: #5d665c;
+    --fh-rule: #d6d9ce;
+    --fh-accent: var(--fh-moss);
+    --fh-mark: var(--fh-moss);
+  }
+}
+
+:root[data-theme="light"] {
+  --fh-bg: var(--fh-paper);
+  --fh-surface: var(--fh-white);
+  --fh-text: var(--fh-ink);
+  --fh-text-muted: #5d665c;
+  --fh-rule: #d6d9ce;
+  --fh-accent: var(--fh-moss);
+  --fh-mark: var(--fh-moss);
+}
+
+:root[data-theme="dark"] {
+  --fh-bg: var(--fh-ink);
+  --fh-surface: var(--fh-basalt);
+  --fh-text: var(--fh-paper);
+  --fh-text-muted: var(--fh-scree);
+  --fh-rule: #26302a;
+  --fh-accent: var(--fh-signal);
+  --fh-mark: var(--fh-signal);
+}
+
+/* --- the one rule that is easy to get wrong ------------------------------ */
+/* Benchmark numbers and elevations are always mono and always tabular, so a
+ * column of results lines up and reads as data. */
+.fh-data {
+  font-family: var(--fh-font-mono);
+  font-variant-numeric: tabular-nums;
+}

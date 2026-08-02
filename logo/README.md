@@ -14,8 +14,11 @@ the artboard** on the full cut, which keeps every paired line clearly separate
 at every size. Heavier than that and the pairs close up against each other,
 which is what makes an organic mark look unclean rather than characterful.
 
-Rebuild everything with `python3 build.py` (see the header of that file for
-dependencies). Nothing here is hand-edited — change `build.py`, not the SVGs.
+Rebuild the SVGs with `python3 build.py` and the rasters with
+`python3 export.py` (see each file's header for dependencies). Nothing here is
+hand-edited — change the scripts, not the output.
+
+Rules, palette and misuse: [`../../docs/brand.md`](../../docs/brand.md).
 
 ## Which file
 
@@ -31,10 +34,26 @@ dependencies). Nothing here is hand-edited — change `build.py`, not the SVGs.
 | Wide spaces: site header, slide footer | `lockup-horizontal-*.svg` |
 | Squarer spaces: cards, README badges | `lockup-compact-*.svg` |
 | Centred: README hero, title slide, print | `lockup-vertical-*.svg` |
+| Anywhere SVG is not accepted | `png/` — see below |
 
 Lockup suffixes: `-dark` (signal mark, paper wordmark), `-light` (moss mark, ink
 wordmark), `-signal` (all one colour — for placing on a moss or alpine panel, or
 anywhere a single-colour reproduction is needed).
+
+## Rasters
+
+SVG is the source of truth. `png/` covers the places that cannot take one:
+
+| File | For |
+| --- | --- |
+| `avatar-ink-1024.png`, `-512.png` | GitHub org, Hugging Face org, social profile |
+| `avatar-signal-512.png`, `avatar-moss-512.png` | Alternate grounds |
+| `mark-signal-512.png`, `mark-moss-512.png` | Transparent mark, decks and docs |
+| `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
+| `apple-touch-icon-180.png` | iOS home screen |
+| `social-card-1200x630.png` | Open Graph and Twitter card |
+
+`favicon.svg` is preferred over the PNGs wherever the browser will take it.
 
 ## Rules
 
@@ -58,4 +77,4 @@ anywhere a single-colour reproduction is needed).
 `signal #D9F224` · `ink #0C1110` · `moss #39441F` · `paper #F2F3EC` ·
 `alpine #12688F`
 
-Full palette and the reasoning behind it: [`../../docs/visual-direction.md`](../../docs/visual-direction.md).
+Full palette, misuse rules and the reasoning: [`../../docs/brand.md`](../../docs/brand.md).
