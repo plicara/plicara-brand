@@ -17,7 +17,6 @@ the repository.
 """
 
 import io
-import math
 import os
 import re
 import sys
@@ -31,7 +30,8 @@ from fontTools.misc.transform import Transform
 import uharfbuzz as hb
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-FAMILY = os.path.join(HERE, "..", "marks")
+MARK_SRC = os.path.join(HERE, "..", "marks", "contour-siwalik.svg")
+MARK_SRC_SM = os.path.join(HERE, "..", "marks", "contour-siwalik-small.svg")
 
 FONT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
     HERE, "..", "..", "node_modules", "@fontsource-variable", "archivo",
@@ -49,96 +49,24 @@ TRACKING = 0.015  # em, opens the expanded caps up a little
 
 
 # --- the mark ---------------------------------------------------------------
-#
-# Siwalik is CONSTRUCTED, not sampled. The seven summits are contoured from
-# height fields by ../marks/generate.py, and that irregularity is the point for
-# them — it is data. A logo is not data. It has to hold at 16 px, reproduce in
-# one colour, and look deliberate at every size, so the house mark is drawn:
-# one master curve, three true parallel offsets, even spacing, aligned ends.
 
-BANDS, GAP, AMP, TILT, SKEW = 4, 19.0, 14.0, 5.0, 0.95
-
-
-def master(t):
-    """One ridge line across a 100-wide box. t in [0, 1]. SVG y-down."""
-    return t * 100.0, AMP * math.sin(math.pi * (t ** SKEW)) - TILT * t
-
-
-def bands(n=BANDS, gap=GAP, samples=400, points=12):
-    """n parallel copies of the master curve at constant PERPENDICULAR distance.
-
-    Translating the curve down n times would look wrong: the gaps pinch wherever
-    the curve is steep. True offsets keep the air between bands even, which is
-    the whole complaint this fixes.
-    """
-    pts = [master(i / (samples - 1)) for i in range(samples)]
-    norms = []
-    for i in range(samples):
-        a, b = pts[max(0, i - 1)], pts[min(samples - 1, i + 1)]
-        dx, dy = b[0] - a[0], b[1] - a[1]
-        L = math.hypot(dx, dy) or 1.0
-        norms.append((-dy / L, dx / L))
-
-    lines = [[(p[0] + nx * k * gap, p[1] + ny * k * gap)
-              for p, (nx, ny) in zip(pts, norms)] for k in range(n)]
-
-    # Trim to the x-range every band shares, so the stack has square edges
-    # instead of stepping in and out.
-    lo = max(min(p[0] for p in ln) for ln in lines)
-    hi = min(max(p[0] for p in ln) for ln in lines)
-    out = []
-    for ln in lines:
-        clip = [p for p in ln if lo <= p[0] <= hi] or ln
-        out.append(_bezier(_even(clip, points)))
-    return out
-
-
-def _even(line, n):
-    """Resample to n points at even arc length."""
-    d = [0.0]
-    for a, b in zip(line, line[1:]):
-        d.append(d[-1] + math.hypot(b[0] - a[0], b[1] - a[1]))
-    total = d[-1] or 1.0
-    out = []
-    for i in range(n):
-        target = total * i / (n - 1)
-        j = max(k for k in range(len(d)) if d[k] <= target) if target < total else len(line) - 2
-        j = min(j, len(line) - 2)
-        span = d[j + 1] - d[j] or 1.0
-        f = (target - d[j]) / span
-        out.append((line[j][0] + (line[j + 1][0] - line[j][0]) * f,
-                    line[j][1] + (line[j + 1][1] - line[j][1]) * f))
-    return out
-
-
-def _bezier(pts, prec=2):
-    """Open Catmull-Rom through the points, emitted as cubic beziers."""
-    f = lambda v: f"{round(v, prec):g}"
-    n = len(pts)
-    d = [f"M{f(pts[0][0])} {f(pts[0][1])}"]
-    for i in range(n - 1):
-        p0, p1 = pts[max(0, i - 1)], pts[i]
-        p2, p3 = pts[i + 1], pts[min(n - 1, i + 2)]
-        c1 = (p1[0] + (p2[0] - p0[0]) / 6.0, p1[1] + (p2[1] - p0[1]) / 6.0)
-        c2 = (p2[0] - (p3[0] - p1[0]) / 6.0, p2[1] - (p3[1] - p1[1]) / 6.0)
-        d.append(f"C{f(c1[0])} {f(c1[1])} {f(c2[0])} {f(c2[1])} {f(p2[0])} {f(p2[1])}")
-    return "".join(d)
-
-
-def bbox(ds):
-    pts = [(float(x), float(y)) for d in ds
-           for x, y in re.findall(r"(-?[\d.]+) (-?[\d.]+)", d)]
+def load_mark(path):
+    """Path data and its bounding box. Siwalik is polylines, so M/L only."""
+    src = open(path).read()
+    ds = re.findall(r'd="([^"]+)"', src)
+    pts = [(float(x), float(y))
+           for d in ds for x, y in re.findall(r"(-?[\d.]+) (-?[\d.]+)", d)]
     xs, ys = [p[0] for p in pts], [p[1] for p in pts]
-    return min(xs), min(ys), max(xs), max(ys)
+    return ds, (min(xs), min(ys), max(xs), max(ys))
 
 
-def reframe(ds, bb, box, pad, stroke):
+def reframe(ds, bbox, box, pad, stroke):
     """Fit the mark into a `box` square with `pad` clear space on every side.
 
-    The stroke's own half-width is held inside the padding, so a flush box is
-    correct clear space at any size.
+    Stroke is scaled with the art so the drawing keeps its weight, and the
+    stroke's own half-width is held inside the padding.
     """
-    x0, y0, x1, y1 = bb
+    x0, y0, x1, y1 = bbox
     w, h = x1 - x0, y1 - y0
     inner = box - 2 * pad - stroke
     k = inner / max(w, h)
@@ -255,28 +183,33 @@ def write(name, content):
 
 
 def main():
-    base = bands()
-    bb = bbox(base)
+    BOX, PAD, STROKE = 64, 4, 1.7
+    ds_full, bb_full = load_mark(MARK_SRC)
+    ds_sm, bb_sm = load_mark(MARK_SRC_SM)
 
-    BOX, PAD, STROKE = 64, 4, 3.4
-    mark, _ = reframe(base, bb, BOX, PAD, STROKE)
+    mark, _ = reframe(ds_full, bb_full, BOX, PAD, STROKE)
+    small, _ = reframe(ds_sm, bb_sm, BOX, PAD, STROKE * 1.65)
 
     print("marks")
     write("mark.svg", mark_svg(mark, BOX, STROKE))
     for tone in ("signal", "moss", "ink", "paper"):
         write(f"mark-{tone}.svg", mark_svg(mark, BOX, STROKE, C[tone]))
+    write("mark-small.svg", mark_svg(small, BOX, STROKE * 1.65))
+    for tone in ("signal", "moss", "ink", "paper"):
+        write(f"mark-small-{tone}.svg",
+              mark_svg(small, BOX, STROKE * 1.65, C[tone]))
 
     print("avatars and favicon")
-    A, APAD, ASTROKE = 512, 74, 26.0
-    av, _ = reframe(base, bb, A, APAD, ASTROKE)
+    A, APAD, ASTROKE = 512, 74, 13.3
+    av, _ = reframe(ds_full, bb_full, A, APAD, ASTROKE)
     for name, ground, fg in (("ink", C["ink"], C["signal"]),
                              ("signal", C["signal"], C["ink"]),
                              ("moss", C["moss"], C["signal"]),
                              ("alpine", C["alpine"], C["paper"])):
-        write(f"avatar-{name}.svg", mark_svg(av, A, ASTROKE, fg, ground=ground))
-    # Same geometry, a hair more stroke — optical sizing, not a second shape.
-    fav, _ = reframe(base, bb, 32, 3, 2.1)
-    write("favicon.svg", mark_svg(fav, 32, 2.1, C["signal"], ground=C["ink"]))
+        write(f"avatar-{name}.svg",
+              mark_svg(av, A, ASTROKE, fg, ground=ground))
+    fav, _ = reframe(ds_sm, bb_sm, 32, 3.5, 1.9)
+    write("favicon.svg", mark_svg(fav, 32, 1.9, C["signal"], ground=C["ink"]))
 
     # Lockups. Cap height drives the optical match between mark and wordmark.
     font = static_archivo()
@@ -288,25 +221,16 @@ def main():
                                  ("compact", ["FOOTHILLS", "LABS"], 78.0)):
         for theme, fg, wordfg in THEMES:
             write(f"lockup-{kind}-{theme}.svg",
-                  lockup(font, base, bb, lines, fg, wordfg, mark_px))
+                  lockup(font, ds_full, bb_full, lines, fg, wordfg, mark_px))
     for theme, fg, wordfg in THEMES:
         write(f"lockup-vertical-{theme}.svg",
-              vertical(font, base, bb, ["FOOTHILLS", "LABS"], fg, wordfg))
-
-    # The family glyph is the same drawing at the family's stroke weight, so the
-    # model sheet and the logo can never drift apart.
-    print("family glyph")
-    fam, _ = reframe(base, bb, 100, 6, 1.75)
-    path = os.path.join(FAMILY, "contour-siwalik.svg")
-    with open(path, "w") as fh:
-        fh.write(mark_svg(fam, 100, 1.75) + "\n")
-    print(f"  ../marks/contour-siwalik.svg")
+              vertical(font, ds_full, bb_full, ["FOOTHILLS", "LABS"], fg, wordfg))
 
 
 def lockup(font, ds, bb, lines, mark_colour, word_colour, mark_px=64.0):
     SIZE = 44.0           # em size for the wordmark
     MARK = mark_px        # mark box
-    STROKE = 3.0 * (mark_px / 64.0)
+    STROKE = 2.35 * (mark_px / 64.0)
     GAP = 22.0
     LEAD = 0.86           # line height, in em, for the stacked cut
 
@@ -357,7 +281,7 @@ def vertical(font, ds, bb, lines, mark_colour, word_colour):
     """Mark above, wordmark centred beneath. For README heroes and cards."""
     SIZE = 40.0
     MARK = 96.0
-    STROKE = 4.4
+    STROKE = 3.5
     GAP = 26.0
     LEAD = 0.86
 
