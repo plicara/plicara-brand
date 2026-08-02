@@ -9,6 +9,11 @@ The rule, and the whole point of the system:
 
     Everest gets five rings. Kosciuszko gets one.
 
+Siwalik is not built here. It has no summit and no elevation, and it doubles as
+the house mark, so it is constructed rather than contoured — see
+../logo/build.py. A logo needs a regularity that sampling a height field cannot
+give it.
+
 Spot heights (the filled dots) mark named summits, as they would on a map.
 Mountains with more than one named top get more than one dot — Elbrus's twin
 cones, Denali's North and South Peaks, Aconcagua's south summit.
@@ -26,7 +31,6 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.path import Path as MPath
 
 N = 420
 CI = 1500.0  # contour interval, metres
@@ -198,13 +202,6 @@ def f_kosciuszko():
     return h + noise(79, 16, 0.026)
 
 
-def f_siwalik():
-    """Foothills. Long parallel ridges, running off the frame — no summit."""
-    ridge = Y * 8.4 + 0.35 + 1.25 * np.sin(X * 2.4 + 0.7) + 0.45 * np.sin(X * 5.1)
-    h = 0.5 + 0.5 * np.sin(ridge)
-    return h + noise(83, 22, 0.22)
-
-
 MOUNTAINS = [
     dict(key="everest", name="Everest", local="Chomolungma / Sagarmāthā",
          continent="Asia", elev=8849, role="Flagship", field=f_everest,
@@ -267,37 +264,6 @@ for m in MOUNTAINS:
                  "rings": n_rings, "closed": closed, "paths": rings, "dots": dots,
                  "small": [rings[0]], "smallDots": small_dots})
     print(f"{m['name']:12s} {m['elev']:>5} m   rings {n_rings}   closed contours {closed}   dots {len(dots)}")
-
-# Siwalik — open ridge lines, no summit, no dot
-Hs = f_siwalik()
-Hs = (Hs - Hs.min()) / (Hs.max() - Hs.min())
-fig = plt.figure(); ax = fig.add_subplot(111)
-cs = ax.contour(X, Y, Hs, levels=[0.46, 0.74])
-sw = []
-for lp in cs.get_paths():
-    verts, codes = lp.vertices, lp.codes
-    if codes is None:
-        chunks = [verts]
-    else:
-        starts = np.flatnonzero(codes == MPath.MOVETO)
-        bounds = list(starts) + [len(verts)]
-        chunks = [verts[a:b] for a, b in zip(bounds, bounds[1:])]
-    for poly in chunks:
-        if len(poly) < 120:
-            continue
-        p = np.asarray(poly)
-        p = 6.0 + p * 88.0
-        p[:, 1] = 100.0 - p[:, 1]
-        step = max(1, len(p) // 34)
-        sw.append(polyline(p[::step]))
-plt.close(fig)
-with open(os.path.join(OUT, "contour-siwalik.svg"), "w") as fh:
-    fh.write(wrap("".join(f'<path d="{d}"/>' for d in sw)))
-print(f"{'Siwalik':12s}     —      ridge lines {len(sw)}")
-
-data.append(dict(key="siwalik", name="Siwalik", local="Śivālik Hills", continent="Asia",
-                 elev=None, role="Pre-release", rings=len(sw), closed=0,
-                 paths=[sw], dots=[], small=[sw[::2]], smallDots=[]))
 
 with open(os.path.join(OUT, "glyphs.json"), "w") as fh:
     json.dump(data, fh)
