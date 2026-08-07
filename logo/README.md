@@ -71,9 +71,15 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 - **Minimum size 16 px**, reduced cut.
 - **Lockups carry a heavier mark** (3.7% rather than 2.6%) so it holds its own
   beside 800-weight caps. That is optical weight matching, not a second mark.
-- **Do not** rotate it, add a third colour, place it on a busy photograph,
-  outline the wordmark, or set the wordmark in anything but Archivo — the
-  lockups carry outlines, so nothing needs the font installed.
+- **Do not** rotate it, add a third colour, place it on a busy photograph, or
+  outline the wordmark.
+- **Standalone surfaces use the lockups**, never a retyped name — decks,
+  social, print, README heroes, anywhere the name appears without page context.
+  The lockups carry outlines, so nothing needs the font installed.
+- **In-page headers are the exception**: a page header may set the name in the
+  surface's display face beside the mark — Fraunces on warm pages, Archivo on
+  technical ones, sentence case either way. In-page, the mark carries the
+  identity; the letterforms follow the register the page is already in.
 - The wordmark is Archivo (Omnibus-Type) at `wght` 800, `wdth` 125, converted to
   paths. Archivo is SIL Open Font Licence 1.1; the OFL covers the baked outlines
   and does not extend to the rest of this repository.

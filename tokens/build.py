@@ -53,10 +53,14 @@ SCHEMES = {
                     accent_on="#F2F3EC", series_1="#12688F", series_2="#39441F"),
 }
 
+# Both typesets set headings in sentence case; uppercase belongs to the mono
+# label role alone. Both declare "case" explicitly — one declaring and one
+# silent is how this drifted the first time.
 TYPESETS = {
     "warm": {
         "display": {"family": "Fraunces", "weight": 600,
-                    "settings": {"opsz": 96, "SOFT": 24, "WONK": 1}},
+                    "settings": {"opsz": 96, "SOFT": 24, "WONK": 1},
+                    "case": "sentence"},
         "body":    {"family": "Newsreader", "weight": 400, "opsz": 18},
         "data":    {"family": "JetBrains Mono", "weight": 400,
                     "numeric": "tabular-nums"},
@@ -64,7 +68,7 @@ TYPESETS = {
     },
     "technical": {
         "display": {"family": "Archivo", "weight": 800,
-                    "settings": {"wght": 800, "wdth": 125}, "case": "upper"},
+                    "settings": {"wght": 800, "wdth": 125}, "case": "sentence"},
         "body":    {"family": "Archivo", "weight": 400, "width": 100},
         "data":    {"family": "JetBrains Mono", "weight": 400,
                     "numeric": "tabular-nums"},
