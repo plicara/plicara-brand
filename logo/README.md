@@ -79,7 +79,7 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 
 ## Colours
 
-`signal #D9F224` · `ink #0C1110` · `moss #39441F` · `paper #F2F3EC` ·
+`signal #C2DC2F` · `ink #0C1110` · `moss #39441F` · `paper #F2F3EC` ·
 `alpine #12688F`
 
 Full palette, misuse rules and the reasoning: [`../../docs/brand.md`](../../docs/brand.md).

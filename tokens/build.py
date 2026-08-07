@@ -17,7 +17,7 @@ import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 PALETTE = {
-    "signal":  ("#D9F224", "The one hot colour. A fill, never an ink."),
+    "lichen":  ("#C2DC2F", "The one hot colour. A fill, never an ink. Pantone 584 C is the closest solid coated match."),
     "ink":     ("#0C1110", "Near-black with a green cast. Primary dark ground; primary text on light."),
     "basalt":  ("#171E1A", "Raised surface on ink. Tiles, table rows, code blocks."),
     "moss":    ("#39441F", "Deep olive. Model cards and editorial panels. A ground, not a second accent."),
@@ -26,9 +26,53 @@ PALETTE = {
     "glacier": ("#9CC7D8", "Pale cyan. Second chart series and recessive detail."),
     "paper":   ("#F2F3EC", "Warm off-white. Light ground; primary text on dark."),
     "white":   ("#FFFFFF", "Surfaces on the light ground."),
+    "shadow":  ("#414A6B", "Atlas: Imhof's shadow violet. Accent ink on the warm light ground."),
+    "bistre":  ("#7C6A52", "Atlas: rock brown. First chart series on the warm light ground."),
+    "ochre":   ("#CE9B45", "Atlas: warm light. Highlight fill."),
+    "vellum":  ("#EDE6D6", "Atlas: warm paper ground."),
 }
 
-GROUNDS = ["ink", "basalt", "moss", "alpine", "paper", "white", "signal"]
+# Four schemes, paired by area of the lab. Glacier/Atlas carry the lab and the
+# models; Signal/Field carry benchmarks and tools.
+SCHEMES = {
+    "glacier": dict(mode="dark", area="lab, models", typeset="warm",
+                    bg="#072430", surface="#0E3646", text="#EAF3F5",
+                    text_muted="#93B7C4", rule="#17475C", accent="#C2DC2F",
+                    accent_on="#0C1110", series_1="#1C7FA8", series_2="#9CC7D8"),
+    "atlas":   dict(mode="light", area="lab, models", typeset="warm",
+                    bg="#EDE6D6", surface="#F7F3E8", text="#221F1C",
+                    text_muted="#5C5340", rule="#D6CBB4", accent="#414A6B",
+                    accent_on="#EDE6D6", series_1="#7C6A52", series_2="#BCD4DC"),
+    "signal":  dict(mode="dark", area="benchmarks, tools", typeset="technical",
+                    bg="#0C1110", surface="#171E1A", text="#F2F3EC",
+                    text_muted="#8C9689", rule="#26302A", accent="#C2DC2F",
+                    accent_on="#0C1110", series_1="#12688F", series_2="#9CC7D8"),
+    "field":   dict(mode="light", area="benchmarks, tools", typeset="technical",
+                    bg="#F2F3EC", surface="#FFFFFF", text="#0C1110",
+                    text_muted="#5D665C", rule="#D6D9CE", accent="#39441F",
+                    accent_on="#F2F3EC", series_1="#12688F", series_2="#39441F"),
+}
+
+TYPESETS = {
+    "warm": {
+        "display": {"family": "Fraunces", "weight": 600,
+                    "settings": {"opsz": 96, "SOFT": 24, "WONK": 1}},
+        "body":    {"family": "Newsreader", "weight": 400, "opsz": 18},
+        "data":    {"family": "JetBrains Mono", "weight": 400,
+                    "numeric": "tabular-nums"},
+        "use": "the lab and the models",
+    },
+    "technical": {
+        "display": {"family": "Archivo", "weight": 800,
+                    "settings": {"wght": 800, "wdth": 125}, "case": "upper"},
+        "body":    {"family": "Archivo", "weight": 400, "width": 100},
+        "data":    {"family": "JetBrains Mono", "weight": 400,
+                    "numeric": "tabular-nums"},
+        "use": "benchmarks and tools",
+    },
+}
+
+GROUNDS = ["ink", "basalt", "moss", "alpine", "paper", "white", "lichen", "vellum"]
 
 
 def _lin(c):
@@ -58,19 +102,30 @@ def build():
         "color": {k: {"value": v[0], "comment": v[1]} for k, v in PALETTE.items()},
         "contrast": {},
         "font": {
+            "display": {"value": "Fraunces",
+                        "comment": "Variable: opsz 9-144, wght 100-900, SOFT, WONK. SIL OFL."},
+            "body": {"value": "Newsreader",
+                     "comment": "Variable: wght 200-800, opsz 6-72. SIL OFL."},
             "sans": {"value": "Archivo",
                      "comment": "Variable: wght 100-900, wdth 62-125. SIL OFL."},
             "mono": {"value": "JetBrains Mono",
-                     "comment": "Apache-2.0. All figures and labels."},
+                     "comment": "Apache-2.0. Shared by both typesets — the through-line."},
         },
-        "role": {
-            "display": {"family": "sans", "weight": 800, "width": 125, "case": "upper"},
-            "heading": {"family": "sans", "weight": 700, "width": 112, "case": "upper"},
-            "body": {"family": "sans", "weight": 400, "width": 100, "case": "sentence"},
-            "data": {"family": "mono", "weight": 400, "numeric": "tabular-nums"},
-            "label": {"family": "mono", "weight": 700, "case": "upper", "tracking": "0.2em"},
-        },
+        "scheme": SCHEMES,
+        "typeset": TYPESETS,
     }
+
+    # Contrast per scheme, generated so the guide never asserts a stale number.
+    tokens["scheme_contrast"] = {}
+    for name, sc in SCHEMES.items():
+        tokens["scheme_contrast"][name] = {
+            f"{fg}_on_{ground}": {
+                "ratio": contrast(sc[fg], sc[ground]),
+                "aa_body": contrast(sc[fg], sc[ground]) >= 4.5,
+            }
+            for ground in ("bg", "surface")
+            for fg in ("text", "text_muted", "accent", "series_1", "series_2")
+        }
 
     for fg in PALETTE:
         row = {}

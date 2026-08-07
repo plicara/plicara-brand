@@ -19,7 +19,7 @@ OUT = os.path.join(HERE, "png")
 os.makedirs(OUT, exist_ok=True)
 
 INK = "#0C1110"
-SIGNAL = "#D9F224"
+SIGNAL = "#C2DC2F"
 PAPER = "#F2F3EC"
 
 # (source svg, output name, pixel size, background or None for transparent)

@@ -38,7 +38,7 @@ FONT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
     "files", "archivo-latin-wdth-normal.woff2")
 
 C = {
-    "signal": "#D9F224",
+    "signal": "#C2DC2F",
     "ink": "#0C1110",
     "moss": "#39441F",
     "paper": "#F2F3EC",
