@@ -212,8 +212,33 @@ def main():
                              ("alpine", C["alpine"], C["paper"])):
         write(f"avatar-{name}.svg",
               mark_svg(av, A, ASTROKE, fg, ground=ground))
-    fav, _ = reframe(ds_sm, bb_sm, 32, 3.5, 1.9)
-    write("favicon.svg", mark_svg(fav, 32, 1.9, C["lichen"], ground=C["ink"]))
+    # Favicon: rounded tile with a pronounced lichen border — a sharp square
+    # sat awkwardly next to the round tab controls. Reduced cut, since the tile
+    # lives at 16-32 px. The border is drawn inset so nothing clips.
+    fav, _ = reframe(ds_sm, bb_sm, 64, 9, 5.2)
+    fav_mark = ('<g fill="none" stroke="{fg}" stroke-width="5.2" '
+                'stroke-linecap="round" stroke-linejoin="round">{paths}</g>').format(
+        fg=C["lichen"], paths="".join(f'<path d="{d}"/>' for d in fav))
+    write("favicon.svg",
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" '
+          'width="64" height="64" role="img" aria-label="Foothills Labs">'
+          '<title>Foothills Labs</title>'
+          f'<rect width="64" height="64" rx="14" fill="{C["ink"]}"/>'
+          f'<rect x="1.8" y="1.8" width="60.4" height="60.4" rx="12.2" '
+          f'fill="none" stroke="{C["lichen"]}" stroke-width="3.6"/>'
+          + fav_mark + "</svg>")
+    # Apple touch icon: the GROUND stays square — iOS applies its own corner
+    # mask, and pre-rounding it leaves dark notches — but the BORDER is
+    # pre-rounded to sit just inside iOS's ~22.5% mask radius, or the mask
+    # clips its corners mid-line.
+    write("touch-icon.svg",
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" '
+          'width="64" height="64" role="img" aria-label="Foothills Labs">'
+          '<title>Foothills Labs</title>'
+          f'<rect width="64" height="64" fill="{C["ink"]}"/>'
+          f'<rect x="1.8" y="1.8" width="60.4" height="60.4" rx="12.6" '
+          f'fill="none" stroke="{C["lichen"]}" stroke-width="3.6"/>'
+          + fav_mark + "</svg>")
 
     # Lockups. Cap height drives the optical match between mark and wordmark.
     font = static_archivo()

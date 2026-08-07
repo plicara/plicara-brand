@@ -30,7 +30,7 @@ Rules, palette and misuse: [`../../docs/brand.md`](../../docs/brand.md).
 | On a signal or moss panel | `mark-paper.svg` |
 | Below ~40 px | `mark-small*.svg` — three lines instead of six, heavier stroke |
 | GitHub org, Hugging Face, social | `avatar-ink.svg` (default), or `-lichen` / `-moss` / `-alpine` |
-| Browser tab | `favicon.svg` — 32 px artboard, ink ground |
+| Browser tab | `favicon.svg` — rounded ink tile, bold lichen border, reduced cut |
 | Wide spaces: site header, slide footer | `lockup-horizontal-*.svg` |
 | Squarer spaces: cards, README badges | `lockup-compact-*.svg` |
 | Centred: README hero, title slide, print | `lockup-vertical-*.svg` |
@@ -50,6 +50,7 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 | `avatar-lichen-512.png`, `avatar-moss-512.png` | Alternate grounds |
 | `mark-lichen-512.png`, `mark-moss-512.png` | Transparent mark, decks and docs |
 | `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
+| `touch-icon.svg` | Source for the apple-touch icon: square ground (iOS rounds it), pre-rounded border so the mask does not clip it |
 | `apple-touch-icon-180.png` | iOS home screen |
 | `social-card-1200x630.png` | Open Graph and Twitter card |
 

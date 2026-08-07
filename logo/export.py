@@ -32,7 +32,7 @@ JOBS = [
     ("mark-moss.svg", "mark-moss-512.png", 512, None),
     ("favicon.svg", "favicon-32.png", 32, None),
     ("favicon.svg", "favicon-64.png", 64, None),
-    ("favicon.svg", "apple-touch-icon-180.png", 180, None),
+    ("touch-icon.svg", "apple-touch-icon-180.png", 180, None),
 ]
 
 
