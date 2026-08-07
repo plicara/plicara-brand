@@ -38,7 +38,7 @@ FONT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
     "files", "archivo-latin-wdth-normal.woff2")
 
 C = {
-    "signal": "#C2DC2F",
+    "lichen": "#C2DC2F",
     "ink": "#0C1110",
     "moss": "#39441F",
     "paper": "#F2F3EC",
@@ -192,10 +192,10 @@ def main():
 
     print("marks")
     write("mark.svg", mark_svg(mark, BOX, STROKE))
-    for tone in ("signal", "moss", "ink", "paper"):
+    for tone in ("lichen", "moss", "ink", "paper"):
         write(f"mark-{tone}.svg", mark_svg(mark, BOX, STROKE, C[tone]))
     write("mark-small.svg", mark_svg(small, BOX, STROKE * 1.65))
-    for tone in ("signal", "moss", "ink", "paper"):
+    for tone in ("lichen", "moss", "ink", "paper"):
         write(f"mark-small-{tone}.svg",
               mark_svg(small, BOX, STROKE * 1.65, C[tone]))
 
@@ -206,21 +206,21 @@ def main():
     # drawing inside that circle with room to spare.
     A, APAD, ASTROKE = 512, 88, 13.3
     av, _ = reframe(ds_full, bb_full, A, APAD, ASTROKE)
-    for name, ground, fg in (("ink", C["ink"], C["signal"]),
-                             ("signal", C["signal"], C["ink"]),
-                             ("moss", C["moss"], C["signal"]),
+    for name, ground, fg in (("ink", C["ink"], C["lichen"]),
+                             ("lichen", C["lichen"], C["ink"]),
+                             ("moss", C["moss"], C["lichen"]),
                              ("alpine", C["alpine"], C["paper"])):
         write(f"avatar-{name}.svg",
               mark_svg(av, A, ASTROKE, fg, ground=ground))
     fav, _ = reframe(ds_sm, bb_sm, 32, 3.5, 1.9)
-    write("favicon.svg", mark_svg(fav, 32, 1.9, C["signal"], ground=C["ink"]))
+    write("favicon.svg", mark_svg(fav, 32, 1.9, C["lichen"], ground=C["ink"]))
 
     # Lockups. Cap height drives the optical match between mark and wordmark.
     font = static_archivo()
     print("lockups")
-    THEMES = (("dark", C["signal"], C["paper"]),
+    THEMES = (("dark", C["lichen"], C["paper"]),
               ("light", C["moss"], C["ink"]),
-              ("signal", C["signal"], C["signal"]))
+              ("mono", C["lichen"], C["lichen"]))
     for kind, lines, mark_px in (("horizontal", ["FOOTHILLS LABS"], 64.0),
                                  ("compact", ["FOOTHILLS", "LABS"], 78.0)):
         for theme, fg, wordfg in THEMES:

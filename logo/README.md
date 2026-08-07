@@ -25,20 +25,20 @@ Rules, palette and misuse: [`../../docs/brand.md`](../../docs/brand.md).
 | Use | File |
 | --- | --- |
 | Anything you can style with CSS | `mark.svg` — takes `currentColor` |
-| Dark ground | `mark-signal.svg` |
+| Dark ground | `mark-lichen.svg` |
 | Light ground | `mark-moss.svg` (quiet) or `mark-ink.svg` (maximum contrast) |
 | On a signal or moss panel | `mark-paper.svg` |
 | Below ~40 px | `mark-small*.svg` — three lines instead of six, heavier stroke |
-| GitHub org, Hugging Face, social | `avatar-ink.svg` (default), or `-signal` / `-moss` / `-alpine` |
+| GitHub org, Hugging Face, social | `avatar-ink.svg` (default), or `-lichen` / `-moss` / `-alpine` |
 | Browser tab | `favicon.svg` — 32 px artboard, ink ground |
 | Wide spaces: site header, slide footer | `lockup-horizontal-*.svg` |
 | Squarer spaces: cards, README badges | `lockup-compact-*.svg` |
 | Centred: README hero, title slide, print | `lockup-vertical-*.svg` |
 | Anywhere SVG is not accepted | `png/` — see below |
 
-Lockup suffixes: `-dark` (signal mark, paper wordmark), `-light` (moss mark, ink
-wordmark), `-signal` (all one colour — for placing on a moss or alpine panel, or
-anywhere a single-colour reproduction is needed).
+Lockup suffixes: `-dark` (lichen mark, paper wordmark), `-light` (moss mark, ink
+wordmark), `-mono` (all one colour, in lichen — for placing on a moss or alpine
+panel, or anywhere a single-colour reproduction is needed).
 
 ## Rasters
 
@@ -47,8 +47,8 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 | File | For |
 | --- | --- |
 | `avatar-ink-1024.png`, `-512.png` | GitHub org, Hugging Face org, social profile |
-| `avatar-signal-512.png`, `avatar-moss-512.png` | Alternate grounds |
-| `mark-signal-512.png`, `mark-moss-512.png` | Transparent mark, decks and docs |
+| `avatar-lichen-512.png`, `avatar-moss-512.png` | Alternate grounds |
+| `mark-lichen-512.png`, `mark-moss-512.png` | Transparent mark, decks and docs |
 | `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
 | `apple-touch-icon-180.png` | iOS home screen |
 | `social-card-1200x630.png` | Open Graph and Twitter card |
@@ -79,7 +79,12 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 
 ## Colours
 
-`signal #C2DC2F` · `ink #0C1110` · `moss #39441F` · `paper #F2F3EC` ·
+`lichen #C2DC2F` · `ink #0C1110` · `moss #39441F` · `paper #F2F3EC` ·
 `alpine #12688F`
+
+Lichen is the accent colour; **Signal** is the name of a scheme (dark, for
+benchmarks and tools). The colour was called signal before the schemes existed,
+and the `--fh-signal` token survives as a legacy alias — new work should say
+lichen.
 
 Full palette, misuse rules and the reasoning: [`../../docs/brand.md`](../../docs/brand.md).

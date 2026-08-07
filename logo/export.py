@@ -19,16 +19,16 @@ OUT = os.path.join(HERE, "png")
 os.makedirs(OUT, exist_ok=True)
 
 INK = "#0C1110"
-SIGNAL = "#C2DC2F"
+LICHEN = "#C2DC2F"
 PAPER = "#F2F3EC"
 
 # (source svg, output name, pixel size, background or None for transparent)
 JOBS = [
     ("avatar-ink.svg", "avatar-ink-1024.png", 1024, None),
     ("avatar-ink.svg", "avatar-ink-512.png", 512, None),
-    ("avatar-signal.svg", "avatar-signal-512.png", 512, None),
+    ("avatar-lichen.svg", "avatar-lichen-512.png", 512, None),
     ("avatar-moss.svg", "avatar-moss-512.png", 512, None),
-    ("mark-signal.svg", "mark-signal-512.png", 512, None),
+    ("mark-lichen.svg", "mark-lichen-512.png", 512, None),
     ("mark-moss.svg", "mark-moss-512.png", 512, None),
     ("favicon.svg", "favicon-32.png", 32, None),
     ("favicon.svg", "favicon-64.png", 64, None),
@@ -64,10 +64,10 @@ def social():
         f'viewBox="0 0 {W} {H}">'
         f'<rect width="{W}" height="{H}" fill="{INK}"/>'
         f'<g transform="translate({x:.1f} {y:.1f}) scale({scale:.4f})">{inner}</g>'
-        f'<text x="{W / 2}" y="{H - 214}" fill="{SIGNAL}" text-anchor="middle" '
+        f'<text x="{W / 2}" y="{H - 214}" fill="{LICHEN}" text-anchor="middle" '
         f'font-family="monospace" font-size="19" letter-spacing="5.2">'
         f'BENCHMARKS FIRST, THEN MODELS</text>'
-        f'<rect x="0" y="{H - 12}" width="{W}" height="12" fill="{SIGNAL}"/>'
+        f'<rect x="0" y="{H - 12}" width="{W}" height="12" fill="{LICHEN}"/>'
         f'</svg>'
     )
     path = os.path.join(OUT, "social-card-1200x630.png")
