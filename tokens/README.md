@@ -31,7 +31,14 @@ build.py      python3 build.py
   both. Style through `--fh-face-display` / `--fh-face-body`, never by naming a
   font family directly — that is what lets a section switch register by
   changing one attribute.
-- **Lichen `#C2DC2F` is a fill, not an ink.** Text on a lichen block is
-  `--fh-on-lichen`, and the accent *ink* on light schemes is a different colour
-  entirely (shadow violet on Atlas, moss on Field). Use `--fh-accent` and the
-  swap is mechanical.
+- **Hot fills carry `--fh-on-*` guards.** Lichen and ochre hold text but must
+  never set it; `--fh-on-lichen` (12.30:1) and `--fh-on-ochre` (7.61:1) are the
+  only inks allowed on top of them, and the `fill` section of `tokens.json`
+  records both, generated. Any new hot fill gets its guard before first use.
+- **The lichen fill is the standing exception to "one accent."** It stays
+  constant in every scheme, including Atlas — one accent means one accent ink.
+  The accent *ink* on light schemes is a different colour entirely (shadow
+  violet on Atlas, moss on Field); use `--fh-accent` and the swap is mechanical.
+- **A scheme that paints a ground must be full-bleed** — apply `data-scheme` to
+  the section, not to a padded inner wrapper, or the ground stops short of the
+  viewport edge. (Learned on the site; recorded here so it is not relearned.)

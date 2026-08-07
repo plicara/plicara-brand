@@ -74,6 +74,15 @@ TYPESETS = {
 
 GROUNDS = ["ink", "basalt", "moss", "alpine", "paper", "white", "lichen", "vellum"]
 
+# Hot fills and their text guards. A fill is a colour that holds text but must
+# never set it; the on-colour is the only ink allowed on top of it. The lichen
+# fill is also the standing exception to "one accent per scheme" — it stays
+# constant in every scheme, including Atlas.
+FILLS = {
+    "lichen": {"on": "ink", "standing_exception": True},
+    "ochre":  {"on": "ink", "standing_exception": False},
+}
+
 
 def _lin(c):
     c /= 255
@@ -113,6 +122,15 @@ def build():
         },
         "scheme": SCHEMES,
         "typeset": TYPESETS,
+        "fill": {
+            name: {
+                "value": PALETTE[name][0],
+                "on": PALETTE[cfg["on"]][0],
+                "on_ratio": contrast(PALETTE[name][0], PALETTE[cfg["on"]][0]),
+                "standing_exception": cfg["standing_exception"],
+            }
+            for name, cfg in FILLS.items()
+        },
     }
 
     # Contrast per scheme, generated so the guide never asserts a stale number.
