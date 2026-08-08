@@ -87,7 +87,8 @@ def mark_svg(ds, box, stroke, colour=None, ground=None, title="Foothills Labs",
     body = ""
     if ground:
         r = f' rx="{radius}"' if radius else ""
-        body += f'<rect width="{box}" height="{box}"{r} fill="{ground}"/>'
+        body += (f'<rect width="{box}" height="{box}"{r} fill="{ground}" '
+                 f'stroke="none"/>')
     body += "".join(f'<path d="{d}"/>' for d in ds)
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {box} {box}" '
@@ -204,14 +205,18 @@ def main():
     # Hugging Face both mask org avatars into circles, and the band ends sit
     # near the corners where an inscribed circle cuts. 88 keeps the whole
     # drawing inside that circle with room to spare.
-    A, APAD, ASTROKE = 512, 88, 13.3
+    # Corner radius matches the favicon's ratio (14/64 = 21.875%), so every
+    # tiled cut of the mark shares one corner geometry. No border here, unlike
+    # the favicon: avatars live under the circular masks GitHub and Hugging
+    # Face apply, and any rect border gets clipped mid-line by that mask.
+    A, APAD, ASTROKE, ARX = 512, 88, 13.3, 112
     av, _ = reframe(ds_full, bb_full, A, APAD, ASTROKE)
     for name, ground, fg in (("ink", C["ink"], C["lichen"]),
                              ("lichen", C["lichen"], C["ink"]),
                              ("moss", C["moss"], C["lichen"]),
                              ("alpine", C["alpine"], C["paper"])):
         write(f"avatar-{name}.svg",
-              mark_svg(av, A, ASTROKE, fg, ground=ground))
+              mark_svg(av, A, ASTROKE, fg, ground=ground, radius=ARX))
     # Favicon: rounded tile with a pronounced lichen border — a sharp square
     # sat awkwardly next to the round tab controls. Reduced cut, since the tile
     # lives at 16-32 px. The border is drawn inset so nothing clips.

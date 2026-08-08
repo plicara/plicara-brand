@@ -60,6 +60,11 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 
 - **Clear space** on every side is the height of one ridge band. The mark files
   already carry it inside the artboard, so a flush `64×64` box is correct.
+- **Tiled cuts share one corner geometry.** Avatars carry the favicon's corner
+  ratio (21.875% — `rx` 112 at 512), so every square-ground cut of the mark
+  rounds the same way. Avatars carry no border, unlike the favicon: they live
+  under the circular masks GitHub and Hugging Face apply, and a rect border
+  gets clipped mid-line by that mask.
 - **The avatars are circle-safe.** GitHub and Hugging Face mask org avatars into
   circles, and the band ends sit where an inscribed circle cuts. `avatar-*.svg`
   keeps the whole drawing inside that circle with 37 px of clearance at 512.
