@@ -97,7 +97,11 @@ def mark_svg(ds, box, stroke, colour=None, ground=None, title="Foothills Labs",
     body = ""
     if ground:
         r = f' rx="{radius}"' if radius else ""
-        body += f'<rect width="{box}" height="{box}"{r} fill="{ground}"/>'
+        # stroke="none" is load-bearing: the rect sits inside the stroked
+        # group below, so without it every tile inherits a hairline border
+        # in the mark colour — a bug that shipped once already.
+        body += (f'<rect width="{box}" height="{box}"{r} fill="{ground}" '
+                 f'stroke="none"/>')
     body += "".join(f'<path d="{d}"/>' for d in ds)
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {box} {box}" '
@@ -259,14 +263,17 @@ def main():
     # Hugging Face both mask org avatars into circles, and the band ends sit
     # near the corners where an inscribed circle cuts. 88 keeps the whole
     # drawing inside that circle with room to spare.
-    A, APAD, ASTROKE = 512, 88, 13.3
+    # Corner radius matches the favicon's ratio (14/64 = 21.875%), so every
+    # tiled cut of the mark shares one corner geometry.
+    A, APAD, ASTROKE, ARX = 512, 88, 13.3, 112
     av, _ = reframe(ds_full, bb_full, A, APAD, ASTROKE)
     for name, ground, inner, cbb in (("night", C["night"], inner_d, cbb_d),
                                      ("chalk", C["chalk"], inner_l, cbb_l)):
         write(f"avatar-{name}.svg",
-              colour_svg(inner, cbb, A, APAD, ground=ground))
+              colour_svg(inner, cbb, A, APAD, ground=ground, radius=ARX))
     write("avatar-butterscotch.svg", mark_svg(av, A, ASTROKE, C["sumi"],
-                                              ground=C["butterscotch"]))
+                                              ground=C["butterscotch"],
+                                              radius=ARX))
     # Favicon: rounded tile with a pronounced lichen border — a sharp square
     # sat awkwardly next to the round tab controls. Reduced cut, since the tile
     # lives at 16-32 px. The border is drawn inset so nothing clips.
