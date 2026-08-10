@@ -26,10 +26,10 @@ WASHI = "#FAF6ED"
 JOBS = [
     ("avatar-night.svg", "avatar-night-1024.png", 1024, None),
     ("avatar-night.svg", "avatar-night-512.png", 512, None),
+    ("avatar-washi.svg", "avatar-washi-512.png", 512, None),
     ("avatar-butter.svg", "avatar-butter-512.png", 512, None),
-    ("avatar-sumi.svg", "avatar-sumi-512.png", 512, None),
-    ("mark-butter.svg", "mark-butter-512.png", 512, None),
-    ("mark-sumi.svg", "mark-sumi-512.png", 512, None),
+    ("mark-colour.svg", "mark-colour-512.png", 512, None),
+    ("mark-colour-dark.svg", "mark-colour-dark-512.png", 512, None),
     ("favicon.svg", "favicon-32.png", 32, None),
     ("favicon.svg", "favicon-64.png", 64, None),
     ("touch-icon.svg", "apple-touch-icon-180.png", 180, None),

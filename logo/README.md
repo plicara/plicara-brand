@@ -1,13 +1,12 @@
 # Logo files
 
-**The house mark is Foothills Refolded** — pleated-paper hills, no plane,
-no summit; the lab's name folded out of its own material. Source:
-`candidates/candidate-e3-foothills-refolded.svg`, wired into `build.py`. The
-**colourway is being chosen** from `candidates/mark-foothills-*` (butter,
-arcade, sunset, cool, neon — 2-3 palette colours each, flat facet fills
-under the line, set off-register); until it is picked this pipeline bakes
-the monoline variants. All earlier candidates and sheet cuts stay in
-`candidates/` for the record.
+**The house mark is Foothills Refolded, in the arcade colourway** — two
+pleated-paper ranges (the teal one peeks through the front valleys; ranges
+recede, crowns cannot), magenta/butter/teal facets under the line, set
+off-register. Sources: `candidates/candidate-e3-foothills-refolded.svg`
+(line drawing) and `candidates/mark-foothills-arcade[-dark].svg` (colour
+construction), both generated. All earlier candidates and colourways stay
+in `candidates/` for the record.
 
 The one hard constraint, from the similarity screen: **the paper-plane
 silhouette in side view is Telegram's mark.** None of the candidates is one,
@@ -34,20 +33,20 @@ trademark screen ([`../../next_steps/trademark.md`](../../next_steps/trademark.m
 
 | Use | File |
 | --- | --- |
-| Anything you can style with CSS | `mark.svg` — takes `currentColor` |
-| Dark ground | `mark-butter.svg` or `mark-washi.svg` |
-| Light ground | `mark-sumi.svg` (maximum contrast) or `mark-magenta.svg` (Cel accent) |
-| Below ~40 px | `mark-small*.svg` — heavier stroke (provisional: same drawing) |
-| GitHub org, Hugging Face, social | `avatar-night.svg` (default), or `-butter` / `-sumi` / `-royal` |
+| The mark, in colour | `mark-colour.svg` (light grounds), `mark-colour-dark.svg` (dark grounds) |
+| Anything you can style with CSS | `mark.svg` — monoline, takes `currentColor` |
+| Single-colour reproduction | `mark-butter.svg`, `mark-washi.svg`, `mark-sumi.svg`, `mark-magenta.svg` |
+| Below ~40 px | `mark-small*.svg` — heavier monoline stroke |
+| GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-washi.svg` (colour), `avatar-butter.svg` (monoline) |
 | Browser tab | `favicon.svg` — rounded night tile, butter border |
 | Wide spaces: site header, slide footer | `lockup-horizontal-*.svg` |
 | Squarer spaces: cards, README badges | `lockup-compact-*.svg` |
 | Centred: README hero, title slide, print | `lockup-vertical-*.svg` |
 | Anywhere SVG is not accepted | `png/` — see below |
 
-Lockup suffixes: `-dark` (butter mark, washi wordmark), `-light` (magenta
-mark, sumi wordmark), `-mono` (all butter — for a dark panel or single-colour
-reproduction). The wordmark is **lowercase**: `foothills labs`.
+Lockup suffixes: `-dark` (colour mark, washi wordmark), `-light` (colour
+mark, sumi wordmark), `-mono` (all butter, monoline — for a dark panel or
+single-colour reproduction). The wordmark is **lowercase**: `foothills labs`.
 
 ## Rasters
 
@@ -56,8 +55,8 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 | File | For |
 | --- | --- |
 | `avatar-night-1024.png`, `-512.png` | GitHub org, Hugging Face org, social profile |
-| `avatar-butter-512.png`, `avatar-sumi-512.png` | Alternate grounds |
-| `mark-butter-512.png`, `mark-sumi-512.png` | Transparent mark, decks and docs |
+| `avatar-washi-512.png`, `avatar-butter-512.png` | Alternate grounds |
+| `mark-colour-512.png`, `mark-colour-dark-512.png` | Transparent colour mark, decks and docs |
 | `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
 | `touch-icon.svg` | Source for the apple-touch icon: square ground (iOS rounds it), pre-rounded border so the mask does not clip it |
 | `apple-touch-icon-180.png` | iOS home screen |

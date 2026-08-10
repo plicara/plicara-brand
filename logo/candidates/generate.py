@@ -175,8 +175,14 @@ CANDIDATES = {
             [(20, 44), (28, 74)],
             [(50, 28), (59, 74)],
             [(81, 42), (87, 74)],
+            # the second range, behind: only the arcs that peek above the
+            # front profile are drawn (endpoints sit on the front slopes).
+            # Ranges recede; crowns do not — this is what kills the crown
+            # read.
+            [(27, 52), (34, 40), (41, 45)],
+            [(61, 43), (70, 34), (75, 46)],
         ],
-        "note": "the foothills refolded: pleated paper hills, no plane",
+        "note": "the foothills refolded: two pleated-paper ranges, no plane",
     },
     "b-first-fold": {
         "tilt": -6,
@@ -256,21 +262,34 @@ E3_FACETS = [
     [(81, 42), (92, 74), (87, 74)],
 ]
 
-# facet colours cycle F1..F4; line colour per ground.
+# The back range's visible regions: each closes down along the front slopes
+# through the valley point, so no ground shows beneath the peeking peak.
+E3_BACK_FILLS = [
+    [(27, 52), (34, 40), (41, 45), (33, 58)],
+    [(61, 43), (70, 34), (75, 46), (67, 52)],
+]
+E3_BACK_LINES = [
+    [(27, 52), (34, 40), (41, 45)],
+    [(61, 43), (70, 34), (75, 46)],
+]
+
+# facet colours cycle F1..F4; "back" fills the second range; line colour per
+# ground. ADOPTED: arcade.
 COLOURWAYS = {
-    "butter": dict(f=["butter", "butter", "butter", "butter"],
+    "butter": dict(f=["butter", "butter", "butter", "butter"], back="butter",
                    light="sumi", dark="washi",
                    note="the control: all butter, two colours"),
-    "arcade": dict(f=["magenta", "butter", "teal", "magenta"],
+    "arcade": dict(f=["magenta", "butter", "teal", "magenta"], back="teal",
                    light="sumi", dark="washi",
-                   note="magenta, butter, teal facets: the 90s carpet"),
-    "sunset": dict(f=["blossom", "butter", "blossom", "butter"],
+                   note="ADOPTED. magenta, butter, teal facets, teal back "
+                        "range: the 90s carpet"),
+    "sunset": dict(f=["blossom", "butter", "blossom", "butter"], back="blossom",
                    light="sumi", dark="washi",
                    note="blossom and butter alternating: warm, soft"),
-    "cool":   dict(f=["teal", "lilac", "teal", "lilac"],
+    "cool":   dict(f=["teal", "lilac", "teal", "lilac"], back="lilac",
                    light="sumi", dark="washi",
                    note="teal and lilac: the cool half of the reference"),
-    "neon":   dict(f=["magenta", "magenta", "magenta", "magenta"],
+    "neon":   dict(f=["magenta", "magenta", "magenta", "magenta"], back="magenta",
                    light="sumi", dark="teal",
                    note="magenta mass, teal line on dark: the arcade sign"),
 }
@@ -280,22 +299,38 @@ def colourways():
     cand = CANDIDATES["e3-foothills-refolded"]
     name = "e3-foothills-refolded"
     ds = _paths(cand, name)
+    back_line_ds = [_smooth(_tx(_wobble(l, f"{name}-o{i+3}", amplitude=0.45,
+                                        step=4.0), cand["tilt"]))
+                    for i, l in enumerate(E3_BACK_LINES)]
+    front_ds = [d for d in ds if d not in back_line_ds]
     for way, cfg in COLOURWAYS.items():
+        backs = []
+        for i, poly in enumerate(E3_BACK_FILLS):
+            pts = _wobble(poly, f"{name}-b{i}", amplitude=0.4, closed=True)
+            d = _smooth(_tx(pts, cand["tilt"]), closed=True)
+            backs.append(f'<path d="{d}" fill="{PAL[cfg["back"]]}" '
+                         f'stroke="none" transform="translate(13 10)"/>')
         facets = []
         for i, poly in enumerate(E3_FACETS):
             pts = _wobble(poly, f"{name}-f{i}", amplitude=0.4, closed=True)
             d = _smooth(_tx(pts, cand["tilt"]), closed=True)
             facets.append(f'<path d="{d}" fill="{PAL[cfg["f"][i]]}" '
                           f'stroke="none" transform="translate(13 10)"/>')
+        facets = backs + [
+            f'<g fill="none" stroke="LINE" stroke-width="{STROKE}" '
+            f'stroke-linecap="round" stroke-linejoin="round">'
+            + "".join(f'<path d="{d}"/>' for d in back_line_ds) + "</g>"
+        ] + facets
         for ground, linecol in (("", cfg["light"]), ("-dark", cfg["dark"])):
             strokes = (f'<g fill="none" stroke="{PAL[linecol]}" '
                        f'stroke-width="{STROKE}" stroke-linecap="round" '
                        f'stroke-linejoin="round">'
-                       + "".join(f'<path d="{d}"/>' for d in ds) + "</g>")
+                       + "".join(f'<path d="{d}"/>' for d in front_ds) + "</g>")
             svg = (f'<svg xmlns="http://www.w3.org/2000/svg" '
                    f'viewBox="0 0 {VIEW:.0f} {VIEW:.0f}" role="img" '
                    f'aria-label="Foothills Labs — {way} colourway">\n'
-                   + "\n".join(facets) + "\n" + strokes + "\n</svg>\n")
+                   + "\n".join(facets).replace("LINE", PAL[linecol])
+                   + "\n" + strokes + "\n</svg>\n")
             with open(os.path.join(OUT, f"mark-foothills-{way}{ground}.svg"),
                       "w") as fh:
                 fh.write(svg)
