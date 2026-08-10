@@ -8,9 +8,12 @@ off-register. Sources: `candidates/candidate-e3-foothills-refolded.svg`
 construction), both generated. All earlier candidates and colourways stay
 in `candidates/` for the record.
 
-The one hard constraint, from the similarity screen: **the paper-plane
-silhouette in side view is Telegram's mark.** None of the candidates is one,
-by construction.
+Two constraints from the device screens, both binding on any future
+revision: **the paper-plane silhouette in side view is Telegram's mark** (no
+candidate was ever one, by construction), and **the mark must never be
+composed as a skyline over horizontal colour bands, nor set in a rectangular
+label lockup** — those are the configurations Patagonia enforces. Full
+reasoning: [`../../next_steps/trademark.md`](../../next_steps/trademark.md).
 
 Everything here is generated. The candidate drawings come from
 `candidates/generate.py` (same deterministic wobble as the model glyphs);
@@ -25,9 +28,12 @@ python3 build.py [path/to/archivo-latin-wdth-normal.woff2]
 python3 export.py
 ```
 
-When the colourway is chosen: move the faceted two-layer construction into
-`build.py`, draw the reduced cut (`MARK_SRC_SM`), regenerate, and re-run the
-trademark screen ([`../../next_steps/trademark.md`](../../next_steps/trademark.md)).
+The faceted two-layer construction lives in `build.py` and the device screen
+has been run against this mark (v2,
+[`../../next_steps/trademark.md`](../../next_steps/trademark.md)). One build
+item is still open: a dedicated **reduced cut** (`MARK_SRC_SM`) for below
+~24 px — drop the back range and carry more stroke. Until it exists, the
+small cut reuses the full drawing.
 
 ## Which file
 
@@ -35,7 +41,7 @@ trademark screen ([`../../next_steps/trademark.md`](../../next_steps/trademark.m
 | --- | --- |
 | The mark, in colour | `mark-colour.svg` (light grounds), `mark-colour-dark.svg` (dark grounds) |
 | Anything you can style with CSS | `mark.svg` — monoline, takes `currentColor` |
-| Single-colour reproduction | `mark-butter.svg`, `mark-washi.svg`, `mark-sumi.svg`, `mark-magenta.svg` |
+| Single-colour reproduction | `mark-butterscotch.svg`, `mark-washi.svg`, `mark-sumi.svg`, `mark-emerald.svg` |
 | Below ~40 px | `mark-small*.svg` — heavier monoline stroke |
 | GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-washi.svg` (colour), `avatar-butterscotch.svg` (monoline) |
 | Browser tab | `favicon.svg` — rounded night tile, butterscotch border |
@@ -72,9 +78,9 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
   into circles; the avatars keep the whole drawing inside the inscribed
   circle. Do not reduce their padding to make the mark look bigger in a
   square preview — the square preview is not where it will be seen.
-- **Minimum size 16 px.** (The final mark gets a real reduced cut for below
-  ~40 px; the provisional mark reuses the full drawing and is the reason the
-  favicon currently runs dense.)
+- **Minimum size 16 px.** A dedicated reduced cut for below ~24 px is still
+  to be drawn; until then the small cut reuses the full drawing, which is why
+  the favicon runs dense at tile sizes.
 - **Lockups carry a heavier mark** so it holds its own beside 800-weight
   letterforms. That is optical weight matching, not a second mark.
 - **Do not** rotate it, add a third colour, place it on a busy photograph, or
