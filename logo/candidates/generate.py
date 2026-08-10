@@ -91,7 +91,8 @@ def _tx(pts, tilt):
     return out
 
 
-# Each candidate: closed outline(s), open crease lines, tilt.
+# Each candidate: closed outline(s), open crease lines, tilt, and optionally
+# "amp" — the wobble amplitude, where more is looser.
 CANDIDATES = {
     "a-sheet": {
         "tilt": -6,
@@ -102,6 +103,41 @@ CANDIDATES = {
             [(50, 12), (30, 88)], [(50, 12), (70, 88)],
         ],
         "note": "the unfolded sheet: dart crease pattern, no plane",
+    },
+    # --- sheet variants, cut after the sheet direction was picked ----------
+    # a2: the dart's first folds only. Quieter, and the small-cut answer —
+    # three creases survive a 16 px tile where five turn to mush.
+    "a2-sheet-quiet": {
+        "tilt": -6,
+        "closed": [[(24, 10), (76, 10), (76, 90), (24, 90)]],
+        "open": [
+            [(50, 10), (50, 90)],
+            [(50, 12), (26, 48)], [(50, 12), (74, 48)],
+        ],
+        "note": "the sheet, quiet: centre fold and first creases only",
+    },
+    # a3: the origami square — both diagonals and the centre fold meeting in
+    # the middle. Reads craft rather than letterhead.
+    "a3-sheet-square": {
+        "tilt": -5,
+        "closed": [[(19, 19), (81, 19), (81, 81), (19, 81)]],
+        "open": [
+            [(21, 21), (79, 79)], [(79, 21), (21, 79)],
+            [(50, 19), (50, 81)],
+        ],
+        "note": "the origami square: diagonals and centre crease",
+    },
+    # a4: the quiet sheet thrown off true — strongest tilt, loosest line.
+    # Maximum levity while staying a sheet.
+    "a4-sheet-jaunty": {
+        "tilt": -14,
+        "amp": 0.75,
+        "closed": [[(26, 12), (74, 12), (74, 88), (26, 88)]],
+        "open": [
+            [(50, 12), (50, 88)],
+            [(50, 14), (28, 48)], [(50, 14), (72, 48)],
+        ],
+        "note": "the sheet, jaunty: more tilt, looser line",
     },
     "b-first-fold": {
         "tilt": -6,
@@ -135,12 +171,13 @@ CANDIDATES = {
 
 
 def _paths(cand, name):
+    amp = cand.get("amp", 0.5)
     ds = []
     for i, poly in enumerate(cand["closed"]):
-        pts = _wobble(poly, f"{name}-c{i}", closed=True)
+        pts = _wobble(poly, f"{name}-c{i}", amplitude=amp, closed=True)
         ds.append(_smooth(_tx(pts, cand["tilt"]), closed=True))
     for i, line in enumerate(cand["open"]):
-        pts = _wobble(line, f"{name}-o{i}", step=4.0)
+        pts = _wobble(line, f"{name}-o{i}", amplitude=amp, step=4.0)
         ds.append(_smooth(_tx(pts, cand["tilt"])))
     return ds
 

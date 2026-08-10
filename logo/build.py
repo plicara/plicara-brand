@@ -46,7 +46,7 @@ C = {
     "butter": "#F3DC7C",
     "sumi": "#2B2422",
     "washi": "#FAF6ED",
-    "night": "#163B4E",
+    "night": "#1F292E",
     "magenta": "#B92D77",
     "royal": "#2F3BB3",
 }

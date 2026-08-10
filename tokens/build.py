@@ -22,11 +22,13 @@ PALETTE = {
     "washi":    ("#FAF6ED", "Warm paper white. Light ground; primary text on dark."),
     "white":    ("#FFFFFF", "Surfaces on the light ground."),
     "cream":    ("#F7EBC9", "Raised warm surface on the light grounds. Tiles, table rows, code blocks."),
-    "night":    ("#163B4E", "Evening-sky blue. Primary dark ground."),
-    "lagoon":   ("#1D4A60", "Raised surface on night."),
+    "night":    ("#1F292E", "Green-cast charcoal, a garden at dusk. Primary dark ground."),
+    "slate":    ("#2C3A40", "Raised surface on night."),
+    "jade":     ("#1B6055", "Deep leaf teal. Panel ground on dark pages; can ink on washi."),
+    "plum":     ("#4E2338", "Deep wine. Panel ground on dark pages."),
     "teal":     ("#3EB7C6", "First chart series on the dark grounds."),
     "blossom":  ("#F0A7C0", "Soft pink. Second chart series on night; recessive detail."),
-    "magenta":  ("#B92D77", "Deep pink. Accent ink on the warm light ground."),
+    "magenta":  ("#B92D77", "Deep pink. Accent ink on the warm light ground; on dark grounds a fill, never an ink."),
     "royal":    ("#2F3BB3", "Saturated blue. Accent ink and first series on the light grounds."),
     "mint":     ("#63C6A0", "Green. Second chart series on the blueprint ground."),
     "lilac":    ("#C9A9E2", "Pale violet. Recessive detail on dark grounds."),
@@ -39,9 +41,10 @@ PALETTE = {
 # models; Blueprint/Notepad carry benchmarks and tools.
 SCHEMES = {
     "twilight":  dict(mode="dark", area="lab, models", typeset="warm",
-                      bg="#163B4E", surface="#1D4A60", text="#FAF6ED",
-                      text_muted="#A9C6D3", rule="#2C5E76", accent="#F3DC7C",
-                      accent_on="#2B2422", series_1="#3EB7C6", series_2="#F0A7C0"),
+                      bg="#1F292E", surface="#2C3A40", text="#FAF6ED",
+                      text_muted="#A0BAB8", rule="#3B4C50", accent="#F3DC7C",
+                      accent_on="#2B2422", series_1="#3EB7C6", series_2="#F0A7C0",
+                      panels=["jade", "plum"]),
     "cel":       dict(mode="light", area="lab, models", typeset="warm",
                       bg="#FAF6ED", surface="#FFFFFF", text="#2B2422",
                       text_muted="#6E6259", rule="#E3D8C4", accent="#B92D77",
@@ -79,7 +82,7 @@ TYPESETS = {
     },
 }
 
-GROUNDS = ["night", "lagoon", "print", "drafting", "washi", "white", "cream", "butter"]
+GROUNDS = ["night", "slate", "jade", "plum", "print", "drafting", "washi", "white", "cream", "butter"]
 
 # Hot fills and their text guards. A fill is a colour that holds text but must
 # never set it; the on-colour is the only ink allowed on top of it. The butter
@@ -87,7 +90,10 @@ GROUNDS = ["night", "lagoon", "print", "drafting", "washi", "white", "cream", "b
 # constant in every scheme, including Cel and Notepad, whose accent inks are
 # magenta and royal.
 FILLS = {
-    "butter": {"on": "sumi", "standing_exception": True},
+    "butter":  {"on": "sumi", "standing_exception": True},
+    # Magenta clears AA as an ink on washi but only 2.62:1 on night — on the
+    # dark grounds it is a fill, and the guard is what makes that mechanical.
+    "magenta": {"on": "white", "standing_exception": False},
 }
 
 

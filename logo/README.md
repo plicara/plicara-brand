@@ -1,11 +1,15 @@
 # Logo files
 
-**The house mark is being chosen.** Four generated candidates live in
-[`candidates/`](candidates/) — the unfolded sheet (a), the first fold (b), the
-dart head-on (c), and the paper foothills (d). Until the choice is made,
-candidate **a** is wired into the pipeline provisionally so every derived
-asset stays buildable and tested: *the lab is the sheet; the planes belong to
-the models* — the direct heir of the summit-less Siwalik logic.
+**The house mark is the sheet; the cut is being chosen.** The sheet
+direction won (*the lab is the sheet; the planes belong to the models* — the
+direct heir of the summit-less Siwalik logic), and four cuts of it live in
+[`candidates/`](candidates/): `a-sheet` (full crease pattern), `a2-sheet-quiet`
+(centre fold and first creases), `a3-sheet-square` (the origami square) and
+`a4-sheet-jaunty` (strongest tilt, loosest line). The retired b/c/d candidates
+stay in the directory for the record. Until the cut is picked, `a-sheet` is
+wired into the pipeline provisionally so every derived asset stays buildable;
+the quiet and square cuts hold a 16 px tile, so the reduced cut will come
+from one of them.
 
 The one hard constraint, from the similarity screen: **the paper-plane
 silhouette in side view is Telegram's mark.** None of the candidates is one,
@@ -91,7 +95,7 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 
 ## Colours
 
-`butter #F3DC7C` · `sumi #2B2422` · `washi #FAF6ED` · `night #163B4E` ·
+`butter #F3DC7C` · `sumi #2B2422` · `washi #FAF6ED` · `night #1F292E` ·
 `magenta #B92D77` · `royal #2F3BB3`
 
 Butter is the accent colour and a fill, never an ink — text on it is always

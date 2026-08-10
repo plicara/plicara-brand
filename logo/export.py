@@ -18,7 +18,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "png")
 os.makedirs(OUT, exist_ok=True)
 
-NIGHT = "#163B4E"
+NIGHT = "#1F292E"
 BUTTER = "#F3DC7C"
 WASHI = "#FAF6ED"
 

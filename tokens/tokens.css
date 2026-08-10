@@ -45,11 +45,17 @@
   --fh-washi: #faf6ed;       /* warm paper white */
   --fh-white: #ffffff;
   --fh-cream: #f7ebc9;       /* raised warm surface */
-  --fh-night: #163b4e;       /* evening-sky blue, primary dark ground */
-  --fh-lagoon: #1d4a60;      /* raised surface on night */
+  --fh-night: #1f292e;       /* green-cast charcoal, primary dark ground */
+  --fh-slate: #2c3a40;       /* raised surface on night */
+  --fh-jade: #1b6055;        /* deep leaf teal; panel ground on dark pages */
+  --fh-plum: #4e2338;        /* deep wine; panel ground on dark pages */
   --fh-teal: #3eb7c6;        /* first series, dark grounds */
   --fh-blossom: #f0a7c0;     /* soft pink, second series on night */
-  --fh-magenta: #b92d77;     /* accent ink on the warm light ground */
+  /* Magenta is an ink on light grounds (5.26:1 on washi) but only 2.62:1 on
+   * night — on the DARK grounds it is a fill, never an ink, and text on a
+   * magenta fill is always --fh-on-magenta. Same railing as butter. */
+  --fh-magenta: #b92d77;
+  --fh-on-magenta: #ffffff;
   --fh-royal: #2f3bb3;       /* accent ink and first series, light grounds */
   --fh-mint: #63c6a0;        /* second series on the blueprint ground */
   --fh-lilac: #c9a9e2;       /* recessive detail on dark grounds */
@@ -88,13 +94,17 @@
 /* Every pairing below clears WCAG AA for body text; series colours clear AA
  * large. Ratios are in tokens.json, generated rather than asserted. */
 
-/* Twilight — primary dark. The lab and the models. */
+/* Twilight — primary dark. The lab and the models. A garden at dusk:
+ * charcoal ground, slate tiles, and the colour arriving through PANELS —
+ * jade and plum grounds, magenta fills, blossom and teal series — rather
+ * than through the base ground. Dark pages are not monotone; they are dark
+ * paper that colourful things sit on. */
 [data-scheme="twilight"] {
   --fh-bg: var(--fh-night);
-  --fh-surface: var(--fh-lagoon);
+  --fh-surface: var(--fh-slate);
   --fh-text: var(--fh-washi);
-  --fh-text-muted: #a9c6d3;
-  --fh-rule: #2c5e76;
+  --fh-text-muted: #a0bab8;
+  --fh-rule: #3b4c50;
   --fh-accent: var(--fh-butter);
   --fh-accent-on: var(--fh-sumi);
   --fh-series-1: var(--fh-teal);
@@ -146,8 +156,8 @@
 }
 
 /* Default, when nothing declares a scheme: the lab pair, following the OS. */
-:root { --fh-bg: #163b4e; --fh-surface: #1d4a60; --fh-text: #faf6ed;
-        --fh-text-muted: #a9c6d3; --fh-rule: #2c5e76;
+:root { --fh-bg: #1f292e; --fh-surface: #2c3a40; --fh-text: #faf6ed;
+        --fh-text-muted: #a0bab8; --fh-rule: #3b4c50;
         --fh-accent: var(--fh-butter); --fh-accent-on: var(--fh-sumi);
         --fh-series-1: var(--fh-teal); --fh-series-2: var(--fh-blossom); }
 
