@@ -234,6 +234,74 @@ def _svg(ds, colour, fill_n=0, title=""):
             f'aria-label="{title}">\n' + "\n".join(body) + "\n</svg>\n")
 
 
+
+
+# --- the chosen mark: foothills refolded — colourways -----------------------
+# The pleats give the mark four facets, and the facets take flat colour
+# patches under the line — the two-layer construction, now with a Memphis
+# temperature. Every way is 2-3 colours from the brand palette, nothing
+# outside it.
+
+PAL = {
+    "butter": "#F3DC7C", "magenta": "#B92D77", "teal": "#3EB7C6",
+    "blossom": "#F0A7C0", "lilac": "#C9A9E2", "sumi": "#2B2422",
+    "washi": "#FAF6ED",
+}
+
+# Facets of e3-foothills-refolded, left to right, split at the pleat returns.
+E3_FACETS = [
+    [(8, 74), (20, 44), (28, 74)],
+    [(20, 44), (33, 58), (50, 28), (59, 74), (28, 74)],
+    [(50, 28), (67, 52), (81, 42), (87, 74), (59, 74)],
+    [(81, 42), (92, 74), (87, 74)],
+]
+
+# facet colours cycle F1..F4; line colour per ground.
+COLOURWAYS = {
+    "butter": dict(f=["butter", "butter", "butter", "butter"],
+                   light="sumi", dark="washi",
+                   note="the control: all butter, two colours"),
+    "arcade": dict(f=["magenta", "butter", "teal", "magenta"],
+                   light="sumi", dark="washi",
+                   note="magenta, butter, teal facets: the 90s carpet"),
+    "sunset": dict(f=["blossom", "butter", "blossom", "butter"],
+                   light="sumi", dark="washi",
+                   note="blossom and butter alternating: warm, soft"),
+    "cool":   dict(f=["teal", "lilac", "teal", "lilac"],
+                   light="sumi", dark="washi",
+                   note="teal and lilac: the cool half of the reference"),
+    "neon":   dict(f=["magenta", "magenta", "magenta", "magenta"],
+                   light="sumi", dark="teal",
+                   note="magenta mass, teal line on dark: the arcade sign"),
+}
+
+
+def colourways():
+    cand = CANDIDATES["e3-foothills-refolded"]
+    name = "e3-foothills-refolded"
+    ds = _paths(cand, name)
+    for way, cfg in COLOURWAYS.items():
+        facets = []
+        for i, poly in enumerate(E3_FACETS):
+            pts = _wobble(poly, f"{name}-f{i}", amplitude=0.4, closed=True)
+            d = _smooth(_tx(pts, cand["tilt"]), closed=True)
+            facets.append(f'<path d="{d}" fill="{PAL[cfg["f"][i]]}" '
+                          f'stroke="none" transform="translate(13 10)"/>')
+        for ground, linecol in (("", cfg["light"]), ("-dark", cfg["dark"])):
+            strokes = (f'<g fill="none" stroke="{PAL[linecol]}" '
+                       f'stroke-width="{STROKE}" stroke-linecap="round" '
+                       f'stroke-linejoin="round">'
+                       + "".join(f'<path d="{d}"/>' for d in ds) + "</g>")
+            svg = (f'<svg xmlns="http://www.w3.org/2000/svg" '
+                   f'viewBox="0 0 {VIEW:.0f} {VIEW:.0f}" role="img" '
+                   f'aria-label="Foothills Labs — {way} colourway">\n'
+                   + "\n".join(facets) + "\n" + strokes + "\n</svg>\n")
+            with open(os.path.join(OUT, f"mark-foothills-{way}{ground}.svg"),
+                      "w") as fh:
+                fh.write(svg)
+        print(f"wrote mark-foothills-{way}[-dark].svg")
+
+
 def main():
     for name, cand in CANDIDATES.items():
         ds = _paths(cand, name)
@@ -247,3 +315,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    colourways()

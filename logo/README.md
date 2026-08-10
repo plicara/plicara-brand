@@ -1,15 +1,13 @@
 # Logo files
 
-**The house mark is the sheet; the cut is being chosen.** The sheet
-direction won (*the lab is the sheet; the planes belong to the models* — the
-direct heir of the summit-less Siwalik logic), and four cuts of it live in
-[`candidates/`](candidates/): `a-sheet` (full crease pattern), `a2-sheet-quiet`
-(centre fold and first creases), `a3-sheet-square` (the origami square) and
-`a4-sheet-jaunty` (strongest tilt, loosest line). The retired b/c/d candidates
-stay in the directory for the record. Until the cut is picked, `a-sheet` is
-wired into the pipeline provisionally so every derived asset stays buildable;
-the quiet and square cuts hold a 16 px tile, so the reduced cut will come
-from one of them.
+**The house mark is Foothills Refolded** — pleated-paper hills, no plane,
+no summit; the lab's name folded out of its own material. Source:
+`candidates/candidate-e3-foothills-refolded.svg`, wired into `build.py`. The
+**colourway is being chosen** from `candidates/mark-foothills-*` (butter,
+arcade, sunset, cool, neon — 2-3 palette colours each, flat facet fills
+under the line, set off-register); until it is picked this pipeline bakes
+the monoline variants. All earlier candidates and sheet cuts stay in
+`candidates/` for the record.
 
 The one hard constraint, from the similarity screen: **the paper-plane
 silhouette in side view is Telegram's mark.** None of the candidates is one,
@@ -28,8 +26,8 @@ python3 build.py [path/to/archivo-latin-wdth-normal.woff2]
 python3 export.py
 ```
 
-When the mark is chosen: point `MARK_SRC` in `build.py` at the final drawing,
-draw it a proper reduced cut (`MARK_SRC_SM`), regenerate, and re-run the
+When the colourway is chosen: move the faceted two-layer construction into
+`build.py`, draw the reduced cut (`MARK_SRC_SM`), regenerate, and re-run the
 trademark screen ([`../../next_steps/trademark.md`](../../next_steps/trademark.md)).
 
 ## Which file
