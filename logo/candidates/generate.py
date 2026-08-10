@@ -26,7 +26,7 @@ OUT = os.path.dirname(os.path.abspath(__file__))
 
 VIEW = 512.0
 STROKE = 15.0
-SUMI = "#2B2422"
+SUMI = "#26292B"    # cool near-black
 BUTTER = "#E7A63E"  # butterscotch
 
 
@@ -249,10 +249,12 @@ def _svg(ds, colour, fill_n=0, title=""):
 # outside it.
 
 PAL = {
-    # pastel palette (2026-08-10, palette card): the live set
-    "coral": "#F7A283", "butterscotch": "#E7A63E", "emerald": "#376F71",
-    "duckegg": "#CBDFD4", "smoke": "#9DACBA", "blush": "#F7DDD3",
-    "sumi": "#2B2422", "washi": "#FAF6ED",
+    # chalk palette (2026-08-10): the live set
+    "rose": "#EE93A9", "butterscotch": "#E7A63E", "emerald": "#2F6E70",
+    "duckegg": "#CBDFD4", "smoke": "#9DACBA", "mist": "#DCE6E6",
+    "plum": "#8E4763", "sumi": "#26292B", "chalk": "#EDF1F0",
+    # retired pastel-card hues, kept so the historical colourways still build
+    "coral": "#F7A283", "washi": "#FAF6ED", "blush": "#F7DDD3",
     # retired 90s-anime hues, kept so the historical colourways still build
     "butter": "#F3DC7C", "magenta": "#B92D77", "teal": "#3EB7C6",
     "blossom": "#F0A7C0", "lilac": "#C9A9E2",
@@ -281,10 +283,16 @@ E3_BACK_LINES = [
 # ground. ADOPTED: seaglass (pastel palette). The 90s-anime ways below it are
 # history and still build.
 COLOURWAYS = {
+    "chalk": dict(f=["rose", "butterscotch", "emerald", "rose"],
+                  back="duckegg", light="sumi", dark="chalk",
+                  note="ADOPTED. rose, butterscotch, emerald facets, "
+                       "duck-egg back range: the chalk palette. Rose replaces "
+                       "coral to clear terracotta's family; the line on dark "
+                       "grounds is cool chalk, not warm washi."),
     "seaglass": dict(f=["coral", "butterscotch", "emerald", "coral"],
                      back="duckegg", light="sumi", dark="washi",
-                     note="ADOPTED. coral, butterscotch, emerald facets, "
-                          "duck-egg back range: the pastel card"),
+                     note="retired 2026-08-10 — coral and washi read as "
+                          "Anthropic's cream-and-terracotta pairing"),
     "butter": dict(f=["butter", "butter", "butter", "butter"], back="butter",
                    light="sumi", dark="washi",
                    note="the control: all butter, two colours"),

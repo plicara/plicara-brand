@@ -6,7 +6,8 @@ explains it. Change all three together.
     python3 build.py
 
 Contrast is WCAG 2.1 relative luminance. Every pairing the brand sanctions for
-text clears AA (4.5:1); the pairs that fail are ground-on-ground combinations
+text clears AA (4.5:1) — including the accent on a raised surface, which the
+previous palette missed. The pairs that fail are ground-on-ground combinations
 that are never text, plus the pastel fills on light grounds, which is the
 reason for the "a pastel is a fill, not an ink" rule.
 """
@@ -16,49 +17,57 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# The six reference colours (coral, blush, butterscotch, smoke, duck egg,
-# emerald sea) were sampled from the founder's palette card. Emerald is
-# darkened one step so it can serve as the light-scheme accent ink; night,
-# slate, print, drafting and clay are DERIVED — dark grounds and a
-# light-ground series ink that a six-pastel card cannot supply — and are
-# marked as such.
+# The CHALK palette. Descended from the founder's pastel card, with two
+# deliberate moves away from Anthropic's identity, which pairs a warm cream
+# ground with a terracotta accent:
+#
+#   1. The paper is COOL. Chalk sits at b* 0.0 on the yellow-blue axis;
+#      the warm cream it replaces sat at +4.8, against Anthropic's +4.1 —
+#      close enough (dE2000 2.0) that no viewer could separate them.
+#   2. The warm accent is ROSE, not coral. Rose is dE2000 20 from
+#      terracotta; the coral it replaces was 11.5, the same family.
+#
+# Butterscotch, duck egg and smoke came through from the card unchanged —
+# none of them is anywhere near Anthropic's palette. Night/slate,
+# print/drafting and plum are DERIVED: dark grounds and a light-ground
+# series ink a six-pastel card cannot supply.
 PALETTE = {
     "butterscotch": ("#E7A63E", "The one hot colour. A fill, never an ink. The glyph fill and the accent of both dark schemes."),
-    "coral":        ("#F7A283", "Warm pastel. A fill and a panel ground; never an ink."),
-    "blush":        ("#F7DDD3", "Pale warm pink. Raised surface on the cel ground."),
-    "duckegg":      ("#CBDFD4", "Pale green. Raised surface on notepad; second series on dark."),
+    "rose":         ("#EE93A9", "Cool-leaning pink. A fill and a panel ground; never an ink. Replaces the card's coral, which sat in terracotta's family."),
+    "chalk":        ("#EDF1F0", "Cool paper white. The light ground, and text on the dark ones."),
+    "white":        ("#FFFFFF", "Ground of notepad; surfaces on chalk."),
+    "mist":         ("#DCE6E6", "Raised cool surface. Tiles, table rows, code blocks."),
+    "duckegg":      ("#CBDFD4", "Pale green. Second chart series on the dark grounds."),
     "smoke":        ("#9DACBA", "Blue-grey. Recessive detail and rules; never body text."),
-    "emerald":      ("#376F71", "Emerald sea, darkened a step. The accent ink on light grounds; a panel ground on dark."),
-    "sumi":         ("#2B2422", "Warm near-black, like ink that has dried. Primary text on light; the outline colour of every drawing."),
-    "washi":        ("#FAF6ED", "Warm paper white. Light ground; primary text on dark."),
-    "white":        ("#FFFFFF", "Ground of notepad; surfaces on washi."),
-    "clay":         ("#B85C40", "Derived: coral fired dark. Second chart series on light grounds."),
-    "night":        ("#22474A", "Derived from emerald sea: deep water. Primary dark ground."),
-    "slate":        ("#2D5559", "Raised surface on night."),
-    "print":        ("#333E48", "Derived from smoke: smoked slate. Dark ground for benchmarks and tools."),
-    "drafting":     ("#3E4A55", "Raised surface on print."),
+    "emerald":      ("#2F6E70", "Emerald sea, darkened for ink duty. The accent ink on light grounds; a panel ground on dark."),
+    "plum":         ("#8E4763", "Derived: rose fired dark. Second chart series on the light grounds."),
+    "sumi":         ("#26292B", "Cool near-black, like ink that has dried. Primary text on light; the outline colour of every drawing."),
+    "night":        ("#1E3C40", "Derived from emerald sea: deep water. Primary dark ground."),
+    "slate":        ("#23464A", "Raised surface on night."),
+    "print":        ("#2E3A42", "Derived from smoke: smoked slate. Dark ground for benchmarks and tools."),
+    "drafting":     ("#38444C", "Raised surface on print."),
 }
 
 # Four schemes, paired by area of the lab. Twilight/Cel carry the lab and the
 # models; Blueprint/Notepad carry benchmarks and tools.
 SCHEMES = {
     "twilight":  dict(mode="dark", area="lab, models", typeset="warm",
-                      bg="#22474A", surface="#2D5559", text="#FAF6ED",
-                      text_muted="#AFC9C5", rule="#3B6165", accent="#E7A63E",
-                      accent_on="#2B2422", series_1="#F7A283", series_2="#CBDFD4",
-                      panels=["emerald", "coral"]),
+                      bg="#1E3C40", surface="#23464A", text="#EDF1F0",
+                      text_muted="#A7C4C2", rule="#33585C", accent="#E7A63E",
+                      accent_on="#26292B", series_1="#EE93A9", series_2="#CBDFD4",
+                      panels=["emerald", "rose"]),
     "cel":       dict(mode="light", area="lab, models", typeset="warm",
-                      bg="#FAF6ED", surface="#FFFFFF", text="#2B2422",
-                      text_muted="#6E6259", rule="#E8DCD2", accent="#376F71",
-                      accent_on="#FFFFFF", series_1="#376F71", series_2="#B85C40"),
+                      bg="#EDF1F0", surface="#FFFFFF", text="#26292B",
+                      text_muted="#5C6668", rule="#DBE4E3", accent="#2F6E70",
+                      accent_on="#FFFFFF", series_1="#2F6E70", series_2="#8E4763"),
     "blueprint": dict(mode="dark", area="benchmarks, tools", typeset="technical",
-                      bg="#333E48", surface="#3E4A55", text="#FFFFFF",
-                      text_muted="#AEBCC8", rule="#4C5A66", accent="#E7A63E",
-                      accent_on="#2B2422", series_1="#CBDFD4", series_2="#F7A283"),
+                      bg="#2E3A42", surface="#38444C", text="#FFFFFF",
+                      text_muted="#AEBCC6", rule="#46525B", accent="#E7A63E",
+                      accent_on="#26292B", series_1="#CBDFD4", series_2="#EE93A9"),
     "notepad":   dict(mode="light", area="benchmarks, tools", typeset="technical",
-                      bg="#FFFFFF", surface="#CBDFD4", text="#2B2422",
-                      text_muted="#525E60", rule="#DCE6DE", accent="#376F71",
-                      accent_on="#FFFFFF", series_1="#376F71", series_2="#B85C40"),
+                      bg="#FFFFFF", surface="#DCE6E6", text="#26292B",
+                      text_muted="#4F5A5C", rule="#C9D8D8", accent="#2F6E70",
+                      accent_on="#FFFFFF", series_1="#2F6E70", series_2="#8E4763"),
 }
 
 # Both typesets set headings in lowercase; uppercase belongs to the mono
@@ -84,8 +93,8 @@ TYPESETS = {
     },
 }
 
-GROUNDS = ["night", "slate", "print", "drafting", "washi", "white", "blush",
-           "duckegg", "emerald", "coral", "butterscotch"]
+GROUNDS = ["night", "slate", "print", "drafting", "chalk", "white", "mist",
+           "duckegg", "emerald", "rose", "butterscotch"]
 
 # Hot fills and their text guards. A fill is a colour that holds text but must
 # never set it; the on-colour is the only ink allowed on top of it. The
@@ -94,10 +103,14 @@ GROUNDS = ["night", "slate", "print", "drafting", "washi", "white", "blush",
 # ink is emerald.
 FILLS = {
     "butterscotch": {"on": "sumi", "standing_exception": True},
-    # Coral clears nothing as an ink anywhere (1.86:1 on washi) but holds
-    # sumi at 7.58:1 — a fill and a panel ground, with the same railing.
-    "coral":        {"on": "sumi", "standing_exception": False},
+    "rose":         {"on": "sumi", "standing_exception": False},
 }
+
+# Pairings the brand sanctions for text, checked per scheme. The accent is
+# included at body threshold on purpose: it is documented as an *ink*, so a
+# link set in it on a raised tile has to clear 4.5 like any other text.
+TEXT_ROLES = {"text": 4.5, "text_muted": 4.5, "accent": 4.5}
+SERIES_ROLES = {"series_1": 3.0, "series_2": 3.0}
 
 
 def _lin(c):
@@ -116,6 +129,22 @@ def contrast(a, b):
     return round((max(la, lb) + 0.05) / (min(la, lb) + 0.05), 2)
 
 
+def audit():
+    """Every sanctioned pairing, checked. Returns a list of failures."""
+    bad = []
+    for name, sc in SCHEMES.items():
+        for ground in ("bg", "surface"):
+            for role, need in {**TEXT_ROLES, **SERIES_ROLES}.items():
+                r = contrast(sc[role], sc[ground])
+                if r < need:
+                    bad.append(f"{name}.{role}_on_{ground}={r} (needs {need})")
+    for fill, cfg in FILLS.items():
+        r = contrast(PALETTE[fill][0], PALETTE[cfg["on"]][0])
+        if r < 4.5:
+            bad.append(f"fill {fill} holds {cfg['on']} at only {r}")
+    return bad
+
+
 def build():
     tokens = {
         "$schema": "https://design-tokens.github.io/community-group/format/",
@@ -123,6 +152,7 @@ def build():
             "name": "Foothills Labs",
             "source": "docs/brand.md",
             "note": "Generated by assets/tokens/build.py. Edit docs/brand.md, then regenerate.",
+            "palette": "chalk",
         },
         "color": {k: {"value": v[0], "comment": v[1]} for k, v in PALETTE.items()},
         "contrast": {},
@@ -170,11 +200,20 @@ def build():
             row[bg] = {"ratio": r, "aa_body": r >= 4.5, "aa_large": r >= 3.0}
         tokens["contrast"][fg] = row
 
+    failures = audit()
+    tokens["meta"]["audit"] = "all sanctioned pairings clear AA" if not failures else failures
+
     path = os.path.join(HERE, "tokens.json")
     with open(path, "w") as fh:
         json.dump(tokens, fh, indent=2)
         fh.write("\n")
     print(f"wrote {path}")
+    if failures:
+        print("AUDIT FAILURES:")
+        for f in failures:
+            print("  " + f)
+    else:
+        print("audit: every sanctioned pairing clears AA")
     return tokens
 
 

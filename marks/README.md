@@ -23,8 +23,8 @@ charming instead — that is the brand argument, not a compromise on it.
 
 | Use | File |
 | --- | --- |
-| Light grounds (washi, white, cream) | `plane-{name}.svg` — sumi outline, butterscotch fill |
-| Dark grounds (night, print) | `plane-{name}-dark.svg` — washi outline, butterscotch fill |
+| Light grounds (chalk, white, mist) | `plane-{name}.svg` — sumi outline, butterscotch fill |
+| Dark grounds (night, print) | `plane-{name}-dark.svg` — chalk outline, butterscotch fill |
 | Below ~40 px | `plane-{name}-small.svg` — heavier line, centre fold only, fill on-register |
 | Styled with CSS | `plane-{name}-mono.svg` — `currentColor` outline, no fill |
 
@@ -49,7 +49,7 @@ No dependencies beyond the standard library.
 - The glyphs are the models'. The house mark is the lab's — never use a plane
   glyph as the org mark, and never use the house mark on a model card where a
   glyph belongs.
-- Outline is sumi on light grounds, washi on dark. Butterscotch is the only fill,
+- Outline is sumi on light grounds, chalk on dark. Butterscotch is the only fill,
   and it never carries text ([`brand.md` § Colour](../../docs/brand.md#colour)).
 - Keep the tilt. Every plane sits at the same slight nose-up angle; a glyph
   straightened to the grid reads as a different system.

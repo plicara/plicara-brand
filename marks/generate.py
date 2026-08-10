@@ -3,7 +3,7 @@
 The rule, and the whole point of the system:
 
     Each model is a paper plane, drawn simply: a top view, a thick sumi
-    outline, and a butter fill that sits deliberately off-register — the
+    outline, and a butterscotch fill that sits deliberately off-register — the
     loose screen-print look of the illustration style. The drawings are
     stylised, not fold diagrams; charm is the point, complexity is not.
 
@@ -16,8 +16,8 @@ this script always produces byte-identical output. Change the code, not the
 files.
 
 Outputs, per plane:
-    plane-{name}.svg        sumi outline + butter fill, for light grounds
-    plane-{name}-dark.svg   washi outline + butter fill, for dark grounds
+    plane-{name}.svg        sumi outline + butterscotch fill, for light grounds
+    plane-{name}-dark.svg   chalk outline + butterscotch fill, for dark grounds
     plane-{name}-small.svg  heavier line, centre fold only, for < 40 px
     plane-{name}-mono.svg   currentColor outline, no fill, for CSS styling
 
@@ -30,15 +30,15 @@ import os
 
 OUT = os.path.dirname(os.path.abspath(__file__))
 
-SUMI = "#2B2422"
-WASHI = "#FAF6ED"
-BUTTER = "#E7A63E"  # butterscotch — the fill colour after the pastel palette
+SUMI = "#26292B"   # cool near-black outline
+CHALK = "#EDF1F0"  # cool paper — the outline colour on dark grounds
+BUTTER = "#E7A63E" # butterscotch — the one hot fill
 
 VIEW = 512.0           # artboard
 STROKE = 17.0          # main outline, ~3.3% of the artboard
 STROKE_FOLD = 11.0     # interior fold lines
 STROKE_SMALL = 30.0    # reduced cut
-OFFSET = (14.0, 11.0)  # butter fill misregistration, in artboard units
+OFFSET = (14.0, 11.0)  # fill misregistration, in artboard units
 TILT = -7.0            # degrees; the whole drawing sits slightly nose-up
 
 # --- geometry -------------------------------------------------------------
@@ -228,7 +228,7 @@ def main():
     for name, plane in sorted(PLANES.items(), key=lambda kv: kv[1]["tier"]):
         files = {
             f"plane-{name}.svg": glyph(name, plane, SUMI),
-            f"plane-{name}-dark.svg": glyph(name, plane, WASHI),
+            f"plane-{name}-dark.svg": glyph(name, plane, CHALK),
             f"plane-{name}-small.svg": glyph(name, plane, SUMI, small=True),
             f"plane-{name}-mono.svg": glyph(name, plane, "currentColor",
                                             with_fill=False),

@@ -18,15 +18,15 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "png")
 os.makedirs(OUT, exist_ok=True)
 
-NIGHT = "#22474A"
+NIGHT = "#1E3C40"
 BUTTERSCOTCH = "#E7A63E"
-WASHI = "#FAF6ED"
+CHALK = "#EDF1F0"
 
 # (source svg, output name, pixel size, background or None for transparent)
 JOBS = [
     ("avatar-night.svg", "avatar-night-1024.png", 1024, None),
     ("avatar-night.svg", "avatar-night-512.png", 512, None),
-    ("avatar-washi.svg", "avatar-washi-512.png", 512, None),
+    ("avatar-chalk.svg", "avatar-chalk-512.png", 512, None),
     ("avatar-butterscotch.svg", "avatar-butterscotch-512.png", 512, None),
     ("mark-colour.svg", "mark-colour-512.png", 512, None),
     ("mark-colour-dark.svg", "mark-colour-dark-512.png", 512, None),
