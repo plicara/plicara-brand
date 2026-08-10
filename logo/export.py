@@ -18,18 +18,18 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "png")
 os.makedirs(OUT, exist_ok=True)
 
-INK = "#0C1110"
-LICHEN = "#C2DC2F"
-PAPER = "#F2F3EC"
+NIGHT = "#163B4E"
+BUTTER = "#F3DC7C"
+WASHI = "#FAF6ED"
 
 # (source svg, output name, pixel size, background or None for transparent)
 JOBS = [
-    ("avatar-ink.svg", "avatar-ink-1024.png", 1024, None),
-    ("avatar-ink.svg", "avatar-ink-512.png", 512, None),
-    ("avatar-lichen.svg", "avatar-lichen-512.png", 512, None),
-    ("avatar-moss.svg", "avatar-moss-512.png", 512, None),
-    ("mark-lichen.svg", "mark-lichen-512.png", 512, None),
-    ("mark-moss.svg", "mark-moss-512.png", 512, None),
+    ("avatar-night.svg", "avatar-night-1024.png", 1024, None),
+    ("avatar-night.svg", "avatar-night-512.png", 512, None),
+    ("avatar-butter.svg", "avatar-butter-512.png", 512, None),
+    ("avatar-sumi.svg", "avatar-sumi-512.png", 512, None),
+    ("mark-butter.svg", "mark-butter-512.png", 512, None),
+    ("mark-sumi.svg", "mark-sumi-512.png", 512, None),
     ("favicon.svg", "favicon-32.png", 32, None),
     ("favicon.svg", "favicon-64.png", 64, None),
     ("touch-icon.svg", "apple-touch-icon-180.png", 180, None),
@@ -48,7 +48,7 @@ def render(src, dst, size, bg=None):
 
 
 def social():
-    """1200x630 Open Graph card: lockup on ink, centred, generous margin."""
+    """1200x630 Open Graph card: lockup on night, centred, generous margin."""
     lockup = open(os.path.join(HERE, "lockup-horizontal-dark.svg")).read()
     inner = lockup[lockup.index(">", lockup.index("<svg")) + 1:lockup.rindex("</svg>")]
     inner = inner.replace("<title>Foothills Labs</title>", "")
@@ -62,12 +62,12 @@ def social():
     svg = (
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
         f'viewBox="0 0 {W} {H}">'
-        f'<rect width="{W}" height="{H}" fill="{INK}"/>'
+        f'<rect width="{W}" height="{H}" fill="{NIGHT}"/>'
         f'<g transform="translate({x:.1f} {y:.1f}) scale({scale:.4f})">{inner}</g>'
-        f'<text x="{W / 2}" y="{H - 214}" fill="{LICHEN}" text-anchor="middle" '
+        f'<text x="{W / 2}" y="{H - 214}" fill="{BUTTER}" text-anchor="middle" '
         f'font-family="monospace" font-size="19" letter-spacing="5.2">'
         f'BENCHMARKS FIRST, THEN MODELS</text>'
-        f'<rect x="0" y="{H - 12}" width="{W}" height="12" fill="{LICHEN}"/>'
+        f'<rect x="0" y="{H - 12}" width="{W}" height="12" fill="{BUTTER}"/>'
         f'</svg>'
     )
     path = os.path.join(OUT, "social-card-1200x630.png")

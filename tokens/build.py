@@ -7,8 +7,8 @@ explains it. Change all three together.
 
 Contrast is WCAG 2.1 relative luminance. Every pairing the brand sanctions for
 text clears AA (4.5:1); the pairs that fail are ground-on-ground combinations
-that are never text, plus signal on a light ground, which is the reason for the
-"signal is a fill, not an ink" rule.
+that are never text, plus butter on a light ground, which is the reason for the
+"butter is a fill, not an ink" rule.
 """
 
 import json
@@ -17,50 +17,53 @@ import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 PALETTE = {
-    "lichen":  ("#C2DC2F", "The one hot colour. A fill, never an ink. Pantone 584 C is the closest solid coated match."),
-    "ink":     ("#0C1110", "Near-black with a green cast. Primary dark ground; primary text on light."),
-    "basalt":  ("#171E1A", "Raised surface on ink. Tiles, table rows, code blocks."),
-    "moss":    ("#39441F", "Deep olive. Model cards and editorial panels. A ground, not a second accent."),
-    "alpine":  ("#12688F", "Glacier-lake blue. Second ground and the anchor for chart series."),
-    "scree":   ("#8C9689", "Grey with a green bias. Secondary text, rules, axis labels."),
-    "glacier": ("#9CC7D8", "Pale cyan. Second chart series and recessive detail."),
-    "paper":   ("#F2F3EC", "Warm off-white. Light ground; primary text on dark."),
-    "white":   ("#FFFFFF", "Surfaces on the light ground."),
-    "shadow":  ("#414A6B", "Atlas: Imhof's shadow violet. Accent ink on the warm light ground."),
-    "bistre":  ("#7C6A52", "Atlas: rock brown. First chart series on the warm light ground."),
-    "ochre":   ("#CE9B45", "Atlas: warm light. Highlight fill."),
-    "vellum":  ("#EDE6D6", "Atlas: warm paper ground."),
+    "butter":   ("#F3DC7C", "The one hot colour. A fill, never an ink. The glyph fill and the accent of both dark schemes."),
+    "sumi":     ("#2B2422", "Warm near-black, like ink that has dried. Primary text on light; the outline colour of every drawing."),
+    "washi":    ("#FAF6ED", "Warm paper white. Light ground; primary text on dark."),
+    "white":    ("#FFFFFF", "Surfaces on the light ground."),
+    "cream":    ("#F7EBC9", "Raised warm surface on the light grounds. Tiles, table rows, code blocks."),
+    "night":    ("#163B4E", "Evening-sky blue. Primary dark ground."),
+    "lagoon":   ("#1D4A60", "Raised surface on night."),
+    "teal":     ("#3EB7C6", "First chart series on the dark grounds."),
+    "blossom":  ("#F0A7C0", "Soft pink. Second chart series on night; recessive detail."),
+    "magenta":  ("#B92D77", "Deep pink. Accent ink on the warm light ground."),
+    "royal":    ("#2F3BB3", "Saturated blue. Accent ink and first series on the light grounds."),
+    "mint":     ("#63C6A0", "Green. Second chart series on the blueprint ground."),
+    "lilac":    ("#C9A9E2", "Pale violet. Recessive detail on dark grounds."),
+    "brick":    ("#A8333A", "Warm red. Second chart series on the light grounds."),
+    "print":    ("#1B2E63", "Blueprint blue. Dark ground for benchmarks and tools."),
+    "drafting": ("#24397A", "Raised surface on print."),
 }
 
-# Four schemes, paired by area of the lab. Glacier/Atlas carry the lab and the
-# models; Signal/Field carry benchmarks and tools.
+# Four schemes, paired by area of the lab. Twilight/Cel carry the lab and the
+# models; Blueprint/Notepad carry benchmarks and tools.
 SCHEMES = {
-    "glacier": dict(mode="dark", area="lab, models", typeset="warm",
-                    bg="#072430", surface="#0E3646", text="#EAF3F5",
-                    text_muted="#93B7C4", rule="#17475C", accent="#C2DC2F",
-                    accent_on="#0C1110", series_1="#1C7FA8", series_2="#9CC7D8"),
-    "atlas":   dict(mode="light", area="lab, models", typeset="warm",
-                    bg="#EDE6D6", surface="#F7F3E8", text="#221F1C",
-                    text_muted="#5C5340", rule="#D6CBB4", accent="#414A6B",
-                    accent_on="#EDE6D6", series_1="#7C6A52", series_2="#BCD4DC"),
-    "signal":  dict(mode="dark", area="benchmarks, tools", typeset="technical",
-                    bg="#0C1110", surface="#171E1A", text="#F2F3EC",
-                    text_muted="#8C9689", rule="#26302A", accent="#C2DC2F",
-                    accent_on="#0C1110", series_1="#12688F", series_2="#9CC7D8"),
-    "field":   dict(mode="light", area="benchmarks, tools", typeset="technical",
-                    bg="#F2F3EC", surface="#FFFFFF", text="#0C1110",
-                    text_muted="#5D665C", rule="#D6D9CE", accent="#39441F",
-                    accent_on="#F2F3EC", series_1="#12688F", series_2="#39441F"),
+    "twilight":  dict(mode="dark", area="lab, models", typeset="warm",
+                      bg="#163B4E", surface="#1D4A60", text="#FAF6ED",
+                      text_muted="#A9C6D3", rule="#2C5E76", accent="#F3DC7C",
+                      accent_on="#2B2422", series_1="#3EB7C6", series_2="#F0A7C0"),
+    "cel":       dict(mode="light", area="lab, models", typeset="warm",
+                      bg="#FAF6ED", surface="#FFFFFF", text="#2B2422",
+                      text_muted="#6E6259", rule="#E3D8C4", accent="#B92D77",
+                      accent_on="#FFFFFF", series_1="#2F3BB3", series_2="#A8333A"),
+    "blueprint": dict(mode="dark", area="benchmarks, tools", typeset="technical",
+                      bg="#1B2E63", surface="#24397A", text="#FFFFFF",
+                      text_muted="#A3B1E3", rule="#35509E", accent="#F3DC7C",
+                      accent_on="#2B2422", series_1="#3EB7C6", series_2="#63C6A0"),
+    "notepad":   dict(mode="light", area="benchmarks, tools", typeset="technical",
+                      bg="#FFFFFF", surface="#F7EBC9", text="#2B2422",
+                      text_muted="#6E6259", rule="#E0D7C4", accent="#2F3BB3",
+                      accent_on="#FFFFFF", series_1="#2F3BB3", series_2="#B92D77"),
 }
 
-# Both typesets set headings in sentence case; uppercase belongs to the mono
+# Both typesets set headings in lowercase; uppercase belongs to the mono
 # label role alone. Both declare "case" explicitly — one declaring and one
 # silent is how this drifted the first time.
 TYPESETS = {
     "warm": {
         "display": {"family": "Fraunces", "weight": 600,
                     "settings": {"opsz": 96, "SOFT": 24, "WONK": 1},
-                    "case": "sentence"},
+                    "case": "lower"},
         "body":    {"family": "Newsreader", "weight": 400, "opsz": 18},
         "data":    {"family": "JetBrains Mono", "weight": 400,
                     "numeric": "tabular-nums"},
@@ -68,7 +71,7 @@ TYPESETS = {
     },
     "technical": {
         "display": {"family": "Archivo", "weight": 800,
-                    "settings": {"wght": 800, "wdth": 125}, "case": "sentence"},
+                    "settings": {"wght": 800, "wdth": 125}, "case": "lower"},
         "body":    {"family": "Archivo", "weight": 400, "width": 100},
         "data":    {"family": "JetBrains Mono", "weight": 400,
                     "numeric": "tabular-nums"},
@@ -76,15 +79,15 @@ TYPESETS = {
     },
 }
 
-GROUNDS = ["ink", "basalt", "moss", "alpine", "paper", "white", "lichen", "vellum"]
+GROUNDS = ["night", "lagoon", "print", "drafting", "washi", "white", "cream", "butter"]
 
 # Hot fills and their text guards. A fill is a colour that holds text but must
-# never set it; the on-colour is the only ink allowed on top of it. The lichen
+# never set it; the on-colour is the only ink allowed on top of it. The butter
 # fill is also the standing exception to "one accent per scheme" — it stays
-# constant in every scheme, including Atlas.
+# constant in every scheme, including Cel and Notepad, whose accent inks are
+# magenta and royal.
 FILLS = {
-    "lichen": {"on": "ink", "standing_exception": True},
-    "ochre":  {"on": "ink", "standing_exception": False},
+    "butter": {"on": "sumi", "standing_exception": True},
 }
 
 

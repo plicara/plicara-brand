@@ -1,81 +1,57 @@
 # Model glyphs
 
-One mark per model, generated from a synthetic height field. The rules that
-govern them are in [`../../docs/brand.md`](../../docs/brand.md); the reasoning
-is in [`../../docs/brand-rationale.md`](../../docs/brand-rationale.md).
+One glyph per model, each a **stylised drawing of its paper plane** — a top
+view with a thick sumi outline and a butter fill set deliberately
+off-register, the loose screen-print look of the illustration style
+([`../../docs/brand.md` § Illustration](../../docs/brand.md#illustration-and-imagery)).
 
-These are **product marks, not the org mark.** The lab's logo is Siwalik, in
-[`../logo/`](../logo/).
+The canon, by tier:
 
-## The rule
+| Glyph | Model | Character |
+| --- | --- | --- |
+| `plane-glider` | glider (es: planeador) | wide span, gentle sweep — the plane that stays up |
+| `plane-delta` | delta (es: delta) | one triangle, no waste — nearly all wing |
+| `plane-canard` | canard (es: canard) | small wings forward, big wing aft — steers before it glides |
+| `plane-hammer` | hammer (es: martillo) | a locked, weighted nose — the most folds, the longest throw |
 
-> Each summit is drawn as an island, seen from directly above.
-> Contour interval is a constant **1,500 m**.
-> Ring count is therefore **elevation ÷ 1,500**.
+These are drawings, not fold diagrams. A fold-count-equals-tier construction
+was considered and dropped: fold counts would have been self-authored
+authority, decoration pretending to be data. The drawings stay simple and
+charming instead — that is the brand argument, not a compromise on it.
 
-Complexity tracks tier by construction. Nobody decides how elaborate Everest's
-mark should be next to Kosciuszko's — the elevation decides, and it decides the
-same way every time a summit is added.
+## Which file
 
-| Model | Elevation | Rings | Notes |
-| --- | ---: | ---: | --- |
-| Everest | 8,849 m | 5 | Three ridge arms off a steep summit |
-| Aconcagua | 6,961 m | 4 | Main summit plus the south summit |
-| Denali | 6,190 m | 4 | North and South Peaks, huge footprint |
-| Kilimanjaro | 5,895 m | 3 | Shield volcano; Mawenzi closes its own ring |
-| Elbrus | 5,642 m | 3 | Twin cones on a shared base |
-| Vinson | 4,892 m | 3 | Long ridge massif |
-| Kosciuszko | 2,228 m | 1 | Broad and gentle. One ring is the point |
-| Siwalik | — | — | No summit, no dot. Open ridge bands |
+| Use | File |
+| --- | --- |
+| Light grounds (washi, white, cream) | `plane-{name}.svg` — sumi outline, butter fill |
+| Dark grounds (night, print) | `plane-{name}-dark.svg` — washi outline, butter fill |
+| Below ~40 px | `plane-{name}-small.svg` — heavier line, centre fold only, fill on-register |
+| Styled with CSS | `plane-{name}-mono.svg` — `currentColor` outline, no fill |
 
-**Spot-height dots** mark named summits, as they would on a map. Elbrus's twin
-cones get two, Denali's North and South Peaks get two, Aconcagua's south summit
-gets a second. They are also what keeps otherwise-similar footprints apart at
-small sizes.
+`glyphs.json` carries the family metadata (tiers, naming axes, notes).
 
-Kilimanjaro carries one closed ring that is not a tier signal: Mawenzi, its
-eastern peak, clears 4,500 m and so closes a contour of its own. That is true at
-this interval, and it makes the fast tier the most recognisable mark in the set.
+## The generator
 
-## Files
-
-```
-contour-<name>.svg          full cut, stroke 1.75
-contour-<name>-small.svg    reduced cut, stroke 4.4 — below about 32 px
-generate.py                 the generator
-```
-
-Marks take `currentColor`, so they inherit from CSS and need no per-colour
-variants. Nothing here is hand-edited — change `generate.py` and rerun it.
+Everything here is written by `generate.py` — geometry authored as clean
+symmetric polygons in code, with the hand-drawn character applied as
+**deterministic low-frequency wobble**, seeded per glyph. Re-running the
+script produces byte-identical output on any machine; that is checked, not
+hoped. Change the code, not the SVGs.
 
 ```
-pip install numpy matplotlib
 python3 generate.py
 ```
 
-The generator builds a small height field per mountain, extracts contours with
-marching squares, resamples each to an even arc length, and emits smooth closed
-cubic-bezier paths. It is deterministic: same input, same SVG.
+No dependencies beyond the standard library.
 
-Siwalik is generated here too, and `../logo/build.py` reframes that same drawing
-into the logo set — so the model sheet and the org mark cannot drift apart.
+## Rules
 
-## What is real and what is not
-
-**Real:** every summit elevation, every named secondary top, the continent
-assignments, and Mawenzi clearing 4,500 m.
-
-**Not real:** the shapes. Each field is tuned by hand to follow the mountain's
-character — sharp pyramid, shield volcano, twin cones, long ridge — but it is
-not SRTM, ASTER, or any other elevation dataset.
-
-Deriving them from real elevation data is roughly an afternoon of work and
-should happen before any of this is public. It is the difference between a
-system that is *true* and one that is merely *consistent*. Until then, do not
-describe the glyphs as derived from survey data.
-
-## Known weak spot
-
-Denali and Elbrus read close at small sizes — both are ovals with two spot
-heights. They are genuinely similar footprints, so this may be honest rather
-than wrong, but it is the first thing to fix if the family ever needs tightening.
+- The glyphs are the models'. The house mark is the lab's — never use a plane
+  glyph as the org mark, and never use the house mark on a model card where a
+  glyph belongs.
+- Outline is sumi on light grounds, washi on dark. Butter is the only fill,
+  and it never carries text ([`brand.md` § Colour](../../docs/brand.md#colour)).
+- Keep the tilt. Every plane sits at the same slight nose-up angle; a glyph
+  straightened to the grid reads as a different system.
+- New models get new common plane designs (bulldog, swallow, …) by a decision
+  recorded in the brand log — and `dart` stays reserved-unused.

@@ -1,303 +1,263 @@
-"""Generate contour-ring glyphs for the Foothills Labs model family.
+"""Generate the paper-plane glyphs for the Foothills Labs model family.
 
 The rule, and the whole point of the system:
 
-    Each summit is drawn as an island. Sea level is the frame.
-    Contour interval is a constant 1,500 m across the entire family.
-    Ring count is therefore elevation / 1,500 — the glyph's complexity
-    IS the model's capability tier, by construction, not by decoration.
+    Each model is a paper plane, drawn simply: a top view, a thick sumi
+    outline, and a butter fill that sits deliberately off-register — the
+    loose screen-print look of the illustration style. The drawings are
+    stylised, not fold diagrams; charm is the point, complexity is not.
 
-    Everest gets five rings. Kosciuszko gets one.
+    glider < delta < canard < hammer, by capability tier.
 
-Spot heights (the filled dots) mark named summits, as they would on a map.
-Mountains with more than one named top get more than one dot — Elbrus's twin
-cones, Denali's North and South Peaks, Aconcagua's south summit.
+Nothing here is hand-edited SVG. The geometry is authored below as clean
+symmetric polygons; the hand-drawn character — the wobble in the line — is
+applied by deterministic low-frequency noise, seeded per glyph, so re-running
+this script always produces byte-identical output. Change the code, not the
+files.
 
-Each mountain is a small synthetic height field shaped to follow the real
-mountain's character. Contours come out of marching squares, get resampled to
-an even arc length, and are emitted as smooth closed cubic-bezier paths.
+Outputs, per plane:
+    plane-{name}.svg        sumi outline + butter fill, for light grounds
+    plane-{name}-dark.svg   washi outline + butter fill, for dark grounds
+    plane-{name}-small.svg  heavier line, centre fold only, for < 40 px
+    plane-{name}-mono.svg   currentColor outline, no fill, for CSS styling
+
+plus glyphs.json, the family metadata.
 """
 
 import json
 import math
 import os
 
-import numpy as np
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-from matplotlib.path import Path as MPath
-
-N = 420
-CI = 1500.0  # contour interval, metres
 OUT = os.path.dirname(os.path.abspath(__file__))
 
-xs = np.linspace(0.0, 1.0, N)
-X, Y = np.meshgrid(xs, xs)
+SUMI = "#2B2422"
+WASHI = "#FAF6ED"
+BUTTER = "#F3DC7C"
+
+VIEW = 512.0           # artboard
+STROKE = 17.0          # main outline, ~3.3% of the artboard
+STROKE_FOLD = 11.0     # interior fold lines
+STROKE_SMALL = 30.0    # reduced cut
+OFFSET = (14.0, 11.0)  # butter fill misregistration, in artboard units
+TILT = -7.0            # degrees; the whole drawing sits slightly nose-up
+
+# --- geometry -------------------------------------------------------------
+# Design space is 0..100, y down, nose at the top, centre line at x = 50.
+# Each plane gives the RIGHT half of its silhouette from nose to tail;
+# the left half is mirrored. Fold lines are given whole.
+
+PLANES = {
+    # The trainer. Wide span, gentle lines, the biggest wing area.
+    "glider": {
+        "tier": 1,
+        "half": [(50, 16), (60, 28), (94, 56), (96, 68), (91, 71),
+                 (60, 66), (57, 84), (50, 86)],
+        "folds": [
+            [(50, 16), (50, 86)],
+            [(56, 30), (59, 66)],
+            [(44, 30), (41, 66)],
+        ],
+        "note": "wide span, gentle sweep — the plane that stays up",
+    },
+    # The classic wide triangle; fast, direct, nearly all wing.
+    "delta": {
+        "tier": 2,
+        "half": [(50, 8), (93, 80), (92, 86), (52, 76), (50, 76)],
+        "folds": [
+            [(50, 8), (50, 76)],
+            [(50, 12), (63, 80)],
+            [(50, 12), (37, 80)],
+        ],
+        "note": "one triangle, no waste — nearly all wing",
+    },
+    # Fore-planes ahead of the main wing; the unusual silhouette.
+    "canard": {
+        "tier": 3,
+        "half": [(50, 8), (56, 18), (71, 26), (58, 34), (57, 44),
+                 (89, 72), (90, 82), (58, 76), (55, 92), (50, 93)],
+        "folds": [
+            [(50, 8), (50, 93)],
+            [(54, 20), (56, 44)],
+            [(46, 20), (44, 44)],
+            [(56, 48), (60, 74)],
+            [(44, 48), (40, 74)],
+        ],
+        "note": "small wings forward, big wing aft — steers before it glides",
+    },
+    # The heavy one. Blunt locked nose, short broad wings, dense folds.
+    "hammer": {
+        "tier": 4,
+        "half": [(50, 14), (63, 15), (70, 22), (72, 36), (91, 62),
+                 (92, 74), (60, 66), (57, 86), (50, 88)],
+        "folds": [
+            [(50, 14), (50, 88)],
+            [(38, 18), (62, 18)],
+            [(35, 30), (65, 30)],
+            [(57, 34), (60, 64)],
+            [(43, 34), (40, 64)],
+        ],
+        "note": "a locked, weighted nose — the most folds, the longest throw",
+    },
+}
 
 
-def blob(cx, cy, amp, sx, sy, rot=0.0, p=2.0):
-    """Generalised gaussian. p<2 gives a sharp cone, p>2 a flat-topped shield."""
-    dx, dy = X - cx, Y - cy
-    c, s = math.cos(rot), math.sin(rot)
-    u = (dx * c + dy * s) / sx
-    v = (-dx * s + dy * c) / sy
-    r = np.sqrt(u * u + v * v) + 1e-9
-    return amp * np.exp(-(r ** p))
+# --- the hand in the line ---------------------------------------------------
+
+def _seed(name):
+    return sum(ord(c) * (i + 7) for i, c in enumerate(name))
 
 
-def _blur1d(a, k, axis):
-    rad = int(3 * k)
-    t = np.arange(-rad, rad + 1)
-    w = np.exp(-(t ** 2) / (2.0 * k * k))
-    w /= w.sum()
-    pad = [(0, 0), (0, 0)]
-    pad[axis] = (rad, rad)
-    ap = np.pad(a, pad, mode="edge")
-    out = np.zeros_like(a)
-    for i, wi in enumerate(w):
-        sl = [slice(None), slice(None)]
-        sl[axis] = slice(i, i + a.shape[axis])
-        out += wi * ap[tuple(sl)]
-    return out
+def _wobble_polyline(pts, name, amplitude=0.7, step=3.0, closed=False):
+    """Resample a polyline and push points off the line with smooth noise.
 
-
-def noise(seed, scale, amp):
-    """Smooth low-frequency field. Kept light — this is a map, not terrain."""
-    rng = np.random.default_rng(seed)
-    a = rng.normal(size=(N, N))
-    a = _blur1d(_blur1d(a, scale, 0), scale, 1)
-    a /= np.abs(a).max()
-    return amp * a
-
-
-def resample(poly, n):
-    p = np.asarray(poly, dtype=float)
-    if np.allclose(p[0], p[-1]):
-        p = p[:-1]
-    d = np.sqrt(((np.roll(p, -1, axis=0) - p) ** 2).sum(axis=1))
-    cum = np.concatenate([[0.0], np.cumsum(d)])
-    total = cum[-1]
-    if total <= 0:
-        return p
-    targets = np.linspace(0.0, total, n, endpoint=False)
-    idx = np.clip(np.searchsorted(cum, targets, side="right") - 1, 0, len(p) - 1)
-    seg = np.where(d[idx] > 0, (targets - cum[idx]) / np.where(d[idx] > 0, d[idx], 1), 0)
-    nxt = (idx + 1) % len(p)
-    return p[idx] + (p[nxt] - p[idx]) * seg[:, None]
-
-
-def catmull(pts, prec=2):
-    n = len(pts)
-    f = lambda v: f"{round(v, prec):g}"
-    d = [f"M{f(pts[0][0])} {f(pts[0][1])}"]
-    for i in range(n):
-        p0, p1, p2, p3 = pts[(i - 1) % n], pts[i], pts[(i + 1) % n], pts[(i + 2) % n]
-        c1 = p1 + (p2 - p0) / 6.0
-        c2 = p2 - (p3 - p1) / 6.0
-        d.append(f"C{f(c1[0])} {f(c1[1])} {f(c2[0])} {f(c2[1])} {f(p2[0])} {f(p2[1])}")
-    d.append("Z")
-    return "".join(d)
-
-
-def polyline(pts, prec=2):
-    f = lambda v: f"{round(v, prec):g}"
-    return "M" + "L".join(f"{f(x)} {f(y)}" for x, y in pts)
-
-
-def contours(H, levels, pad=0.06, samples=56, min_pts=24):
-    """Contour paths in a 0-100 box, inset by `pad` so nothing touches the edge."""
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    cs = ax.contour(X, Y, H, levels=levels)
-    lo, span = pad * 100.0, (1 - 2 * pad) * 100.0
+    Deterministic: the phases come from the glyph name, never from a RNG
+    state, so output is byte-stable across runs and machines.
+    """
+    s = _seed(name)
+    dense = []
+    seq = pts + [pts[0]] if closed else pts
+    for (x0, y0), (x1, y1) in zip(seq, seq[1:]):
+        d = math.hypot(x1 - x0, y1 - y0)
+        n = max(2, int(d / step))
+        for i in range(n):
+            t = i / n
+            dense.append((x0 + (x1 - x0) * t, y0 + (y1 - y0) * t))
+    if not closed:
+        dense.append(seq[-1])
     out = []
-    for lvl in cs.get_paths():
-        got = []
-        for poly in lvl.to_polygons(closed_only=True):
-            if len(poly) < min_pts:
-                continue
-            n = max(26, min(samples, len(poly) // 2))
-            rs = resample(poly, n)
-            rs = lo + rs * span
-            rs[:, 1] = 100.0 - rs[:, 1]
-            got.append(catmull(rs))
-        out.append(got)
-    plt.close(fig)
+    total = len(dense)
+    for i, (x, y) in enumerate(dense):
+        u = i / total * math.tau
+        w = (math.sin(u * 3 + s) + 0.6 * math.sin(u * 7 + s * 1.7)) * amplitude
+        if i == 0 or (not closed and i == total):
+            w = 0.0
+        j = (i + 1) % total
+        k = (i - 1) % total
+        tx, ty = dense[j][0] - dense[k][0], dense[j][1] - dense[k][1]
+        tl = math.hypot(tx, ty) or 1.0
+        out.append((x - ty / tl * w, y + tx / tl * w))
     return out
 
 
-def place(cx, cy, pad=0.06):
-    """Map a field coordinate into the same inset 0-100 box."""
-    lo, span = pad * 100.0, (1 - 2 * pad) * 100.0
-    return round(lo + cx * span, 2), round(100.0 - (lo + cy * span), 2)
+def _smooth_path(pts, closed=False):
+    """Catmull-Rom through the points, emitted as cubic beziers."""
+
+    def pt(i):
+        if closed:
+            return pts[i % len(pts)]
+        return pts[max(0, min(len(pts) - 1, i))]
+
+    n = len(pts) if closed else len(pts) - 1
+    d = [f"M {pts[0][0]:.2f} {pts[0][1]:.2f}"]
+    for i in range(n):
+        p0, p1, p2, p3 = pt(i - 1), pt(i), pt(i + 1), pt(i + 2)
+        c1 = (p1[0] + (p2[0] - p0[0]) / 6.0, p1[1] + (p2[1] - p0[1]) / 6.0)
+        c2 = (p2[0] - (p3[0] - p1[0]) / 6.0, p2[1] - (p3[1] - p1[1]) / 6.0)
+        d.append(f"C {c1[0]:.2f} {c1[1]:.2f} {c2[0]:.2f} {c2[1]:.2f} "
+                 f"{p2[0]:.2f} {p2[1]:.2f}")
+    if closed:
+        d.append("Z")
+    return " ".join(d)
 
 
-# --- the mountains -----------------------------------------------------------
-# Fields are stylised, not surveyed. Summit elevations and the named secondary
-# tops are real; the shapes follow each mountain's actual character.
+# --- assembly ---------------------------------------------------------------
 
-def f_everest():
-    """Sharp asymmetric pyramid — three ridges off a small, steep summit."""
-    h = blob(0.50, 0.52, 1.00, 0.132, 0.124, 0.0, 2.25)
-    h += blob(0.655, 0.665, 0.60, 0.235, 0.056, -0.72, 1.70)   # NE ridge
-    h += blob(0.325, 0.455, 0.56, 0.215, 0.054, 0.40, 1.70)    # W ridge
-    h += blob(0.565, 0.315, 0.52, 0.056, 0.205, 0.10, 1.70)    # SE ridge
-    h += blob(0.665, 0.395, 0.20, 0.070, 0.070, 0.0, 1.8)      # South Col
-    return h + noise(11, 13, 0.020)
-
-
-def f_aconcagua():
-    """Long massif, main summit north, a distinct south summit below it."""
-    h = blob(0.462, 0.628, 1.00, 0.158, 0.172, 0.10, 2.25)
-    h += blob(0.552, 0.348, 0.86, 0.128, 0.138, 0.0, 2.25)     # south summit
-    h += blob(0.500, 0.490, 0.44, 0.215, 0.230, 0.0, 2.2)      # shared massif
-    h += blob(0.285, 0.640, 0.30, 0.150, 0.080, 0.35, 1.9)     # west shoulder
-    return h + noise(23, 14, 0.022)
+def _transform(pts):
+    """Design space (0..100) -> artboard (512), tilted around the centre."""
+    a = math.radians(TILT)
+    c, s = math.cos(a), math.sin(a)
+    out = []
+    for x, y in pts:
+        dx, dy = x - 50.0, y - 50.0
+        rx, ry = dx * c - dy * s, dx * s + dy * c
+        out.append(((rx + 50.0) * VIEW / 100.0, (ry + 50.0) * VIEW / 100.0))
+    return out
 
 
-def f_denali():
-    """Vast footprint, two named summits, long buttresses off the south side."""
-    h = blob(0.466, 0.462, 1.00, 0.152, 0.147, 0.0, 2.3)       # South Peak
-    h += blob(0.618, 0.630, 0.93, 0.128, 0.123, 0.0, 2.3)      # North Peak
-    h += blob(0.520, 0.530, 0.56, 0.290, 0.265, 0.2, 2.4)      # massif
-    h += blob(0.330, 0.335, 0.30, 0.140, 0.105, 0.55, 1.9)     # SW buttress
-    return h + noise(31, 14, 0.020)
+def _silhouette(plane, name, amplitude=0.7):
+    half = plane["half"]
+    mirrored = [(100.0 - x, y) for x, y in reversed(half)
+                if abs(x - 50.0) > 1e-9]
+    outline = half + mirrored
+    return _smooth_path(_transform(
+        _wobble_polyline(outline, name, amplitude=amplitude, closed=True)),
+        closed=True)
 
 
-def f_kilimanjaro():
-    """Shield volcano — broad, near-circular, flat-flanked. Mawenzi stands off
-    to the east and clears 4,500 m, so it closes its own ring."""
-    h = blob(0.455, 0.485, 1.00, 0.235, 0.225, 0.0, 3.0)
-    h += blob(0.760, 0.605, 0.62, 0.062, 0.058, 0.0, 1.5)      # Mawenzi
-    h += blob(0.255, 0.395, 0.42, 0.075, 0.065, 0.3, 1.8)      # Shira
-    return h + noise(43, 15, 0.016)
+def _fold_paths(plane, name, amplitude=0.45):
+    out = []
+    for i, line in enumerate(plane["folds"]):
+        pts = _wobble_polyline(line, f"{name}-fold-{i}", amplitude=amplitude,
+                               step=4.0)
+        out.append(_smooth_path(_transform(pts)))
+    return out
 
 
-def f_elbrus():
-    """Twin volcanic cones, near-equal, on one shared base."""
-    h = blob(0.370, 0.560, 1.00, 0.112, 0.108, 0.0, 1.90)      # west summit
-    h += blob(0.625, 0.455, 0.96, 0.108, 0.104, 0.0, 1.90)     # east summit
-    h += blob(0.500, 0.505, 0.62, 0.255, 0.215, 0.0, 2.6)      # shared shield
-    return h + noise(57, 14, 0.018)
+def _svg(body, title):
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" '
+            f'viewBox="0 0 {VIEW:.0f} {VIEW:.0f}" role="img" '
+            f'aria-label="{title}">\n{body}\n</svg>\n')
 
 
-def f_vinson():
-    """A long ridge massif — high aspect ratio, summit toward one end."""
-    h = blob(0.500, 0.500, 0.66, 0.335, 0.090, 0.42, 2.1)
-    h += blob(0.625, 0.585, 1.00, 0.115, 0.082, 0.42, 1.9)     # summit
-    h += blob(0.350, 0.420, 0.72, 0.099, 0.074, 0.42, 1.9)     # subsidiary top
-    return h + noise(67, 14, 0.018)
+def _stroke_attrs(width, colour):
+    return (f'fill="none" stroke="{colour}" stroke-width="{width:.1f}" '
+            f'stroke-linecap="round" stroke-linejoin="round"')
 
 
-def f_kosciuszko():
-    """Broad and gentle. One ring, and that is the whole point."""
-    h = blob(0.500, 0.500, 1.00, 0.280, 0.255, 0.3, 2.2)
-    h += blob(0.610, 0.400, 0.26, 0.150, 0.130, 0.0, 2.2)
-    return h + noise(79, 16, 0.026)
+def glyph(name, plane, ink, with_fill=True, small=False):
+    amp = 0.9 if small else 0.7
+    sil = _silhouette(plane, name, amplitude=amp)
+    parts = []
+    if with_fill:
+        dx, dy = (0.0, 0.0) if small else OFFSET
+        parts.append(f'  <path d="{sil}" fill="{BUTTER}" stroke="none" '
+                     f'transform="translate({dx:.0f} {dy:.0f})"/>')
+    w = STROKE_SMALL if small else STROKE
+    parts.append(f'  <path d="{sil}" {_stroke_attrs(w, ink)}/>')
+    folds = _fold_paths(plane, name)
+    keep = folds[:1] if small else folds
+    fw = STROKE_SMALL * 0.62 if small else STROKE_FOLD
+    for d in keep:
+        parts.append(f'  <path d="{d}" {_stroke_attrs(fw, ink)}/>')
+    title = f"{name} — Foothills Labs model glyph"
+    return _svg("\n".join(parts), title)
 
 
-def f_siwalik():
-    """Foothills. Long parallel ridges, running off the frame — no summit."""
-    ridge = Y * 8.4 + 0.35 + 1.25 * np.sin(X * 2.4 + 0.7) + 0.45 * np.sin(X * 5.1)
-    h = 0.5 + 0.5 * np.sin(ridge)
-    return h + noise(83, 22, 0.22)
+def main():
+    meta = {}
+    for name, plane in sorted(PLANES.items(), key=lambda kv: kv[1]["tier"]):
+        files = {
+            f"plane-{name}.svg": glyph(name, plane, SUMI),
+            f"plane-{name}-dark.svg": glyph(name, plane, WASHI),
+            f"plane-{name}-small.svg": glyph(name, plane, SUMI, small=True),
+            f"plane-{name}-mono.svg": glyph(name, plane, "currentColor",
+                                            with_fill=False),
+        }
+        for fn, svg in files.items():
+            with open(os.path.join(OUT, fn), "w") as fh:
+                fh.write(svg)
+        meta[name] = {
+            "tier": plane["tier"],
+            "note": plane["note"],
+            "files": sorted(files),
+        }
+        print(f"wrote plane-{name}[-dark|-small|-mono].svg")
+
+    with open(os.path.join(OUT, "glyphs.json"), "w") as fh:
+        json.dump({
+            "family": "paper planes",
+            "order": "tier — glider < delta < canard < hammer",
+            "regional_axis": "a specialised model takes the plane's name in "
+                             "the language of its specialisation: hammer -> "
+                             "martillo (Spanish)",
+            "checkpoints": "pre-release checkpoints are {name}-preview",
+            "style": "thick sumi outline, butter fill set off-register; "
+                     "drawn by this script, never by hand",
+            "glyphs": meta,
+        }, fh, indent=2)
+        fh.write("\n")
+    print("wrote glyphs.json")
 
 
-MOUNTAINS = [
-    dict(key="everest", name="Everest", local="Chomolungma / Sagarmāthā",
-         continent="Asia", elev=8849, role="Flagship", field=f_everest,
-         dots=[(0.50, 0.52, 2.5)]),
-    dict(key="aconcagua", name="Aconcagua", local="Aconcagua",
-         continent="South America", elev=6961, role="Spanish-language", field=f_aconcagua,
-         dots=[(0.462, 0.628, 2.4), (0.552, 0.348, 1.7)]),
-    dict(key="denali", name="Denali", local="Denali (Koyukon)",
-         continent="North America", elev=6190, role="Reserved", field=f_denali,
-         dots=[(0.466, 0.462, 2.4), (0.618, 0.630, 1.8)]),
-    dict(key="kilimanjaro", name="Kilimanjaro", local="Kilimanjaro",
-         continent="Africa", elev=5895, role="Fast tier", field=f_kilimanjaro,
-         dots=[(0.455, 0.485, 2.4), (0.760, 0.605, 1.6)]),
-    dict(key="elbrus", name="Elbrus", local="Elbrus / Mingi Taw",
-         continent="Europe", elev=5642, role="Reserved", field=f_elbrus,
-         dots=[(0.370, 0.560, 2.2), (0.625, 0.455, 2.2)]),
-    dict(key="vinson", name="Vinson", local="Vinson Massif",
-         continent="Antarctica", elev=4892, role="Reserved", field=f_vinson,
-         dots=[(0.625, 0.585, 2.3), (0.350, 0.420, 1.7)]),
-    dict(key="kosciuszko", name="Kosciuszko", local="Kosciuszko / Targangil",
-         continent="Oceania", elev=2228, role="Reserved", field=f_kosciuszko,
-         dots=[(0.500, 0.500, 2.4)]),
-]
-
-STROKE = 1.75
-
-
-def svg_body(rings, dots):
-    body = [f'<path d="{d}"/>' for level in rings for d in level]
-    body += [f'<circle cx="{x}" cy="{y}" r="{r}" fill="currentColor" stroke="none"/>'
-             for x, y, r in dots]
-    return "".join(body)
-
-
-def wrap(body, stroke=STROKE):
-    return (
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" '
-        f'height="100" fill="none" stroke="currentColor" stroke-width="{stroke}" '
-        f'stroke-linejoin="round" stroke-linecap="round">{body}</svg>'
-    )
-
-
-data = []
-for m in MOUNTAINS:
-    H = m["field"]()
-    H = (H - H.min()) / (H.max() - H.min()) * m["elev"]   # field in metres
-    n_rings = int(m["elev"] // CI)
-    levels = [CI * (i + 1) for i in range(n_rings)]
-    rings = contours(H, levels)
-    dots = [place(x, y) + (r,) for x, y, r in m["dots"]]
-    with open(os.path.join(OUT, f"contour-{m['key']}.svg"), "w") as fh:
-        fh.write(wrap(svg_body(rings, dots)))
-    # Reduced cut for avatars and favicons: outermost ring, summit dots, heavier
-    # stroke. Below about 32px the full ring stack fills in and stops reading.
-    small_dots = [(x, y, r * 1.7) for x, y, r in dots]
-    with open(os.path.join(OUT, f"contour-{m['key']}-small.svg"), "w") as fh:
-        fh.write(wrap(svg_body(rings[:1], small_dots), stroke=4.4))
-    closed = sum(len(l) for l in rings)
-    data.append({**{k: m[k] for k in ("key", "name", "local", "continent", "elev", "role")},
-                 "rings": n_rings, "closed": closed, "paths": rings, "dots": dots,
-                 "small": [rings[0]], "smallDots": small_dots})
-    print(f"{m['name']:12s} {m['elev']:>5} m   rings {n_rings}   closed contours {closed}   dots {len(dots)}")
-
-# Siwalik — open ridge lines, no summit, no dot
-Hs = f_siwalik()
-Hs = (Hs - Hs.min()) / (Hs.max() - Hs.min())
-fig = plt.figure(); ax = fig.add_subplot(111)
-cs = ax.contour(X, Y, Hs, levels=[0.46, 0.74])
-sw = []
-for lp in cs.get_paths():
-    verts, codes = lp.vertices, lp.codes
-    if codes is None:
-        chunks = [verts]
-    else:
-        starts = np.flatnonzero(codes == MPath.MOVETO)
-        bounds = list(starts) + [len(verts)]
-        chunks = [verts[a:b] for a, b in zip(bounds, bounds[1:])]
-    for poly in chunks:
-        if len(poly) < 120:
-            continue
-        p = np.asarray(poly)
-        p = 6.0 + p * 88.0
-        p[:, 1] = 100.0 - p[:, 1]
-        step = max(1, len(p) // 34)
-        sw.append(polyline(p[::step]))
-plt.close(fig)
-with open(os.path.join(OUT, "contour-siwalik.svg"), "w") as fh:
-    fh.write(wrap("".join(f'<path d="{d}"/>' for d in sw)))
-print(f"{'Siwalik':12s}     —      ridge lines {len(sw)}")
-
-data.append(dict(key="siwalik", name="Siwalik", local="Śivālik Hills", continent="Asia",
-                 elev=None, role="Pre-release", rings=len(sw), closed=0,
-                 paths=[sw], dots=[], small=[sw[::2]], smallDots=[]))
-
-with open(os.path.join(OUT, "glyphs.json"), "w") as fh:
-    json.dump(data, fh)
-print("\nwrote", OUT)
+if __name__ == "__main__":
+    main()
