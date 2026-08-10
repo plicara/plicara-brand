@@ -34,13 +34,20 @@ from fontTools.misc.transform import Transform
 import uharfbuzz as hb
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# The small cut reuses the full drawing for now — the three-pleat silhouette
-# holds a 22 px tile (tested); a dedicated reduced cut lands with the
-# colourway.
+# Two cuts. The full drawing carries both ranges; the reduced cut drops the
+# back range and carries more stroke, because below ~24 px the rear peaks
+# collapse into the front ones. Same drawing, fewer lines — not a second mark.
 MARK_SRC = os.path.join(HERE, "candidates", "candidate-e3-foothills-refolded.svg")
-MARK_SRC_SM = os.path.join(HERE, "candidates", "candidate-e3-foothills-refolded.svg")
+MARK_SRC_SM = os.path.join(HERE, "candidates", "candidate-e3r-foothills-reduced.svg")
 COLOUR_SRC = os.path.join(HERE, "candidates", "mark-foothills-chalk.svg")
 COLOUR_SRC_DARK = os.path.join(HERE, "candidates", "mark-foothills-chalk-dark.svg")
+# The reduced cut in colour. The favicon and touch icon live at 16-32 px,
+# where the back range's fill and the extra line weight collapse into the
+# front range; this is the same drawing with the rear peaks dropped.
+COLOUR_SRC_SM = os.path.join(HERE, "candidates",
+                             "mark-foothills-chalk-reduced.svg")
+COLOUR_SRC_SM_DARK = os.path.join(HERE, "candidates",
+                                  "mark-foothills-chalk-reduced-dark.svg")
 
 FONT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
     HERE, "..", "..", "node_modules", "@fontsource-variable", "archivo",
@@ -246,6 +253,8 @@ def main():
 
     inner_l, cbb_l = load_colour_mark(COLOUR_SRC)
     inner_d, cbb_d = load_colour_mark(COLOUR_SRC_DARK)
+    inner_rl, cbb_rl = load_colour_mark(COLOUR_SRC_SM)
+    inner_rd, cbb_rd = load_colour_mark(COLOUR_SRC_SM_DARK)
 
     print("marks")
     write("mark.svg", mark_svg(mark, BOX, STROKE))
@@ -253,6 +262,8 @@ def main():
     write("mark-colour-dark.svg", colour_svg(inner_d, cbb_d, BOX, 4))
     for tone in ("butterscotch", "sumi", "chalk", "emerald"):
         write(f"mark-{tone}.svg", mark_svg(mark, BOX, STROKE, C[tone]))
+    write("mark-colour-small.svg", colour_svg(inner_rl, cbb_rl, BOX, 4))
+    write("mark-colour-small-dark.svg", colour_svg(inner_rd, cbb_rd, BOX, 4))
     write("mark-small.svg", mark_svg(small, BOX, STROKE * 1.65))
     for tone in ("butterscotch", "sumi", "chalk", "emerald"):
         write(f"mark-small-{tone}.svg",
@@ -275,9 +286,13 @@ def main():
                                               ground=C["butterscotch"],
                                               radius=ARX))
     # Favicon: rounded tile with a pronounced lichen border — a sharp square
-    # sat awkwardly next to the round tab controls. Reduced cut, since the tile
-    # lives at 16-32 px. The border is drawn inset so nothing clips.
-    fav_mark = colour_group(inner_d, cbb_d, 64, 9)
+    # sat awkwardly next to the round tab controls. The REDUCED cut, because
+    # the tile lives at 16-32 px, where the back range's duck-egg fill breaks
+    # into stray pixels and the valleys silt up. Padding is 8, not the 9 the
+    # full mark needs: with the rear peaks gone the drawing is shorter, and
+    # at 16 px it needs every unit of presence it can take without the base
+    # touching the border ring. The border is drawn inset so nothing clips.
+    fav_mark = colour_group(inner_rd, cbb_rd, 64, 8)
     write("favicon.svg",
           '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" '
           'width="64" height="64" role="img" aria-label="Foothills Labs">'
@@ -290,6 +305,9 @@ def main():
     # mask, and pre-rounding it leaves dark notches — but the BORDER is
     # pre-rounded to sit just inside iOS's ~22.5% mask radius, or the mask
     # clips its corners mid-line.
+    # This one keeps the FULL mark: it renders at 60 px and up on the home
+    # screen, comfortably above the reduced cut's ~24 px threshold.
+    touch_mark = colour_group(inner_d, cbb_d, 64, 9)
     write("touch-icon.svg",
           '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" '
           'width="64" height="64" role="img" aria-label="Foothills Labs">'
@@ -297,7 +315,7 @@ def main():
           f'<rect width="64" height="64" fill="{C["night"]}"/>'
           f'<rect x="1.8" y="1.8" width="60.4" height="60.4" rx="12.6" '
           f'fill="none" stroke="{C["butterscotch"]}" stroke-width="3.6"/>'
-          + fav_mark + "</svg>")
+          + touch_mark + "</svg>")
 
     # Lockups. Cap height drives the optical match between mark and wordmark.
     font = static_archivo()

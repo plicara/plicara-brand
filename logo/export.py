@@ -30,6 +30,7 @@ JOBS = [
     ("avatar-butterscotch.svg", "avatar-butterscotch-512.png", 512, None),
     ("mark-colour.svg", "mark-colour-512.png", 512, None),
     ("mark-colour-dark.svg", "mark-colour-dark-512.png", 512, None),
+    ("favicon.svg", "favicon-16.png", 16, None),
     ("favicon.svg", "favicon-32.png", 32, None),
     ("favicon.svg", "favicon-64.png", 64, None),
     ("touch-icon.svg", "apple-touch-icon-180.png", 180, None),

@@ -184,6 +184,22 @@ CANDIDATES = {
         ],
         "note": "the foothills refolded: two pleated-paper ranges, no plane",
     },
+    # The REDUCED CUT of the adopted mark, for below ~24 px. The back range
+    # is dropped and the line carries more weight: at tile sizes the rear
+    # peaks collapse into the front ones and the drawing turns to mush. Same
+    # front profile, fewer lines — not a different mark.
+    "e3r-foothills-reduced": {
+        "tilt": 0,
+        "amp": 0.35,
+        "closed": [[(8, 74), (20, 44), (33, 58), (50, 28), (67, 52),
+                    (81, 42), (92, 74)]],
+        "open": [
+            [(20, 44), (28, 74)],
+            [(50, 28), (59, 74)],
+            [(81, 42), (87, 74)],
+        ],
+        "note": "foothills refolded, reduced cut: front range only, for < 24 px",
+    },
     "b-first-fold": {
         "tilt": -6,
         "closed": [[(18, 10), (40, 10), (82, 52), (82, 90), (18, 90)],
@@ -364,6 +380,40 @@ def main():
         print(f"wrote candidate-{name}[-butter].svg")
 
 
+def colourway_reduced(way="chalk"):
+    """The adopted colourway on the REDUCED cut, for tiles below ~24 px.
+
+    Front range only and a heavier line. The favicon and touch icon use this;
+    at tile sizes the back range collapses into the front one and the whole
+    drawing turns to mush.
+    """
+    cand = CANDIDATES["e3r-foothills-reduced"]
+    name = "e3r-foothills-reduced"
+    cfg = COLOURWAYS[way]
+    ds = _paths(cand, name)
+    stroke = STROKE * 1.5
+    for ground, linecol in (("", cfg["light"]), ("-dark", cfg["dark"])):
+        parts = []
+        for i, poly in enumerate(E3_FACETS):
+            pts = _wobble(poly, f"{name}-f{i}", amplitude=0.3, closed=True)
+            d = _smooth(_tx(pts, cand["tilt"]), closed=True)
+            parts.append(f'<path d="{d}" fill="{PAL[cfg["f"][i]]}" '
+                         f'stroke="none" transform="translate(13 10)"/>')
+        parts.append(f'<g fill="none" stroke="{PAL[linecol]}" '
+                     f'stroke-width="{stroke}" stroke-linecap="round" '
+                     f'stroke-linejoin="round">'
+                     + "".join(f'<path d="{d}"/>' for d in ds) + "</g>")
+        svg = (f'<svg xmlns="http://www.w3.org/2000/svg" '
+               f'viewBox="0 0 {VIEW:.0f} {VIEW:.0f}" role="img" '
+               f'aria-label="Foothills Labs — reduced cut">\n'
+               + "\n".join(parts) + "\n</svg>\n")
+        with open(os.path.join(OUT, f"mark-foothills-{way}-reduced{ground}.svg"),
+                  "w") as fh:
+            fh.write(svg)
+    print(f"wrote mark-foothills-{way}-reduced[-dark].svg")
+
+
 if __name__ == "__main__":
     main()
     colourways()
+    colourway_reduced()

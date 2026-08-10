@@ -30,10 +30,15 @@ python3 export.py
 
 The faceted two-layer construction lives in `build.py` and the device screen
 has been run against this mark (v2,
-[`../../next_steps/trademark.md`](../../next_steps/trademark.md)). One build
-item is still open: a dedicated **reduced cut** (`MARK_SRC_SM`) for below
-~24 px — drop the back range and carry more stroke. Until it exists, the
-small cut reuses the full drawing.
+[`../../next_steps/trademark.md`](../../next_steps/trademark.md)).
+
+**There are two cuts of the mark, not two marks.** The full drawing carries
+both ranges. The **reduced cut** — `candidates/candidate-e3r-foothills-reduced.svg`
+in monoline, `candidates/mark-foothills-chalk-reduced[-dark].svg` in colour —
+drops the back range and carries ~1.5x the stroke, because below ~24 px the
+rear peaks break into stray duck-egg pixels and the valleys silt up. It drives
+`mark-small*.svg`, `mark-colour-small*.svg` and the **favicon**. The touch icon
+stays on the full drawing: it renders at 60 px and up.
 
 ## Which file
 
@@ -42,7 +47,7 @@ small cut reuses the full drawing.
 | The mark, in colour | `mark-colour.svg` (light grounds), `mark-colour-dark.svg` (dark grounds) |
 | Anything you can style with CSS | `mark.svg` — monoline, takes `currentColor` |
 | Single-colour reproduction | `mark-butterscotch.svg`, `mark-chalk.svg`, `mark-sumi.svg`, `mark-emerald.svg` |
-| Below ~40 px | `mark-small*.svg` — heavier monoline stroke |
+| Below ~40 px | `mark-small*.svg` (monoline), `mark-colour-small*.svg` (colour) — reduced cut, front range only, heavier stroke |
 | GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-chalk.svg` (colour), `avatar-butterscotch.svg` (monoline) |
 | Browser tab | `favicon.svg` — rounded night tile, butterscotch border |
 | Wide spaces: site header, slide footer | `lockup-horizontal-*.svg` |
@@ -63,7 +68,7 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 | `avatar-night-1024.png`, `-512.png` | GitHub org, Hugging Face org, social profile |
 | `avatar-chalk-512.png`, `avatar-butterscotch-512.png` | Alternate grounds |
 | `mark-colour-512.png`, `mark-colour-dark-512.png` | Transparent colour mark, decks and docs |
-| `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
+| `favicon-16.png`, `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
 | `touch-icon.svg` | Source for the apple-touch icon: square ground (iOS rounds it), pre-rounded border so the mask does not clip it |
 | `apple-touch-icon-180.png` | iOS home screen |
 | `social-card-1200x630.png` | Open Graph and Twitter card |
@@ -78,9 +83,14 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
   into circles; the avatars keep the whole drawing inside the inscribed
   circle. Do not reduce their padding to make the mark look bigger in a
   square preview — the square preview is not where it will be seen.
-- **Minimum size 16 px.** A dedicated reduced cut for below ~24 px is still
-  to be drawn; until then the small cut reuses the full drawing, which is why
-  the favicon runs dense at tile sizes.
+- **Minimum print size** is 14 mm for the full drawing on typical coated
+  offset and 4.6 mm for the reduced cut — measured by `printsize.py`, not
+  guessed. Below ~15 mm, print the reduced cut. Business-card scale is the
+  reduced cut.
+- **Minimum size 16 px**, and below ~24 px use the reduced cut. It is not a
+  simplification you may improvise: the front profile is identical, so the two
+  cuts are the same mark seen at two distances. Do not scale the full drawing
+  into a 16 px tile — the back range disintegrates.
 - **Lockups carry a heavier mark** so it holds its own beside 800-weight
   letterforms. That is optical weight matching, not a second mark.
 - **Do not** rotate it, add a third colour, place it on a busy photograph, or
