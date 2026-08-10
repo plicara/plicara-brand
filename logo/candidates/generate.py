@@ -139,6 +139,45 @@ CANDIDATES = {
         ],
         "note": "the sheet, jaunty: more tilt, looser line",
     },
+    # --- distinctiveness round: a plain rect with lines is file-icon
+    # territory. Each of these makes the drawing unmistakably ours, a
+    # different way.
+    # e1: the creases fold the monogram. A plausible crease pattern that is
+    # also a lowercase f — the mark says the name without a letterform.
+    "e1-monogram": {
+        "tilt": -6,
+        "closed": [[(26, 10), (74, 10), (74, 90), (26, 90)]],
+        "open": [
+            [(63, 21), (53, 15), (45, 25), (45, 83)],
+            [(34, 41), (59, 41)],
+        ],
+        "note": "the monogram sheet: creases that fold a lowercase f",
+    },
+    # e2: the sheet growing a wing. One panel has already folded past the
+    # edge — the silhouette stops being a rectangle, the story is mid-fold.
+    "e2-wing": {
+        "tilt": -4,
+        "closed": [[(22, 16), (62, 16), (62, 88), (22, 88)],
+                   [(62, 24), (94, 36), (62, 58)]],
+        "open": [
+            [(42, 16), (42, 88)],
+        ],
+        "note": "the sheet growing a wing: one fold already past the edge",
+    },
+    # e3: the foothills, refolded — taller, with the pleat returns landing
+    # on a visible base strip. Says the lab's name in folded paper; the one
+    # silhouette nobody else is near.
+    "e3-foothills-refolded": {
+        "tilt": 0,
+        "closed": [[(8, 74), (20, 44), (33, 58), (50, 28), (67, 52),
+                    (81, 42), (92, 74)]],
+        "open": [
+            [(20, 44), (28, 74)],
+            [(50, 28), (59, 74)],
+            [(81, 42), (87, 74)],
+        ],
+        "note": "the foothills refolded: pleated paper hills, no plane",
+    },
     "b-first-fold": {
         "tilt": -6,
         "closed": [[(18, 10), (40, 10), (82, 52), (82, 90), (18, 90)],
@@ -182,10 +221,10 @@ def _paths(cand, name):
     return ds
 
 
-def _svg(ds, colour, fill_first=None, title=""):
+def _svg(ds, colour, fill_n=0, title=""):
     body = []
-    if fill_first is not None and ds:
-        body.append(f'<path d="{ds[0]}" fill="{BUTTER}" stroke="none" '
+    for d in ds[:fill_n]:
+        body.append(f'<path d="{d}" fill="{BUTTER}" stroke="none" '
                     f'transform="translate(13 10)"/>')
     body.append(f'<g fill="none" stroke="{colour}" stroke-width="{STROKE}" '
                 f'stroke-linecap="round" stroke-linejoin="round">'
@@ -202,9 +241,7 @@ def main():
         with open(os.path.join(OUT, f"candidate-{name}.svg"), "w") as fh:
             fh.write(_svg(ds, "currentColor", title=title))
         with open(os.path.join(OUT, f"candidate-{name}-butter.svg"), "w") as fh:
-            fh.write(_svg(ds, SUMI,
-                          fill_first=bool(cand["closed"]) or None,
-                          title=title))
+            fh.write(_svg(ds, SUMI, fill_n=len(cand["closed"]), title=title))
         print(f"wrote candidate-{name}[-butter].svg")
 
 
