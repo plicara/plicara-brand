@@ -7,8 +7,8 @@ explains it. Change all three together.
 
 Contrast is WCAG 2.1 relative luminance. Every pairing the brand sanctions for
 text clears AA (4.5:1); the pairs that fail are ground-on-ground combinations
-that are never text, plus butter on a light ground, which is the reason for the
-"butter is a fill, not an ink" rule.
+that are never text, plus the pastel fills on light grounds, which is the
+reason for the "a pastel is a fill, not an ink" rule.
 """
 
 import json
@@ -16,47 +16,49 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
+# The six reference colours (coral, blush, butterscotch, smoke, duck egg,
+# emerald sea) were sampled from the founder's palette card. Emerald is
+# darkened one step so it can serve as the light-scheme accent ink; night,
+# slate, print, drafting and clay are DERIVED — dark grounds and a
+# light-ground series ink that a six-pastel card cannot supply — and are
+# marked as such.
 PALETTE = {
-    "butter":   ("#F3DC7C", "The one hot colour. A fill, never an ink. The glyph fill and the accent of both dark schemes."),
-    "sumi":     ("#2B2422", "Warm near-black, like ink that has dried. Primary text on light; the outline colour of every drawing."),
-    "washi":    ("#FAF6ED", "Warm paper white. Light ground; primary text on dark."),
-    "white":    ("#FFFFFF", "Surfaces on the light ground."),
-    "cream":    ("#F7EBC9", "Raised warm surface on the light grounds. Tiles, table rows, code blocks."),
-    "night":    ("#1F292E", "Green-cast charcoal, a garden at dusk. Primary dark ground."),
-    "slate":    ("#2C3A40", "Raised surface on night."),
-    "jade":     ("#1B6055", "Deep leaf teal. Panel ground on dark pages; can ink on washi."),
-    "plum":     ("#4E2338", "Deep wine. Panel ground on dark pages."),
-    "teal":     ("#3EB7C6", "First chart series on the dark grounds."),
-    "blossom":  ("#F0A7C0", "Soft pink. Second chart series on night; recessive detail."),
-    "magenta":  ("#B92D77", "Deep pink. Accent ink on the warm light ground; on dark grounds a fill, never an ink."),
-    "royal":    ("#2F3BB3", "Saturated blue. Accent ink and first series on the light grounds."),
-    "mint":     ("#63C6A0", "Green. Second chart series on the blueprint ground."),
-    "lilac":    ("#C9A9E2", "Pale violet. Recessive detail on dark grounds."),
-    "brick":    ("#A8333A", "Warm red. Second chart series on the light grounds."),
-    "print":    ("#1B2E63", "Blueprint blue. Dark ground for benchmarks and tools."),
-    "drafting": ("#24397A", "Raised surface on print."),
+    "butterscotch": ("#E7A63E", "The one hot colour. A fill, never an ink. The glyph fill and the accent of both dark schemes."),
+    "coral":        ("#F7A283", "Warm pastel. A fill and a panel ground; never an ink."),
+    "blush":        ("#F7DDD3", "Pale warm pink. Raised surface on the cel ground."),
+    "duckegg":      ("#CBDFD4", "Pale green. Raised surface on notepad; second series on dark."),
+    "smoke":        ("#9DACBA", "Blue-grey. Recessive detail and rules; never body text."),
+    "emerald":      ("#376F71", "Emerald sea, darkened a step. The accent ink on light grounds; a panel ground on dark."),
+    "sumi":         ("#2B2422", "Warm near-black, like ink that has dried. Primary text on light; the outline colour of every drawing."),
+    "washi":        ("#FAF6ED", "Warm paper white. Light ground; primary text on dark."),
+    "white":        ("#FFFFFF", "Ground of notepad; surfaces on washi."),
+    "clay":         ("#B85C40", "Derived: coral fired dark. Second chart series on light grounds."),
+    "night":        ("#22474A", "Derived from emerald sea: deep water. Primary dark ground."),
+    "slate":        ("#2D5559", "Raised surface on night."),
+    "print":        ("#333E48", "Derived from smoke: smoked slate. Dark ground for benchmarks and tools."),
+    "drafting":     ("#3E4A55", "Raised surface on print."),
 }
 
 # Four schemes, paired by area of the lab. Twilight/Cel carry the lab and the
 # models; Blueprint/Notepad carry benchmarks and tools.
 SCHEMES = {
     "twilight":  dict(mode="dark", area="lab, models", typeset="warm",
-                      bg="#1F292E", surface="#2C3A40", text="#FAF6ED",
-                      text_muted="#A0BAB8", rule="#3B4C50", accent="#F3DC7C",
-                      accent_on="#2B2422", series_1="#3EB7C6", series_2="#F0A7C0",
-                      panels=["jade", "plum"]),
+                      bg="#22474A", surface="#2D5559", text="#FAF6ED",
+                      text_muted="#AFC9C5", rule="#3B6165", accent="#E7A63E",
+                      accent_on="#2B2422", series_1="#F7A283", series_2="#CBDFD4",
+                      panels=["emerald", "coral"]),
     "cel":       dict(mode="light", area="lab, models", typeset="warm",
                       bg="#FAF6ED", surface="#FFFFFF", text="#2B2422",
-                      text_muted="#6E6259", rule="#E3D8C4", accent="#B92D77",
-                      accent_on="#FFFFFF", series_1="#2F3BB3", series_2="#A8333A"),
+                      text_muted="#6E6259", rule="#E8DCD2", accent="#376F71",
+                      accent_on="#FFFFFF", series_1="#376F71", series_2="#B85C40"),
     "blueprint": dict(mode="dark", area="benchmarks, tools", typeset="technical",
-                      bg="#1B2E63", surface="#24397A", text="#FFFFFF",
-                      text_muted="#A3B1E3", rule="#35509E", accent="#F3DC7C",
-                      accent_on="#2B2422", series_1="#3EB7C6", series_2="#63C6A0"),
+                      bg="#333E48", surface="#3E4A55", text="#FFFFFF",
+                      text_muted="#AEBCC8", rule="#4C5A66", accent="#E7A63E",
+                      accent_on="#2B2422", series_1="#CBDFD4", series_2="#F7A283"),
     "notepad":   dict(mode="light", area="benchmarks, tools", typeset="technical",
-                      bg="#FFFFFF", surface="#F7EBC9", text="#2B2422",
-                      text_muted="#6E6259", rule="#E0D7C4", accent="#2F3BB3",
-                      accent_on="#FFFFFF", series_1="#2F3BB3", series_2="#B92D77"),
+                      bg="#FFFFFF", surface="#CBDFD4", text="#2B2422",
+                      text_muted="#525E60", rule="#DCE6DE", accent="#376F71",
+                      accent_on="#FFFFFF", series_1="#376F71", series_2="#B85C40"),
 }
 
 # Both typesets set headings in lowercase; uppercase belongs to the mono
@@ -82,18 +84,19 @@ TYPESETS = {
     },
 }
 
-GROUNDS = ["night", "slate", "jade", "plum", "print", "drafting", "washi", "white", "cream", "butter"]
+GROUNDS = ["night", "slate", "print", "drafting", "washi", "white", "blush",
+           "duckegg", "emerald", "coral", "butterscotch"]
 
 # Hot fills and their text guards. A fill is a colour that holds text but must
-# never set it; the on-colour is the only ink allowed on top of it. The butter
-# fill is also the standing exception to "one accent per scheme" — it stays
-# constant in every scheme, including Cel and Notepad, whose accent inks are
-# magenta and royal.
+# never set it; the on-colour is the only ink allowed on top of it. The
+# butterscotch fill is also the standing exception to "one accent per scheme" —
+# it stays constant in every scheme, including Cel and Notepad, whose accent
+# ink is emerald.
 FILLS = {
-    "butter":  {"on": "sumi", "standing_exception": True},
-    # Magenta clears AA as an ink on washi but only 2.62:1 on night — on the
-    # dark grounds it is a fill, and the guard is what makes that mechanical.
-    "magenta": {"on": "white", "standing_exception": False},
+    "butterscotch": {"on": "sumi", "standing_exception": True},
+    # Coral clears nothing as an ink anywhere (1.86:1 on washi) but holds
+    # sumi at 7.58:1 — a fill and a panel ground, with the same railing.
+    "coral":        {"on": "sumi", "standing_exception": False},
 }
 
 

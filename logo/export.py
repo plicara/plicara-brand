@@ -18,8 +18,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "png")
 os.makedirs(OUT, exist_ok=True)
 
-NIGHT = "#1F292E"
-BUTTER = "#F3DC7C"
+NIGHT = "#22474A"
+BUTTERSCOTCH = "#E7A63E"
 WASHI = "#FAF6ED"
 
 # (source svg, output name, pixel size, background or None for transparent)
@@ -27,7 +27,7 @@ JOBS = [
     ("avatar-night.svg", "avatar-night-1024.png", 1024, None),
     ("avatar-night.svg", "avatar-night-512.png", 512, None),
     ("avatar-washi.svg", "avatar-washi-512.png", 512, None),
-    ("avatar-butter.svg", "avatar-butter-512.png", 512, None),
+    ("avatar-butterscotch.svg", "avatar-butterscotch-512.png", 512, None),
     ("mark-colour.svg", "mark-colour-512.png", 512, None),
     ("mark-colour-dark.svg", "mark-colour-dark-512.png", 512, None),
     ("favicon.svg", "favicon-32.png", 32, None),
@@ -64,10 +64,10 @@ def social():
         f'viewBox="0 0 {W} {H}">'
         f'<rect width="{W}" height="{H}" fill="{NIGHT}"/>'
         f'<g transform="translate({x:.1f} {y:.1f}) scale({scale:.4f})">{inner}</g>'
-        f'<text x="{W / 2}" y="{H - 214}" fill="{BUTTER}" text-anchor="middle" '
+        f'<text x="{W / 2}" y="{H - 214}" fill="{BUTTERSCOTCH}" text-anchor="middle" '
         f'font-family="monospace" font-size="19" letter-spacing="5.2">'
         f'BENCHMARKS FIRST, THEN MODELS</text>'
-        f'<rect x="0" y="{H - 12}" width="{W}" height="12" fill="{BUTTER}"/>'
+        f'<rect x="0" y="{H - 12}" width="{W}" height="12" fill="{BUTTERSCOTCH}"/>'
         f'</svg>'
     )
     path = os.path.join(OUT, "social-card-1200x630.png")

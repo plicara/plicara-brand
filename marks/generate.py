@@ -32,7 +32,7 @@ OUT = os.path.dirname(os.path.abspath(__file__))
 
 SUMI = "#2B2422"
 WASHI = "#FAF6ED"
-BUTTER = "#F3DC7C"
+BUTTER = "#E7A63E"  # butterscotch — the fill colour after the pastel palette
 
 VIEW = 512.0           # artboard
 STROKE = 17.0          # main outline, ~3.3% of the artboard
@@ -251,7 +251,7 @@ def main():
                              "the language of its specialisation: hammer -> "
                              "martillo (Spanish)",
             "checkpoints": "pre-release checkpoints are {name}-preview",
-            "style": "thick sumi outline, butter fill set off-register; "
+            "style": "thick sumi outline, butterscotch fill set off-register; "
                      "drawn by this script, never by hand",
             "glyphs": meta,
         }, fh, indent=2)

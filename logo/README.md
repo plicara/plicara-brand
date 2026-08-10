@@ -1,10 +1,10 @@
 # Logo files
 
-**The house mark is Foothills Refolded, in the arcade colourway** — two
-pleated-paper ranges (the teal one peeks through the front valleys; ranges
-recede, crowns cannot), magenta/butter/teal facets under the line, set
+**The house mark is Foothills Refolded, in the seaglass colourway** — two
+pleated-paper ranges (the duck-egg one peeks through the front valleys; ranges
+recede, crowns cannot), coral/butterscotch/emerald facets under the line, duck-egg back range, set
 off-register. Sources: `candidates/candidate-e3-foothills-refolded.svg`
-(line drawing) and `candidates/mark-foothills-arcade[-dark].svg` (colour
+(line drawing) and `candidates/mark-foothills-seaglass[-dark].svg` (colour
 construction), both generated. All earlier candidates and colourways stay
 in `candidates/` for the record.
 
@@ -37,15 +37,15 @@ trademark screen ([`../../next_steps/trademark.md`](../../next_steps/trademark.m
 | Anything you can style with CSS | `mark.svg` — monoline, takes `currentColor` |
 | Single-colour reproduction | `mark-butter.svg`, `mark-washi.svg`, `mark-sumi.svg`, `mark-magenta.svg` |
 | Below ~40 px | `mark-small*.svg` — heavier monoline stroke |
-| GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-washi.svg` (colour), `avatar-butter.svg` (monoline) |
-| Browser tab | `favicon.svg` — rounded night tile, butter border |
+| GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-washi.svg` (colour), `avatar-butterscotch.svg` (monoline) |
+| Browser tab | `favicon.svg` — rounded night tile, butterscotch border |
 | Wide spaces: site header, slide footer | `lockup-horizontal-*.svg` |
 | Squarer spaces: cards, README badges | `lockup-compact-*.svg` |
 | Centred: README hero, title slide, print | `lockup-vertical-*.svg` |
 | Anywhere SVG is not accepted | `png/` — see below |
 
 Lockup suffixes: `-dark` (colour mark, washi wordmark), `-light` (colour
-mark, sumi wordmark), `-mono` (all butter, monoline — for a dark panel or
+mark, sumi wordmark), `-mono` (all butterscotch, monoline — for a dark panel or
 single-colour reproduction). The wordmark is **lowercase**: `foothills labs`.
 
 ## Rasters
@@ -55,7 +55,7 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 | File | For |
 | --- | --- |
 | `avatar-night-1024.png`, `-512.png` | GitHub org, Hugging Face org, social profile |
-| `avatar-washi-512.png`, `avatar-butter-512.png` | Alternate grounds |
+| `avatar-washi-512.png`, `avatar-butterscotch-512.png` | Alternate grounds |
 | `mark-colour-512.png`, `mark-colour-dark-512.png` | Transparent colour mark, decks and docs |
 | `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
 | `touch-icon.svg` | Source for the apple-touch icon: square ground (iOS rounds it), pre-rounded border so the mask does not clip it |
@@ -92,9 +92,9 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 
 ## Colours
 
-`butter #F3DC7C` · `sumi #2B2422` · `washi #FAF6ED` · `night #1F292E` ·
-`magenta #B92D77` · `royal #2F3BB3`
+`butterscotch #E7A63E` · `sumi #2B2422` · `washi #FAF6ED` · `night #22474A` ·
+`emerald #376F71` · `coral #F7A283`
 
-Butter is the accent colour and a fill, never an ink — text on it is always
-`--fh-on-butter`. Full palette, misuse rules and the reasoning:
+Butterscotch is the accent colour and a fill, never an ink — text on it is
+always `--fh-on-butterscotch`. Full palette, misuse rules and the reasoning:
 [`../../docs/brand.md`](../../docs/brand.md).
