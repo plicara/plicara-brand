@@ -278,6 +278,20 @@ PAL = {
     "marigold": "#FF9900", "jade": "#00CC99", "moss": "#597931",
     "forest": "#003300",
     "seafoam": "#A4E1C8", "fern": "#A2B883", "shell": "#E6F4EE",
+    # --- paper-process palettes, proposed 2026-08-10 ---------------------
+    # Not mood boards. Each set is the native ink palette of a real process
+    # for putting colour on paper, which is what this mark depicts.
+    "risopink": "#FF48B0", "risoblue": "#3D5588", "risoyellow": "#FFE800",
+    "prussian": "#0B3C5D", "cyanmid": "#2E7DA6", "tea": "#D9A441",
+    "ditto": "#6B4C9A", "dittofade": "#9B8BC4", "mimeoblue": "#4A6FA5",
+    "verdigris": "#3E9C8F", "copper": "#B5713C", "oxide": "#22332F",
+    "chartreuse": "#C6DE1E", "graphite": "#14161A", "steel": "#8A94A0",
+    # derived: back ranges at L*85-87 and low chroma so they recede, and
+    # papers at L*96 carrying a trace of the family's hue. All computed in
+    # LCh from the hue above them, never picked by eye.
+    "risoback": "#CFD4E9", "cyanoback": "#C3D7E7", "cyanopaper": "#F1F4F7",
+    "dittoback": "#DDCFED", "dittopaper": "#F5F3F7", "verdback": "#C0DDD8",
+    "acidback": "#D5DAE1", "acidpaper": "#F3F4F5", "risopaper": "#FFFFFF",
     # retired pastel-card hues, kept so the historical colourways still build
     "coral": "#F7A283", "washi": "#FAF6ED", "blush": "#F7DDD3",
     # retired 90s-anime hues, kept so the historical colourways still build
@@ -314,6 +328,34 @@ COLOURWAYS = {
                        "duck-egg back range: the chalk palette. Rose replaces "
                        "coral to clear terracotta's family; the line on dark "
                        "grounds is cool chalk, not warm washi."),
+    # --- paper-process ways, proposed 2026-08-10 ------------------------
+    "riso": dict(f=["risopink", "risoyellow", "risoblue", "risopink"],
+                 back="risoback", light="risoblue", dark="risopaper",
+                 note="Risograph's own inks. The mark is ALREADY drawn as "
+                      "flat colour sitting off-register under a line — that "
+                      "is a riso misregistration. This names the source "
+                      "instead of imitating it. No black: riso has none, so "
+                      "the line is federal blue."),
+    "cyanotype": dict(f=["cyanmid", "tea", "prussian", "cyanmid"],
+                      back="cyanoback", light="prussian", dark="cyanopaper",
+                      note="the blueprint process, which is a PAPER process: "
+                           "Prussian blue ground, white line, one tea-toned "
+                           "warm. The brand already has a scheme called "
+                           "blueprint; this is that scheme taken seriously."),
+    "ditto": dict(f=["ditto", "mimeoblue", "dittofade", "ditto"],
+                  back="dittoback", light="ditto", dark="dittopaper",
+                  note="spirit-duplicator purple — the aniline violet of "
+                       "school handouts. One hue family, three values, no "
+                       "hot accent at all. The quietest option here."),
+    "verdigris": dict(f=["verdigris", "copper", "verdigris", "oxide"],
+                      back="verdback", light="oxide", dark="verdback",
+                      note="oxidised copper: patina green against raw metal. "
+                           "Warm and cool from one material aging."),
+    "acid": dict(f=["chartreuse", "steel", "chartreuse", "steel"],
+                 back="acidback", light="graphite", dark="acidpaper",
+                 note="near-black, one acid chartreuse, cool grey between. "
+                      "Two colours doing all the work; loud in exactly one "
+                      "place."),
     # --- beetle card, proposed 2026-08-10 -------------------------------
     # Far more saturated than chalk. Read the audit before adopting one.
     "beetle": dict(f=["marigold", "jade", "moss", "marigold"],
