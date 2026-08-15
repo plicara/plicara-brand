@@ -32,42 +32,43 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # print/drafting and plum are DERIVED: dark grounds and a light-ground
 # series ink a six-pastel card cannot supply.
 PALETTE = {
-    "butterscotch": ("#E7A63E", "The one hot colour. A fill, never an ink. The glyph fill and the accent of both dark schemes."),
-    "rose":         ("#EE93A9", "Cool-leaning pink. A fill and a panel ground; never an ink. Replaces the card's coral, which sat in terracotta's family."),
-    "chalk":        ("#EDF1F0", "Cool paper white. The light ground, and text on the dark ones."),
-    "white":        ("#FFFFFF", "Ground of notepad; surfaces on chalk."),
-    "mist":         ("#DCE6E6", "Raised cool surface. Tiles, table rows, code blocks."),
-    "duckegg":      ("#CBDFD4", "Pale green. Second chart series on the dark grounds."),
-    "smoke":        ("#9DACBA", "Blue-grey. Recessive detail and rules; never body text."),
-    "emerald":      ("#2F6E70", "Emerald sea, darkened for ink duty. The accent ink on light grounds; a panel ground on dark."),
-    "plum":         ("#8E4763", "Derived: rose fired dark. Second chart series on the light grounds."),
-    "sumi":         ("#26292B", "Cool near-black, like ink that has dried. Primary text on light; the outline colour of every drawing."),
-    "night":        ("#1E3C40", "Derived from emerald sea: deep water. Primary dark ground."),
-    "slate":        ("#23464A", "Raised surface on night."),
-    "print":        ("#2E3A42", "Derived from smoke: smoked slate. Dark ground for benchmarks and tools."),
-    "drafting":     ("#38444C", "Raised surface on print."),
+    "butterscotch": ("#EE8B33", "The one hot colour, and the accent INK of the dark schemes only. On the cream paper it manages 2.1:1, so on light grounds it is a fill and nothing else — that asymmetry is the reason the guard token exists."),
+    "rose":         ("#6A2A12", "Burnt rust. The accent ink on light grounds (9.2:1 on cream) and a facet of the mark. Keeps the token name so nothing downstream has to move."),
+    "chalk":        ("#FAEBD3", "Warm paper. The light ground, and text on the dark ones. b* +13.5 — a golden cream, deliberately not a bone: Anthropic's is +4.1."),
+    "white":        ("#FFFFFF", "Ground of notepad."),
+    "mist":         ("#DEEAEE", "Raised cool surface on white. Tiles, table rows, code blocks."),
+    "duckegg":      ("#9ABCC6", "Pale teal. First chart series on the dark grounds."),
+    "smoke":        ("#829AA1", "Derived mid. Recessive detail and rules; never body text."),
+    "emerald":      ("#31606D", "The cool counterweight. Chart series on light grounds; a panel ground on dark."),
+    "plum":         ("#FFB881", "Derived: the hot colour lifted. Second chart series on the dark grounds."),
+    "sumi":         ("#05192B", "Near-black navy. Primary text on light; the outline colour of every drawing."),
+    "night":        ("#05192B", "The primary dark ground. Same value as sumi: the ink and the ground are one colour, which is what makes the cream sit so far forward."),
+    "slate":        ("#132538", "Raised surface on night."),
+    "print":        ("#082C35", "Deep teal. Dark ground for benchmarks and tools."),
+    "drafting":     ("#1D3E47", "Raised surface on print. Sits at L*24 and no higher: the accent has to clear 4.5 on top of it."),
+    "warmwhite":    ("#FFF9EF", "Raised surface on the cream ground. Lighter than the paper, not whiter than it."),
 }
 
 # Four schemes, paired by area of the lab. Twilight/Cel carry the lab and the
 # models; Blueprint/Notepad carry benchmarks and tools.
 SCHEMES = {
     "twilight":  dict(mode="dark", area="lab, models", typeset="warm",
-                      bg="#1E3C40", surface="#23464A", text="#EDF1F0",
-                      text_muted="#A7C4C2", rule="#33585C", accent="#E7A63E",
-                      accent_on="#26292B", series_1="#EE93A9", series_2="#CBDFD4",
+                      bg="#05192B", surface="#132538", text="#FAEBD3",
+                      text_muted="#9CB5BC", rule="#25364A", accent="#EE8B33",
+                      accent_on="#05192B", series_1="#9ABCC6", series_2="#FFB881",
                       panels=["emerald", "rose"]),
     "cel":       dict(mode="light", area="lab, models", typeset="warm",
-                      bg="#EDF1F0", surface="#FFFFFF", text="#26292B",
-                      text_muted="#5C6668", rule="#DBE4E3", accent="#2F6E70",
-                      accent_on="#FFFFFF", series_1="#2F6E70", series_2="#8E4763"),
+                      bg="#FAEBD3", surface="#FFF9EF", text="#05192B",
+                      text_muted="#436974", rule="#E5D5BB", accent="#6A2A12",
+                      accent_on="#FAEBD3", series_1="#31606D", series_2="#6A2A12"),
     "blueprint": dict(mode="dark", area="benchmarks, tools", typeset="technical",
-                      bg="#2E3A42", surface="#38444C", text="#FFFFFF",
-                      text_muted="#AEBCC6", rule="#46525B", accent="#E7A63E",
-                      accent_on="#26292B", series_1="#CBDFD4", series_2="#EE93A9"),
+                      bg="#082C35", surface="#1D3E47", text="#FFFFFF",
+                      text_muted="#9CB5BC", rule="#395760", accent="#EE8B33",
+                      accent_on="#05192B", series_1="#FFB881", series_2="#9ABCC6"),
     "notepad":   dict(mode="light", area="benchmarks, tools", typeset="technical",
-                      bg="#FFFFFF", surface="#DCE6E6", text="#26292B",
-                      text_muted="#4F5A5C", rule="#C9D8D8", accent="#2F6E70",
-                      accent_on="#FFFFFF", series_1="#2F6E70", series_2="#8E4763"),
+                      bg="#FFFFFF", surface="#DEEAEE", text="#05192B",
+                      text_muted="#436974", rule="#CADADF", accent="#6A2A12",
+                      accent_on="#FAEBD3", series_1="#31606D", series_2="#6A2A12"),
 }
 
 # Both typesets set headings in lowercase; uppercase belongs to the mono
@@ -103,7 +104,7 @@ GROUNDS = ["night", "slate", "print", "drafting", "chalk", "white", "mist",
 # ink is emerald.
 FILLS = {
     "butterscotch": {"on": "sumi", "standing_exception": True},
-    "rose":         {"on": "sumi", "standing_exception": False},
+    "rose":         {"on": "chalk", "standing_exception": False},
 }
 
 # Pairings the brand sanctions for text, checked per scheme. The accent is
