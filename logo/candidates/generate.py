@@ -353,8 +353,16 @@ COLOURWAYS = {
             back="sand", light="ink", dark="cream2",
             note="all warm, no cool facet at all"),
     "beacon": dict(f=["hteal", "rust", "horange", "hteal"],
-              back="paleteal", light="ink", dark="cream2",
-              note="the heat climbs left to right and stops"),
+              f_dark=["hslate", "horange", "apricot", "hslate"],
+              back="paleteal", back_dark="paleteal",
+              light="ink", dark="cream2",
+              note="ADOPTED 2026-08-10. The heat climbs left to right and "
+                   "stops — the only way of the twelve that gets a gradient "
+                   "out of the pleats instead of an alternation. Carries a "
+                   "separate DARK facet set, because no facet colour in this "
+                   "card clears 3:1 on both grounds: on ink, rust falls to "
+                   "1.7:1 and teal to 2.6:1, so each is lifted to the value "
+                   "of its own hue that actually reads there."),
     "flare": dict(f=["horange", "hteal", "horange", "hteal"],
              back="sand", light="ink", dark="cream2",
              note="strict alternation, maximum temperature swing"),
@@ -443,6 +451,25 @@ COLOURWAYS = {
 }
 
 
+def _facets(name, cand, f, back, back_line_ds, linecol):
+    """The colour layer: back-range fills, back-range lines, front facets."""
+    out = []
+    for i, poly in enumerate(E3_BACK_FILLS):
+        pts = _wobble(poly, f"{name}-b{i}", amplitude=0.4, closed=True)
+        d = _smooth(_tx(pts, cand["tilt"]), closed=True)
+        out.append(f'<path d="{d}" fill="{PAL[back]}" stroke="none" '
+                   f'transform="translate(13 10)"/>')
+    out.append(f'<g fill="none" stroke="{linecol}" stroke-width="{STROKE}" '
+               f'stroke-linecap="round" stroke-linejoin="round">'
+               + "".join(f'<path d="{d}"/>' for d in back_line_ds) + "</g>")
+    for i, poly in enumerate(E3_FACETS):
+        pts = _wobble(poly, f"{name}-f{i}", amplitude=0.4, closed=True)
+        d = _smooth(_tx(pts, cand["tilt"]), closed=True)
+        out.append(f'<path d="{d}" fill="{PAL[f[i]]}" stroke="none" '
+                   f'transform="translate(13 10)"/>')
+    return out
+
+
 def colourways():
     cand = CANDIDATES["e3-foothills-refolded"]
     name = "e3-foothills-refolded"
@@ -452,24 +479,15 @@ def colourways():
                     for i, l in enumerate(E3_BACK_LINES)]
     front_ds = [d for d in ds if d not in back_line_ds]
     for way, cfg in COLOURWAYS.items():
-        backs = []
-        for i, poly in enumerate(E3_BACK_FILLS):
-            pts = _wobble(poly, f"{name}-b{i}", amplitude=0.4, closed=True)
-            d = _smooth(_tx(pts, cand["tilt"]), closed=True)
-            backs.append(f'<path d="{d}" fill="{PAL[cfg["back"]]}" '
-                         f'stroke="none" transform="translate(13 10)"/>')
-        facets = []
-        for i, poly in enumerate(E3_FACETS):
-            pts = _wobble(poly, f"{name}-f{i}", amplitude=0.4, closed=True)
-            d = _smooth(_tx(pts, cand["tilt"]), closed=True)
-            facets.append(f'<path d="{d}" fill="{PAL[cfg["f"][i]]}" '
-                          f'stroke="none" transform="translate(13 10)"/>')
-        facets = backs + [
-            f'<g fill="none" stroke="LINE" stroke-width="{STROKE}" '
-            f'stroke-linecap="round" stroke-linejoin="round">'
-            + "".join(f'<path d="{d}"/>' for d in back_line_ds) + "</g>"
-        ] + facets
         for ground, linecol in (("", cfg["light"]), ("-dark", cfg["dark"])):
+            # A way may declare f_dark/back_dark. The harbour palette needs it:
+            # no facet colour in that card clears 3:1 on BOTH grounds, so a
+            # single shared set would leave a facet invisible on one of them.
+            # Ways without them are unaffected and still emit byte-identically.
+            fs, bk = cfg["f"], cfg["back"]
+            if ground == "-dark":
+                fs, bk = cfg.get("f_dark", fs), cfg.get("back_dark", bk)
+            layer = _facets(name, cand, fs, bk, back_line_ds, PAL[linecol])
             strokes = (f'<g fill="none" stroke="{PAL[linecol]}" '
                        f'stroke-width="{STROKE}" stroke-linecap="round" '
                        f'stroke-linejoin="round">'
@@ -477,7 +495,7 @@ def colourways():
             svg = (f'<svg xmlns="http://www.w3.org/2000/svg" '
                    f'viewBox="0 0 {VIEW:.0f} {VIEW:.0f}" role="img" '
                    f'aria-label="Foothills Labs — {way} colourway">\n'
-                   + "\n".join(facets).replace("LINE", PAL[linecol])
+                   + "\n".join(layer)
                    + "\n" + strokes + "\n</svg>\n")
             with open(os.path.join(OUT, f"mark-foothills-{way}{ground}.svg"),
                       "w") as fh:
@@ -496,7 +514,7 @@ def main():
         print(f"wrote candidate-{name}[-butter].svg")
 
 
-def colourway_reduced(way="chalk"):
+def colourway_reduced(way="beacon"):
     """The adopted colourway on the REDUCED cut, for tiles below ~24 px.
 
     Front range only and a heavier line. The favicon and touch icon use this;
@@ -509,11 +527,12 @@ def colourway_reduced(way="chalk"):
     ds = _paths(cand, name)
     stroke = STROKE * 1.5
     for ground, linecol in (("", cfg["light"]), ("-dark", cfg["dark"])):
+        fs = cfg.get("f_dark", cfg["f"]) if ground == "-dark" else cfg["f"]
         parts = []
         for i, poly in enumerate(E3_FACETS):
             pts = _wobble(poly, f"{name}-f{i}", amplitude=0.3, closed=True)
             d = _smooth(_tx(pts, cand["tilt"]), closed=True)
-            parts.append(f'<path d="{d}" fill="{PAL[cfg["f"][i]]}" '
+            parts.append(f'<path d="{d}" fill="{PAL[fs[i]]}" '
                          f'stroke="none" transform="translate(13 10)"/>')
         parts.append(f'<g fill="none" stroke="{PAL[linecol]}" '
                      f'stroke-width="{stroke}" stroke-linecap="round" '
@@ -533,3 +552,4 @@ if __name__ == "__main__":
     main()
     colourways()
     colourway_reduced()
+    colourway_reduced("chalk")   # keep the retired cut building
