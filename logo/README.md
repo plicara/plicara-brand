@@ -1,10 +1,11 @@
 # Logo files
 
-**The house mark is Foothills Refolded, in the chalk colourway** — two
+**The house mark is Foothills Refolded, in the beacon colourway** — two
 pleated-paper ranges (the duck-egg one peeks through the front valleys; ranges
-recede, crowns cannot), rose/butterscotch/emerald facets under the line, duck-egg back range, set
-off-register. Sources: `candidates/candidate-e3-foothills-refolded.svg`
-(line drawing) and `candidates/mark-foothills-chalk[-dark].svg` (colour
+recede, crowns cannot), teal/rust/orange facets under the line on light grounds — lifted to
+slate/orange/apricot on dark ones, because no facet colour in this palette
+reads on both — pale-teal back range, set off-register. Sources: `candidates/candidate-e3-foothills-refolded.svg`
+(line drawing) and `candidates/mark-foothills-beacon[-dark].svg` (colour
 construction), both generated. All earlier candidates and colourways stay
 in `candidates/` for the record.
 
@@ -108,9 +109,11 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 
 ## Colours
 
-`butterscotch #E7A63E` · `sumi #26292B` · `chalk #EDF1F0` · `night #1E3C40` ·
-`emerald #2F6E70` · `rose #EE93A9`
+`orange #EE8B33` · `ink #05192B` · `cream #FAEBD3` · `teal #31606D` ·
+`rust #6A2A12` · `paleteal #C3D5DA`
 
-Butterscotch is the accent colour and a fill, never an ink — text on it is
-always `--fh-on-butterscotch`. Full palette, misuse rules and the reasoning:
+Orange is the accent colour. On dark grounds it is also an ink (7.1:1); on
+the cream paper it manages 2.1:1, so there it is a fill and nothing else, and
+text on it is always `--fh-on-butterscotch`. Rust is the light-ground accent
+ink. Full palette, misuse rules and the reasoning:
 [`../../docs/brand.md`](../../docs/brand.md).
