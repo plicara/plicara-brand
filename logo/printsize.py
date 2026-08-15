@@ -10,11 +10,13 @@ directions:
                   and vanishes on uncoated. Heavier strokes make this BETTER.
 
 So the minimum size is the larger of the two limits, and the two cuts of the
-mark land in different regimes: the full drawing is counter-limited (its
-tightest counter is the wedge where a back-range peak meets the front slope),
-the reduced cut is stroke-limited. That is why the reduced cut is also the
-PRINT cut at small sizes — the same reason it is the screen cut, arrived at
-from the opposite direction.
+mark land in different regimes. Both carry the same drawing — the small cut
+differs in stroke weight alone — but that weight moves it between regimes:
+the full cut is counter-limited throughout (its tightest counter is the wedge
+where a back-range peak meets the front slope), while the small cut's heavier
+line holds where the full one breaks up, and it only becomes counter-limited
+on the dirtier processes. That is why the small cut is also the PRINT cut
+below ~15 mm, arrived at from the opposite direction to the screen argument.
 
 Method: render the monoline cut, label every enclosed counter, and take the
 largest inscribed circle in each (a Euclidean distance transform of the
@@ -41,7 +43,7 @@ SLIVER = 0.0002  # fraction of the render below which a counter is noise
 
 # (file, stroke in artboard units, label)
 CUTS = [("mark.svg", 1.7, "full"),
-        ("mark-small.svg", 1.7 * 1.65, "reduced")]
+        ("mark-small.svg", 1.7 * 1.65, "small")]
 
 # (ink spread per side mm, minimum holding line mm, label)
 PROCESSES = [(0.05, 0.15, "coated offset, good"),

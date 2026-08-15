@@ -35,21 +35,24 @@ from fontTools.misc.transform import Transform
 import uharfbuzz as hb
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# Two cuts. The full drawing carries both ranges; the reduced cut drops the
-# back range and carries more stroke, because below ~24 px the rear peaks
-# collapse into the front ones. Same drawing, fewer lines — not a second mark.
+# ONE DRAWING ON SCREEN. Every screen surface — hero, header, favicon, touch
+# icon, avatars, lockups — carries both ranges. The small cuts differ from the
+# full one in STROKE WEIGHT ALONE (x1.65), never in what is drawn.
+#
+# This reverses an earlier rule that dropped the back range below ~24 px on the
+# theory that the rear peaks silt up. Measured on the site at 30 px they do not:
+# the back peaks hold their fill and the valleys stay open, they just need the
+# line a weight heavier. Shipping a reduced cut meant shipping two logos — a
+# hero with two ranges and a header with one — which is what this avoids.
+#
+# Print was measured before this was adopted, not assumed: the small cut's
+# minimum goes 4.6mm -> 5.2mm on typical coated offset and 6.8mm -> 10.3mm
+# uncoated (printsize.py). Business-card scale survives, so the retired
+# reduced cut is kept only for the record in candidates/.
 MARK_SRC = os.path.join(HERE, "candidates", "candidate-e3-foothills-refolded.svg")
-MARK_SRC_SM = os.path.join(HERE, "candidates", "candidate-e3r-foothills-reduced.svg")
 COLOUR_SRC = os.path.join(HERE, "candidates", "mark-foothills-beacon.svg")
 COLOUR_SRC_DARK = os.path.join(HERE, "candidates",
                                "mark-foothills-beacon-dark.svg")
-# The reduced cut in colour. The favicon and touch icon live at 16-32 px,
-# where the back range's fill and the extra line weight collapse into the
-# front range; this is the same drawing with the rear peaks dropped.
-COLOUR_SRC_SM = os.path.join(HERE, "candidates",
-                             "mark-foothills-beacon-reduced.svg")
-COLOUR_SRC_SM_DARK = os.path.join(HERE, "candidates",
-                                  "mark-foothills-beacon-reduced-dark.svg")
 
 FONT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
     HERE, "..", "..", "node_modules", "@fontsource-variable", "archivo",
@@ -248,15 +251,14 @@ def write(name, content):
 def main():
     BOX, PAD, STROKE = 64, 4, 1.7
     ds_full, bb_full = load_mark(MARK_SRC)
-    ds_sm, bb_sm = load_mark(MARK_SRC_SM)
 
     mark, _ = reframe(ds_full, bb_full, BOX, PAD, STROKE)
-    small, _ = reframe(ds_sm, bb_sm, BOX, PAD, STROKE * 1.65)
+    # The small cut: the SAME drawing, reframed at a heavier stroke. Nothing is
+    # dropped from it — see the note on MARK_SRC.
+    small, _ = reframe(ds_full, bb_full, BOX, PAD, STROKE * 1.65)
 
     inner_l, cbb_l = load_colour_mark(COLOUR_SRC)
     inner_d, cbb_d = load_colour_mark(COLOUR_SRC_DARK)
-    inner_rl, cbb_rl = load_colour_mark(COLOUR_SRC_SM)
-    inner_rd, cbb_rd = load_colour_mark(COLOUR_SRC_SM_DARK)
 
     print("marks")
     write("mark.svg", mark_svg(mark, BOX, STROKE))
@@ -264,8 +266,8 @@ def main():
     write("mark-colour-dark.svg", colour_svg(inner_d, cbb_d, BOX, 4))
     for tone in ("butterscotch", "sumi", "chalk", "emerald"):
         write(f"mark-{tone}.svg", mark_svg(mark, BOX, STROKE, C[tone]))
-    write("mark-colour-small.svg", colour_svg(inner_rl, cbb_rl, BOX, 4))
-    write("mark-colour-small-dark.svg", colour_svg(inner_rd, cbb_rd, BOX, 4))
+    write("mark-colour-small.svg", colour_svg(inner_l, cbb_l, BOX, 4))
+    write("mark-colour-small-dark.svg", colour_svg(inner_d, cbb_d, BOX, 4))
     write("mark-small.svg", mark_svg(small, BOX, STROKE * 1.65))
     for tone in ("butterscotch", "sumi", "chalk", "emerald"):
         write(f"mark-small-{tone}.svg",
@@ -307,13 +309,12 @@ def main():
               f'stroke-width="{BSTROKE:.1f}"/>'
               + colour_group(inner, cbb, A, APAD) + '</svg>')
     # Favicon: rounded tile with a pronounced lichen border — a sharp square
-    # sat awkwardly next to the round tab controls. The REDUCED cut, because
-    # the tile lives at 16-32 px, where the back range's duck-egg fill breaks
-    # into stray pixels and the valleys silt up. Padding is 8, not the 9 the
-    # full mark needs: with the rear peaks gone the drawing is shorter, and
-    # at 16 px it needs every unit of presence it can take without the base
-    # touching the border ring. The border is drawn inset so nothing clips.
-    fav_mark = colour_group(inner_rd, cbb_rd, 64, 8)
+    # sat awkwardly next to the round tab controls. The FULL drawing, like
+    # every other screen surface: the tab is the one place the old reduced cut
+    # was hardest to justify, since the touch icon and the OG card beside it
+    # were already carrying both ranges. Padding is 9, which is what the full
+    # drawing needs to keep its base off the border ring.
+    fav_mark = colour_group(inner_d, cbb_d, 64, 9)
     write("favicon.svg",
           '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" '
           'width="64" height="64" role="img" aria-label="Foothills Labs">'
@@ -326,8 +327,8 @@ def main():
     # mask, and pre-rounding it leaves dark notches — but the BORDER is
     # pre-rounded to sit just inside iOS's ~22.5% mask radius, or the mask
     # clips its corners mid-line.
-    # This one keeps the FULL mark: it renders at 60 px and up on the home
-    # screen, comfortably above the reduced cut's ~24 px threshold.
+    # Same full drawing and framing as the favicon — these two used to differ,
+    # which is precisely how the mark drifted into two logos.
     touch_mark = colour_group(inner_d, cbb_d, 64, 9)
     write("touch-icon.svg",
           '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" '

@@ -33,13 +33,23 @@ The faceted two-layer construction lives in `build.py` and the device screen
 has been run against this mark (v2,
 [`../../next_steps/trademark.md`](../../next_steps/trademark.md)).
 
-**There are two cuts of the mark, not two marks.** The full drawing carries
-both ranges. The **reduced cut** — `candidates/candidate-e3r-foothills-reduced.svg`
-in monoline, `candidates/mark-foothills-chalk-reduced[-dark].svg` in colour —
-drops the back range and carries ~1.5x the stroke, because below ~24 px the
-rear peaks break into stray duck-egg pixels and the valleys silt up. It drives
-`mark-small*.svg`, `mark-colour-small*.svg` and the **favicon**. The touch icon
-stays on the full drawing: it renders at 60 px and up.
+**Every cut draws the same mountains**: three peaks in front, two behind. The
+small cut — `mark-small*.svg`, `mark-colour-small*.svg` and the **favicon** —
+differs from the full drawing in **stroke weight alone** (~1.65x), never in
+what is drawn.
+
+An earlier rule dropped the back range below ~24 px, on the theory that the
+rear peaks broke into stray pixels and the valleys silted up. Measured at
+30 px they do not: the back peaks hold their fill and the valleys stay open,
+they just need the line a weight heavier. The cost of that rule was two logos
+in circulation — a hero with two ranges, a header and tab with one — while
+the touch icon and OG card carried the full drawing all along. The reduced cut
+is retired; `candidates/candidate-e3r-foothills-reduced.svg` and
+`candidates/mark-foothills-*-reduced[-dark].svg` stay for the record.
+
+If a size ever does need a reduced cut, cut it in **all** the surfaces at that
+size — header, favicon and touch icon together — or the mark becomes two marks
+again.
 
 ## Which file
 
@@ -48,7 +58,7 @@ stays on the full drawing: it renders at 60 px and up.
 | The mark, in colour | `mark-colour.svg` (light grounds), `mark-colour-dark.svg` (dark grounds) |
 | Anything you can style with CSS | `mark.svg` — monoline, takes `currentColor` |
 | Single-colour reproduction | `mark-butterscotch.svg`, `mark-chalk.svg`, `mark-sumi.svg`, `mark-emerald.svg` |
-| Below ~40 px | `mark-small*.svg` (monoline), `mark-colour-small*.svg` (colour) — reduced cut, front range only, heavier stroke |
+| Below ~40 px | `mark-small*.svg` (monoline), `mark-colour-small*.svg` (colour) — same drawing, heavier stroke |
 | GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-chalk.svg` (colour), `avatar-butterscotch.svg` (monoline). **Unbordered on purpose** — see below |
 | Personal page, slide, app tile | `avatar-cream-bordered.svg` (paper ground) or `avatar-night-bordered.svg` (dark). Rounded tile, accent rule around it |
 | Transparent, drop on any ground | `mark-colour.svg` (light grounds), `mark-colour-dark.svg` (dark) |
@@ -94,14 +104,14 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
   into four arcs. The bordered cuts are for surfaces that keep the square:
   personal pages, slides, app icons. For GitHub and Hugging Face use
   `avatar-night.svg`, which has no border for exactly this reason.
-- **Minimum print size** is 14 mm for the full drawing on typical coated
-  offset and 4.6 mm for the reduced cut — measured by `printsize.py`, not
-  guessed. Below ~15 mm, print the reduced cut. Business-card scale is the
-  reduced cut.
-- **Minimum size 16 px**, and below ~24 px use the reduced cut. It is not a
-  simplification you may improvise: the front profile is identical, so the two
-  cuts are the same mark seen at two distances. Do not scale the full drawing
-  into a 16 px tile — the back range disintegrates.
+- **Minimum print size** is 14 mm for the full cut on typical coated offset
+  and 5.2 mm for the small cut — measured by `printsize.py`, not guessed.
+  Below ~15 mm, print the small cut; business-card scale is the small cut.
+  Uncoated and screen print are dirtier: 27.9 mm and 10.3 mm respectively.
+- **Minimum size 16 px**, and below ~40 px use the small cut — the same
+  drawing with a heavier line, not a simplification you may improvise. Do not
+  reach for a lighter stroke at small sizes: the line, not the drawing, is
+  what fails first.
 - **Lockups carry a heavier mark** so it holds its own beside 800-weight
   letterforms. That is optical weight matching, not a second mark.
 - **Do not** rotate it, add a third colour, place it on a busy photograph, or

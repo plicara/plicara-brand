@@ -36,21 +36,24 @@
    * schemes. */
   --fh-butterscotch: #EE8B33;
 
-  /* Text placed ON a butterscotch fill: 6.92:1. This token is what makes
+  /* Text placed ON a butterscotch fill: 7.1:1. This token is what makes
    * "butterscotch is a fill, not an ink" mechanical rather than a thing to
-   * remember.
+   * remember. It stays a fill on every ground — 2.14:1 on chalk.
    *
    * The butterscotch FILL is the standing exception to "one accent per
    * scheme": buttons, pills and live tags stay butterscotch in every scheme,
-   * including Cel and Notepad, whose accent ink is emerald. One accent means
+   * including Cel and Notepad, whose accent ink is rose. One accent means
    * one accent INK — the fill is a brand constant, one of the three
    * through-lines (outline, fill, mono) that keep four schemes one brand. */
   --fh-on-butterscotch: #05192B;
 
-  /* Rose is the same trap (1.97:1 on chalk) and gets the same railing:
-   * a fill and a panel ground, never an ink. */
+  /* Rose is NO LONGER a fill-only colour. Harbour moved it from a pale pink
+   * to a burnt rust, which made it the accent INK on the light schemes
+   * (9.16:1 on chalk) — see Cel and Notepad below. It is still usable as a
+   * fill, so it keeps a guard, but the guard had to flip with the value:
+   * near-black on rust is 1.65:1, cream on rust is 9.16:1. */
   --fh-rose: #6A2A12;
-  --fh-on-rose: #05192B;
+  --fh-on-rose: #FAEBD3;
 
   --fh-sumi: #05192B;        /* cool near-black; every outline is drawn in it */
   --fh-chalk: #FAEBD3;       /* cool paper white — the light ground */
