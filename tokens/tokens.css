@@ -166,7 +166,12 @@
 :root { --fh-bg: #05192B; --fh-surface: #132538; --fh-text: #FAEBD3;
         --fh-text-muted: #9CB5BC; --fh-rule: #25364A;
         --fh-accent: var(--fh-butterscotch); --fh-accent-on: var(--fh-sumi);
-        --fh-series-1: var(--fh-duckegg); --fh-series-2: var(--fh-plum); }
+        --fh-series-1: var(--fh-duckegg); --fh-series-2: var(--fh-plum);
+        /* The technical band's ground, exposed so page furniture that
+         * straddles the boundary — seams, dividers — can reference it
+         * instead of hard-coding a colour. Follows the same switch. */
+        --fh-band-bg: var(--fh-print); --fh-band-surface: var(--fh-drafting);
+        --fh-band-ink: var(--fh-butterscotch); }
 
 @media (prefers-color-scheme: light) {
   :root:not([data-scheme]) {
@@ -174,6 +179,39 @@
     --fh-text: var(--fh-sumi); --fh-text-muted: #436974; --fh-rule: #E5D5BB;
     --fh-accent: var(--fh-rose); --fh-accent-on: var(--fh-chalk);
     --fh-series-1: var(--fh-emerald); --fh-series-2: var(--fh-rose);
+    --fh-band-bg: var(--fh-white); --fh-band-surface: var(--fh-mist);
+    --fh-band-ink: var(--fh-emerald);
+  }
+}
+
+/* A technical band that FOLLOWS the page rather than pinning itself. Hard-
+ * coding a band to notepad leaves a full-bleed white slab in the middle of a
+ * dark page; this resolves to blueprint at night and notepad by day, using
+ * the same dark-first shape :root uses for twilight/cel. */
+[data-scheme="technical"] {
+  --fh-bg: var(--fh-print);
+  --fh-surface: var(--fh-drafting);
+  --fh-text: var(--fh-white);
+  --fh-text-muted: #9CB5BC;
+  --fh-rule: #395760;
+  --fh-accent: var(--fh-butterscotch);
+  --fh-accent-on: var(--fh-sumi);
+  --fh-series-1: var(--fh-plum);
+  --fh-series-2: var(--fh-duckegg);
+  --fh-typeset: technical;
+}
+
+@media (prefers-color-scheme: light) {
+  [data-scheme="technical"] {
+    --fh-bg: var(--fh-white);
+    --fh-surface: var(--fh-mist);
+    --fh-text: var(--fh-sumi);
+    --fh-text-muted: #436974;
+    --fh-rule: #CADADF;
+    --fh-accent: var(--fh-rose);
+    --fh-accent-on: var(--fh-chalk);
+    --fh-series-1: var(--fh-emerald);
+    --fh-series-2: var(--fh-rose);
   }
 }
 
@@ -197,7 +235,8 @@ body,
 }
 
 /* Technical typeset — benchmarks and tools. */
-[data-scheme="blueprint"], [data-scheme="notepad"] {
+[data-scheme="blueprint"], [data-scheme="notepad"],
+[data-scheme="technical"] {
   --fh-face-display: var(--fh-font-sans);
   --fh-face-body: var(--fh-font-sans);
   --fh-display-settings: "wght" 800, "wdth" 125;
