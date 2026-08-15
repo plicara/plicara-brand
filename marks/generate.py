@@ -30,9 +30,9 @@ import os
 
 OUT = os.path.dirname(os.path.abspath(__file__))
 
-SUMI = "#26292B"   # cool near-black outline
-CHALK = "#EDF1F0"  # cool paper — the outline colour on dark grounds
-BUTTER = "#E7A63E" # butterscotch — the one hot fill
+SUMI = "#05192B"   # near-black navy outline
+CHALK = "#FAEBD3"  # warm paper — the outline colour on dark grounds
+BUTTER = "#EE8B33" # the one hot fill
 
 VIEW = 512.0           # artboard
 STROKE = 17.0          # main outline, ~3.3% of the artboard

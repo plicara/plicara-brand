@@ -45,17 +45,18 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Kept in step with PALETTE in build.py by hand — deliberately, because not
 # every token belongs on a press. `role` is why the colour is here at all.
 PALETTE = [
-    ("butterscotch", "#E7A63E", "accent; a fill, never an ink"),
-    ("rose",         "#EE93A9", "fill and panel ground; never an ink"),
-    ("emerald",      "#2F6E70", "facet; the cool counterweight"),
-    ("night",        "#1E3C40", "the dark ground — avatars, favicon tile"),
-    ("sumi",         "#26292B", "the ink on light grounds"),
-    ("chalk",        "#EDF1F0", "cool paper white; the light ground"),
-    ("duckegg",      "#CBDFD4", "the back range"),
-    ("mist",         "#DCE6E6", "raised surface on light"),
-    ("smoke",        "#9DACBA", "muted text on dark"),
-    ("plum",         "#8E4763", "series colour"),
-    ("slate",        "#23464A", "raised surface on dark"),
+    ("orange",   "#EE8B33", "the one hot colour; accent ink on dark, fill on light"),
+    ("rust",     "#6A2A12", "accent ink on light grounds, and a mark facet"),
+    ("teal",     "#31606D", "the cool counterweight"),
+    ("ink",      "#05192B", "the dark ground, and the ink on light grounds"),
+    ("cream",    "#FAEBD3", "the warm paper — the light ground"),
+    ("warmwhite","#FFF9EF", "raised surface on the cream ground"),
+    ("paleteal", "#C3D5DA", "the back range of the mark"),
+    ("apricot",  "#FFCDAA", "derived; the dark cut's hot facet, and a series"),
+    ("slate",    "#829AA1", "derived mid; muted detail"),
+    ("mist",     "#DEEAEE", "raised cool surface on white"),
+    ("duckegg",  "#9ABCC6", "first chart series on the dark grounds"),
+    ("drafting", "#1D3E47", "raised surface on the tools ground"),
 ]
 
 
