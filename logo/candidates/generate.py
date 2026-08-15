@@ -269,6 +269,15 @@ PAL = {
     "rose": "#EE93A9", "butterscotch": "#E7A63E", "emerald": "#2F6E70",
     "duckegg": "#CBDFD4", "smoke": "#9DACBA", "mist": "#DCE6E6",
     "plum": "#8E4763", "sumi": "#26292B", "chalk": "#EDF1F0",
+    # beetle card (2026-08-10), from the founder's jewel-bug reference.
+    # Four hues only, which cannot supply both grounds, so three are derived
+    # in LCh from the card itself and recorded as derived, not invented:
+    #   seafoam = jade at L*85, chroma x0.45   (a back range must recede)
+    #   fern    = moss at L*72, chroma x0.70   (alternate back range)
+    #   shell   = jade at L*95, chroma x0.10   (the line on dark grounds)
+    "marigold": "#FF9900", "jade": "#00CC99", "moss": "#597931",
+    "forest": "#003300",
+    "seafoam": "#A4E1C8", "fern": "#A2B883", "shell": "#E6F4EE",
     # retired pastel-card hues, kept so the historical colourways still build
     "coral": "#F7A283", "washi": "#FAF6ED", "blush": "#F7DDD3",
     # retired 90s-anime hues, kept so the historical colourways still build
@@ -305,6 +314,23 @@ COLOURWAYS = {
                        "duck-egg back range: the chalk palette. Rose replaces "
                        "coral to clear terracotta's family; the line on dark "
                        "grounds is cool chalk, not warm washi."),
+    # --- beetle card, proposed 2026-08-10 -------------------------------
+    # Far more saturated than chalk. Read the audit before adopting one.
+    "beetle": dict(f=["marigold", "jade", "moss", "marigold"],
+                   back="seafoam", light="forest", dark="shell",
+                   note="the literal read of the reference: hot marigold "
+                        "outer facets, jade centre, moss under the tall peak"),
+    "carapace": dict(f=["jade", "marigold", "jade", "moss"],
+                     back="fern", light="forest", dark="shell",
+                     note="jade-forward, marigold as the single hot facet — "
+                          "closest to the beetle's actual proportions"),
+    "elytra": dict(f=["moss", "marigold", "jade", "moss"],
+                   back="seafoam", light="forest", dark="shell",
+                   note="moss-dominant, the quietest of the four"),
+    "scarab": dict(f=["jade", "jade", "marigold", "jade"],
+                   back="moss", light="forest", dark="shell",
+                   note="a jade shell with one marigold marking, the way the "
+                        "insect is actually coloured"),
     "seaglass": dict(f=["coral", "butterscotch", "emerald", "coral"],
                      back="duckegg", light="sumi", dark="washi",
                      note="retired 2026-08-10 — coral and washi read as "
