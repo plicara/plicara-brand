@@ -278,6 +278,17 @@ PAL = {
     "marigold": "#FF9900", "jade": "#00CC99", "moss": "#597931",
     "forest": "#003300",
     "seafoam": "#A4E1C8", "fern": "#A2B883", "shell": "#E6F4EE",
+    # --- harbour card, proposed 2026-08-10 -------------------------------
+    # ink, teal, cream, orange, rust. Measured against Anthropic BEFORE
+    # building: cream is dE2000 7.2 from their bone (washi, which was
+    # rejected, was 2.0) and b* +13.5 against their +4.1 — a golden cream,
+    # not a bone. Orange is dE 14.9 from terracotta (coral, rejected, was
+    # 12.4). The navy and teal anchor it somewhere they do not go. Clears.
+    "ink": "#05192B", "hteal": "#31606D", "cream2": "#FAEBD3",
+    "horange": "#EE8B33", "rust": "#6A2A12",
+    # derived in LCh from the card above, never picked by eye.
+    "paleteal": "#C3D5DA", "sand": "#E2C6BC", "apricot": "#FFCDAA",
+    "hslate": "#829AA1",
     # --- paper-process palettes, proposed 2026-08-10 ---------------------
     # Not mood boards. Each set is the native ink palette of a real process
     # for putting colour on paper, which is what this mark depicts.
@@ -328,6 +339,43 @@ COLOURWAYS = {
                        "duck-egg back range: the chalk palette. Rose replaces "
                        "coral to clear terracotta's family; the line on dark "
                        "grounds is cool chalk, not warm washi."),
+    # --- harbour ways, proposed 2026-08-10 -------------------------------
+    "harbor": dict(f=["hteal", "horange", "hteal", "rust"],
+              back="paleteal", light="ink", dark="cream2",
+              note="the balanced read: teal shoulders, orange centre, rust cap"),
+    "ember": dict(f=["rust", "horange", "hteal", "rust"],
+             back="sand", light="ink", dark="cream2",
+             note="warm-led: rust outer facets running into teal"),
+    "tide": dict(f=["hteal", "hteal", "horange", "hteal"],
+            back="paleteal", light="ink", dark="cream2",
+            note="a teal mass with one hot facet on the right"),
+    "kiln": dict(f=["horange", "rust", "horange", "rust"],
+            back="sand", light="ink", dark="cream2",
+            note="all warm, no cool facet at all"),
+    "beacon": dict(f=["hteal", "rust", "horange", "hteal"],
+              back="paleteal", light="ink", dark="cream2",
+              note="the heat climbs left to right and stops"),
+    "flare": dict(f=["horange", "hteal", "horange", "hteal"],
+             back="sand", light="ink", dark="cream2",
+             note="strict alternation, maximum temperature swing"),
+    "saffron": dict(f=["horange", "horange", "hteal", "horange"],
+               back="apricot", light="ink", dark="cream2",
+               note="orange-dominant, teal the single cool note"),
+    "quay": dict(f=["hslate", "horange", "rust", "hslate"],
+            back="paleteal", light="ink", dark="cream2",
+            note="the derived mid-slate carries the outer facets"),
+    "ballast": dict(f=["hteal", "hslate", "hteal", "hslate"],
+               back="paleteal", light="ink", dark="cream2",
+               note="cool only: the control, no heat anywhere"),
+    "ochre": dict(f=["rust", "horange", "apricot", "rust"],
+             back="sand", light="ink", dark="cream2",
+             note="one warm family in three values"),
+    "dusk": dict(f=["ink", "horange", "hteal", "ink"],
+            back="paleteal", light="ink", dark="cream2",
+            note="deliberate knockout: ink facets vanish into the dark ground, outlined only"),
+    "signal": dict(f=["cream2", "horange", "hteal", "cream2"],
+              back="apricot", light="ink", dark="cream2",
+              note="deliberate knockout the other way: cream facets read as bare paper on light"),
     # --- paper-process ways, proposed 2026-08-10 ------------------------
     "riso": dict(f=["risopink", "risoyellow", "risoblue", "risopink"],
                  back="risoback", light="risoblue", dark="risopaper",
