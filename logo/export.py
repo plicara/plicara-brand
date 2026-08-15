@@ -18,9 +18,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "png")
 os.makedirs(OUT, exist_ok=True)
 
-NIGHT = "#1E3C40"
-BUTTERSCOTCH = "#E7A63E"
-CHALK = "#EDF1F0"
+NIGHT = "#05192B"
+BUTTERSCOTCH = "#EE8B33"
+CHALK = "#FAEBD3"
 
 # (source svg, output name, pixel size, background or None for transparent)
 JOBS = [

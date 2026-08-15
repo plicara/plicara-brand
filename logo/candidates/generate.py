@@ -26,8 +26,8 @@ OUT = os.path.dirname(os.path.abspath(__file__))
 
 VIEW = 512.0
 STROKE = 15.0
-SUMI = "#26292B"    # cool near-black
-BUTTER = "#E7A63E"  # butterscotch
+SUMI = "#05192B"    # near-black navy
+BUTTER = "#EE8B33"  # the one hot fill
 
 
 def _seed(name):
