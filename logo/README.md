@@ -49,7 +49,9 @@ stays on the full drawing: it renders at 60 px and up.
 | Anything you can style with CSS | `mark.svg` — monoline, takes `currentColor` |
 | Single-colour reproduction | `mark-butterscotch.svg`, `mark-chalk.svg`, `mark-sumi.svg`, `mark-emerald.svg` |
 | Below ~40 px | `mark-small*.svg` (monoline), `mark-colour-small*.svg` (colour) — reduced cut, front range only, heavier stroke |
-| GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-chalk.svg` (colour), `avatar-butterscotch.svg` (monoline) |
+| GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-chalk.svg` (colour), `avatar-butterscotch.svg` (monoline). **Unbordered on purpose** — see below |
+| Personal page, slide, app tile | `avatar-cream-bordered.svg` (paper ground) or `avatar-night-bordered.svg` (dark). Rounded tile, accent rule around it |
+| Transparent, drop on any ground | `mark-colour.svg` (light grounds), `mark-colour-dark.svg` (dark) |
 | Browser tab | `favicon.svg` — rounded night tile, butterscotch border |
 | Wide spaces: site header, slide footer | `lockup-horizontal-*.svg` |
 | Squarer spaces: cards, README badges | `lockup-compact-*.svg` |
@@ -67,6 +69,9 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 | File | For |
 | --- | --- |
 | `avatar-night-1024.png`, `-512.png` | GitHub org, Hugging Face org, social profile |
+| `avatar-cream-bordered-1024.png`, `-512.png` | Bordered paper tile — personal pages, slides, app icons |
+| `avatar-night-bordered-1024.png`, `-512.png` | The same on the dark ground |
+| `mark-colour-1024.png`, `mark-colour-dark-1024.png` | Transparent mark at print size |
 | `avatar-chalk-512.png`, `avatar-butterscotch-512.png` | Alternate grounds |
 | `mark-colour-512.png`, `mark-colour-dark-512.png` | Transparent colour mark, decks and docs |
 | `favicon-16.png`, `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
@@ -84,6 +89,11 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
   into circles; the avatars keep the whole drawing inside the inscribed
   circle. Do not reduce their padding to make the mark look bigger in a
   square preview — the square preview is not where it will be seen.
+- **Do not use a bordered tile as an org avatar.** The rounded rectangle's
+  corners fall outside the inscribed circle, so a circular mask cuts the rule
+  into four arcs. The bordered cuts are for surfaces that keep the square:
+  personal pages, slides, app icons. For GitHub and Hugging Face use
+  `avatar-night.svg`, which has no border for exactly this reason.
 - **Minimum print size** is 14 mm for the full drawing on typical coated
   offset and 4.6 mm for the reduced cut — measured by `printsize.py`, not
   guessed. Below ~15 mm, print the reduced cut. Business-card scale is the

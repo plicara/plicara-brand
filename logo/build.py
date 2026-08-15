@@ -287,6 +287,25 @@ def main():
     write("avatar-butterscotch.svg", mark_svg(av, A, ASTROKE, C["sumi"],
                                               ground=C["butterscotch"],
                                               radius=ARX))
+    # A bordered LIGHT tile. The favicon's border only ever existed on the
+    # night ground, so anything wanting the mark on paper with the accent
+    # rule around it — a personal page, a slide, an app tile — had nothing.
+    # Border geometry is the favicon's, scaled: inset 1.8/64 of the box,
+    # stroke 3.6/64, inner radius 12.2/64. Padding stays at APAD so the tile
+    # is still circle-safe if something masks it.
+    BINSET, BSTROKE, BRX = A * 1.8 / 64, A * 3.6 / 64, A * 12.2 / 64
+    for name, ground, inner, cbb in (("cream", C["chalk"], inner_l, cbb_l),
+                                     ("night", C["night"], inner_d, cbb_d)):
+        write(f"avatar-{name}-bordered.svg",
+              f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {A} {A}" '
+              f'width="{A}" height="{A}" role="img" aria-label="Foothills Labs">'
+              f'<title>Foothills Labs</title>'
+              f'<rect width="{A}" height="{A}" rx="{ARX}" fill="{ground}"/>'
+              f'<rect x="{BINSET:.1f}" y="{BINSET:.1f}" '
+              f'width="{A - 2 * BINSET:.1f}" height="{A - 2 * BINSET:.1f}" '
+              f'rx="{BRX:.1f}" fill="none" stroke="{C["butterscotch"]}" '
+              f'stroke-width="{BSTROKE:.1f}"/>'
+              + colour_group(inner, cbb, A, APAD) + '</svg>')
     # Favicon: rounded tile with a pronounced lichen border — a sharp square
     # sat awkwardly next to the round tab controls. The REDUCED cut, because
     # the tile lives at 16-32 px, where the back range's duck-egg fill breaks
