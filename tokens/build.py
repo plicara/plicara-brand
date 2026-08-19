@@ -18,30 +18,30 @@ import re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# The CHALK palette. Descended from the founder's pastel card, with two
+# The CREAM palette. Descended from the founder's pastel card, with two
 # deliberate moves away from Anthropic's identity, which pairs a warm cream
 # ground with a terracotta accent:
 #
-#   1. The paper is COOL. Chalk sits at b* 0.0 on the yellow-blue axis;
+#   1. The paper is COOL. Cream sits at b* 0.0 on the yellow-blue axis;
 #      the warm cream it replaces sat at +4.8, against Anthropic's +4.1 —
 #      close enough (dE2000 2.0) that no viewer could separate them.
-#   2. The warm accent is ROSE, not coral. Rose is dE2000 20 from
+#   2. The warm accent is RUST, not coral. Rust is dE2000 20 from
 #      terracotta; the coral it replaces was 11.5, the same family.
 #
-# Butterscotch, duck egg and smoke came through from the card unchanged —
+# Orange, duck egg and smoke came through from the card unchanged —
 # none of them is anywhere near Anthropic's palette. Night/slate,
-# print/drafting and plum are DERIVED: dark grounds and a light-ground
+# print/drafting and apricot are DERIVED: dark grounds and a light-ground
 # series ink a six-pastel card cannot supply.
 PALETTE = {
-    "butterscotch": ("#EE8B33", "The one hot colour, and the accent INK of the dark schemes only. On the cream paper it manages 2.1:1, so on light grounds it is a fill and nothing else — that asymmetry is the reason the guard token exists."),
-    "rose":         ("#6A2A12", "Burnt rust. The accent ink on light grounds (9.2:1 on cream) and a facet of the mark. Keeps the token name so nothing downstream has to move."),
-    "chalk":        ("#FAEBD3", "Warm paper. The light ground, and text on the dark ones. b* +13.5 — a golden cream, deliberately not a bone: Anthropic's is +4.1."),
+    "orange": ("#EE8B33", "The one hot colour, and the accent INK of the dark schemes only. On the cream paper it manages 2.1:1, so on light grounds it is a fill and nothing else — that asymmetry is the reason the guard token exists."),
+    "rust":         ("#6A2A12", "Burnt rust. The accent ink on light grounds (9.2:1 on cream) and a facet of the mark. Keeps the token name so nothing downstream has to move."),
+    "cream":        ("#FAEBD3", "Warm paper. The light ground, and text on the dark ones. b* +13.5 — a golden cream, deliberately not a bone: Anthropic's is +4.1."),
     "white":        ("#FFFFFF", "Ground of notepad."),
     "mist":         ("#DEEAEE", "Raised cool surface on white. Tiles, table rows, code blocks."),
     "duckegg":      ("#9ABCC6", "Pale teal. First chart series on the dark grounds."),
     "smoke":        ("#829AA1", "Derived mid. Recessive detail and rules; never body text."),
-    "emerald":      ("#31606D", "The cool counterweight. Chart series on light grounds; a panel ground on dark."),
-    "plum":         ("#FFB881", "Derived: the hot colour lifted. Second chart series on the dark grounds."),
+    "teal":      ("#31606D", "The cool counterweight. Chart series on light grounds; a panel ground on dark."),
+    "apricot":         ("#FFB881", "Derived: the hot colour lifted. Second chart series on the dark grounds."),
     "sumi":         ("#05192B", "Near-black navy. Primary text on light; the outline colour of every drawing."),
     "night":        ("#05192B", "The primary dark ground. Same value as sumi: the ink and the ground are one colour, which is what makes the cream sit so far forward."),
     "slate":        ("#132538", "Raised surface on night."),
@@ -57,7 +57,7 @@ SCHEMES = {
                       bg="#05192B", surface="#132538", text="#FAEBD3",
                       text_muted="#9CB5BC", rule="#25364A", accent="#EE8B33",
                       accent_on="#05192B", series_1="#9ABCC6", series_2="#FFB881",
-                      panels=["emerald", "rose"]),
+                      panels=["teal", "rust"]),
     "cel":       dict(mode="light", area="lab, models", typeset="warm",
                       bg="#FAEBD3", surface="#FFF9EF", text="#05192B",
                       text_muted="#436974", rule="#E5D5BB", accent="#6A2A12",
@@ -95,17 +95,17 @@ TYPESETS = {
     },
 }
 
-GROUNDS = ["night", "slate", "print", "drafting", "chalk", "white", "mist",
-           "duckegg", "emerald", "rose", "butterscotch"]
+GROUNDS = ["night", "slate", "print", "drafting", "cream", "white", "mist",
+           "duckegg", "teal", "rust", "orange"]
 
 # Hot fills and their text guards. A fill is a colour that holds text but must
 # never set it; the on-colour is the only ink allowed on top of it. The
-# butterscotch fill is also the standing exception to "one accent per scheme" —
+# orange fill is also the standing exception to "one accent per scheme" —
 # it stays constant in every scheme, including Cel and Notepad, whose accent
-# ink is emerald.
+# ink is teal.
 FILLS = {
-    "butterscotch": {"on": "sumi", "standing_exception": True},
-    "rose":         {"on": "chalk", "standing_exception": False},
+    "orange": {"on": "sumi", "standing_exception": True},
+    "rust":         {"on": "cream", "standing_exception": False},
 }
 
 # Pairings the brand sanctions for text, checked per scheme. The accent is
@@ -138,9 +138,9 @@ def audit_css():
     used to compare them, so the audit could pass with every sanctioned pairing
     clear while the CSS that browsers actually load said something else.
 
-    That is not hypothetical. The harbour repaint moved rose from a pale pink
-    to a burnt rust and correctly set FILLS["rose"]["on"] = chalk here, but
-    tokens.css kept `--fh-on-rose: #05192B` from when rose was pink — near-black
+    That is not hypothetical. The harbour repaint moved rust from a pale pink
+    to a burnt rust and correctly set FILLS["rust"]["on"] = cream here, but
+    tokens.css kept `--fh-on-rust: #05192B` from when rust was pink — near-black
     text on rust, 1.65:1, shipped and audited green.
 
     Checks the flat `--fh-<name>` declarations and the `--fh-on-<fill>` guards.

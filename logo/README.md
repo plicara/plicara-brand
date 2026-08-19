@@ -57,19 +57,19 @@ again.
 | --- | --- |
 | The mark, in colour | `mark-colour.svg` (light grounds), `mark-colour-dark.svg` (dark grounds) |
 | Anything you can style with CSS | `mark.svg` — monoline, takes `currentColor` |
-| Single-colour reproduction | `mark-butterscotch.svg`, `mark-chalk.svg`, `mark-sumi.svg`, `mark-emerald.svg` |
+| Single-colour reproduction | `mark-orange.svg`, `mark-cream.svg`, `mark-sumi.svg`, `mark-teal.svg` |
 | Below ~40 px | `mark-small*.svg` (monoline), `mark-colour-small*.svg` (colour) — same drawing, heavier stroke |
-| GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-chalk.svg` (colour), `avatar-butterscotch.svg` (monoline). **Unbordered on purpose** — see below |
+| GitHub org, Hugging Face, social | `avatar-night.svg` (default) or `avatar-cream.svg` (colour), `avatar-orange.svg` (monoline). **Unbordered on purpose** — see below |
 | Personal page, slide, app tile | `avatar-cream-bordered.svg` (paper ground) or `avatar-night-bordered.svg` (dark). Rounded tile, accent rule around it |
 | Transparent, drop on any ground | `mark-colour.svg` (light grounds), `mark-colour-dark.svg` (dark) |
-| Browser tab | `favicon.svg` — rounded night tile, butterscotch border |
+| Browser tab | `favicon.svg` — rounded night tile, orange border |
 | Wide spaces: site header, slide footer | `lockup-horizontal-*.svg` |
 | Squarer spaces: cards, README badges | `lockup-compact-*.svg` |
 | Centred: README hero, title slide, print | `lockup-vertical-*.svg` |
 | Anywhere SVG is not accepted | `png/` — see below |
 
-Lockup suffixes: `-dark` (colour mark, chalk wordmark), `-light` (colour
-mark, sumi wordmark), `-mono` (all butterscotch, monoline — for a dark panel or
+Lockup suffixes: `-dark` (colour mark, cream wordmark), `-light` (colour
+mark, sumi wordmark), `-mono` (all orange, monoline — for a dark panel or
 single-colour reproduction). The wordmark is **lowercase**: `foothills labs`.
 
 ## Rasters
@@ -82,7 +82,7 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 | `avatar-cream-bordered-1024.png`, `-512.png` | Bordered paper tile — personal pages, slides, app icons |
 | `avatar-night-bordered-1024.png`, `-512.png` | The same on the dark ground |
 | `mark-colour-1024.png`, `mark-colour-dark-1024.png` | Transparent mark at print size |
-| `avatar-chalk-512.png`, `avatar-butterscotch-512.png` | Alternate grounds |
+| `avatar-cream-512.png`, `avatar-orange-512.png` | Alternate grounds |
 | `mark-colour-512.png`, `mark-colour-dark-512.png` | Transparent colour mark, decks and docs |
 | `favicon-16.png`, `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
 | `touch-icon.svg` | Source for the apple-touch icon: square ground (iOS rounds it), pre-rounded border so the mask does not clip it |
@@ -134,6 +134,6 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 
 Orange is the accent colour. On dark grounds it is also an ink (7.1:1); on
 the cream paper it manages 2.1:1, so there it is a fill and nothing else, and
-text on it is always `--fh-on-butterscotch`. Rust is the light-ground accent
+text on it is always `--fh-on-orange`. Rust is the light-ground accent
 ink. Full palette, misuse rules and the reasoning:
 [`../../docs/brand.md`](../../docs/brand.md).

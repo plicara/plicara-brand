@@ -3,7 +3,7 @@
 The rule, and the whole point of the system:
 
     Each model is a paper plane, drawn simply: a top view, a thick sumi
-    outline, and a butterscotch fill that sits deliberately off-register — the
+    outline, and a orange fill that sits deliberately off-register — the
     loose screen-print look of the illustration style. The drawings are
     stylised, not fold diagrams; charm is the point, complexity is not.
 
@@ -16,8 +16,8 @@ this script always produces byte-identical output. Change the code, not the
 files.
 
 Outputs, per plane:
-    plane-{name}.svg        sumi outline + butterscotch fill, for light grounds
-    plane-{name}-dark.svg   chalk outline + butterscotch fill, for dark grounds
+    plane-{name}.svg        sumi outline + orange fill, for light grounds
+    plane-{name}-dark.svg   cream outline + orange fill, for dark grounds
     plane-{name}-small.svg  heavier line, centre fold only, for < 40 px
     plane-{name}-mono.svg   currentColor outline, no fill, for CSS styling
 
@@ -31,7 +31,7 @@ import os
 OUT = os.path.dirname(os.path.abspath(__file__))
 
 SUMI = "#05192B"   # near-black navy outline
-CHALK = "#FAEBD3"  # warm paper — the outline colour on dark grounds
+CREAM = "#FAEBD3"  # warm paper — the outline colour on dark grounds
 BUTTER = "#EE8B33" # the one hot fill
 
 VIEW = 512.0           # artboard
@@ -228,7 +228,7 @@ def main():
     for name, plane in sorted(PLANES.items(), key=lambda kv: kv[1]["tier"]):
         files = {
             f"plane-{name}.svg": glyph(name, plane, SUMI),
-            f"plane-{name}-dark.svg": glyph(name, plane, CHALK),
+            f"plane-{name}-dark.svg": glyph(name, plane, CREAM),
             f"plane-{name}-small.svg": glyph(name, plane, SUMI, small=True),
             f"plane-{name}-mono.svg": glyph(name, plane, "currentColor",
                                             with_fill=False),
@@ -251,7 +251,7 @@ def main():
                              "the language of its specialisation: hammer -> "
                              "martillo (Spanish)",
             "checkpoints": "pre-release checkpoints are {name}-preview",
-            "style": "thick sumi outline, butterscotch fill set off-register; "
+            "style": "thick sumi outline, orange fill set off-register; "
                      "drawn by this script, never by hand",
             "glyphs": meta,
         }, fh, indent=2)

@@ -59,12 +59,12 @@ FONT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
     "files", "archivo-latin-wdth-normal.woff2")
 
 C = {
-    "butterscotch": "#EE8B33",
+    "orange": "#EE8B33",
     "sumi": "#05192B",
-    "chalk": "#FAEBD3",
+    "cream": "#FAEBD3",
     "night": "#05192B",
-    "emerald": "#31606D",
-    "rose": "#6A2A12",
+    "teal": "#31606D",
+    "rust": "#6A2A12",
 }
 
 TRACKING = 0.004  # em; the lowercase wordmark needs almost none
@@ -264,12 +264,12 @@ def main():
     write("mark.svg", mark_svg(mark, BOX, STROKE))
     write("mark-colour.svg", colour_svg(inner_l, cbb_l, BOX, 4))
     write("mark-colour-dark.svg", colour_svg(inner_d, cbb_d, BOX, 4))
-    for tone in ("butterscotch", "sumi", "chalk", "emerald"):
+    for tone in ("orange", "sumi", "cream", "teal"):
         write(f"mark-{tone}.svg", mark_svg(mark, BOX, STROKE, C[tone]))
     write("mark-colour-small.svg", colour_svg(inner_l, cbb_l, BOX, 4))
     write("mark-colour-small-dark.svg", colour_svg(inner_d, cbb_d, BOX, 4))
     write("mark-small.svg", mark_svg(small, BOX, STROKE * 1.65))
-    for tone in ("butterscotch", "sumi", "chalk", "emerald"):
+    for tone in ("orange", "sumi", "cream", "teal"):
         write(f"mark-small-{tone}.svg",
               mark_svg(small, BOX, STROKE * 1.65, C[tone]))
 
@@ -283,11 +283,11 @@ def main():
     A, APAD, ASTROKE, ARX = 512, 88, 13.3, 112
     av, _ = reframe(ds_full, bb_full, A, APAD, ASTROKE)
     for name, ground, inner, cbb in (("night", C["night"], inner_d, cbb_d),
-                                     ("chalk", C["chalk"], inner_l, cbb_l)):
+                                     ("cream", C["cream"], inner_l, cbb_l)):
         write(f"avatar-{name}.svg",
               colour_svg(inner, cbb, A, APAD, ground=ground, radius=ARX))
-    write("avatar-butterscotch.svg", mark_svg(av, A, ASTROKE, C["sumi"],
-                                              ground=C["butterscotch"],
+    write("avatar-orange.svg", mark_svg(av, A, ASTROKE, C["sumi"],
+                                              ground=C["orange"],
                                               radius=ARX))
     # A bordered LIGHT tile. The favicon's border only ever existed on the
     # night ground, so anything wanting the mark on paper with the accent
@@ -296,7 +296,7 @@ def main():
     # stroke 3.6/64, inner radius 12.2/64. Padding stays at APAD so the tile
     # is still circle-safe if something masks it.
     BINSET, BSTROKE, BRX = A * 1.8 / 64, A * 3.6 / 64, A * 12.2 / 64
-    for name, ground, inner, cbb in (("cream", C["chalk"], inner_l, cbb_l),
+    for name, ground, inner, cbb in (("cream", C["cream"], inner_l, cbb_l),
                                      ("night", C["night"], inner_d, cbb_d)):
         write(f"avatar-{name}-bordered.svg",
               f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {A} {A}" '
@@ -305,7 +305,7 @@ def main():
               f'<rect width="{A}" height="{A}" rx="{ARX}" fill="{ground}"/>'
               f'<rect x="{BINSET:.1f}" y="{BINSET:.1f}" '
               f'width="{A - 2 * BINSET:.1f}" height="{A - 2 * BINSET:.1f}" '
-              f'rx="{BRX:.1f}" fill="none" stroke="{C["butterscotch"]}" '
+              f'rx="{BRX:.1f}" fill="none" stroke="{C["orange"]}" '
               f'stroke-width="{BSTROKE:.1f}"/>'
               + colour_group(inner, cbb, A, APAD) + '</svg>')
     # Favicon: rounded tile with a pronounced lichen border — a sharp square
@@ -321,7 +321,7 @@ def main():
           '<title>Foothills Labs</title>'
           f'<rect width="64" height="64" rx="14" fill="{C["night"]}"/>'
           f'<rect x="1.8" y="1.8" width="60.4" height="60.4" rx="12.2" '
-          f'fill="none" stroke="{C["butterscotch"]}" stroke-width="3.6"/>'
+          f'fill="none" stroke="{C["orange"]}" stroke-width="3.6"/>'
           + fav_mark + "</svg>")
     # Apple touch icon: the GROUND stays square — iOS applies its own corner
     # mask, and pre-rounding it leaves dark notches — but the BORDER is
@@ -336,15 +336,15 @@ def main():
           '<title>Foothills Labs</title>'
           f'<rect width="64" height="64" fill="{C["night"]}"/>'
           f'<rect x="1.8" y="1.8" width="60.4" height="60.4" rx="12.6" '
-          f'fill="none" stroke="{C["butterscotch"]}" stroke-width="3.6"/>'
+          f'fill="none" stroke="{C["orange"]}" stroke-width="3.6"/>'
           + touch_mark + "</svg>")
 
     # Lockups. Cap height drives the optical match between mark and wordmark.
     font = static_archivo()
     print("lockups")
-    THEMES = (("dark", (inner_d, cbb_d), C["chalk"]),
+    THEMES = (("dark", (inner_d, cbb_d), C["cream"]),
               ("light", (inner_l, cbb_l), C["sumi"]),
-              ("mono", C["butterscotch"], C["butterscotch"]))
+              ("mono", C["orange"], C["orange"]))
     for kind, lines, mark_px in (("horizontal", ["foothills labs"], 64.0),
                                  ("compact", ["foothills", "labs"], 78.0)):
         for theme, fg, wordfg in THEMES:
