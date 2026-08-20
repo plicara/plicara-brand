@@ -42,22 +42,57 @@ from PIL import Image, ImageCms
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# Kept in step with PALETTE in build.py by hand — deliberately, because not
+# A curated subset of the token palette plus the mark's facet colours — not
 # every token belongs on a press. `role` is why the colour is here at all.
+#
+# NAMES ARE NOT FREE HERE. This file once called #829AA1 "slate" while the
+# token source called it "smoke" and had its own slate at #132538 — one word,
+# two colours, and a printer cross-referencing the brand guide would have
+# mixed the wrong ink. The audit below now fails the build on any divergence
+# from PALETTE in build.py, so a rename lands in both files or in neither.
 PALETTE = [
     ("orange",   "#EE8B33", "the one hot colour; accent ink on dark, fill on light"),
     ("rust",     "#6A2A12", "accent ink on light grounds, and a mark facet"),
     ("teal",     "#31606D", "the cool counterweight"),
-    ("ink",      "#05192B", "the dark ground, and the ink on light grounds"),
+    ("sumi",     "#05192B", "the dark ground, and the ink on light grounds"),
     ("cream",    "#FAEBD3", "the warm paper — the light ground"),
     ("warmwhite","#FFF9EF", "raised surface on the cream ground"),
-    ("paleteal", "#C3D5DA", "the back range of the mark"),
-    ("apricot",  "#FFCDAA", "derived; the dark cut's hot facet, and a series"),
-    ("slate",    "#829AA1", "derived mid; muted detail"),
+    ("paleteal", "#C3D5DA", "the back range of the mark; not a screen token"),
+    ("peach",    "#FFCDAA", "the dark cut's hot facet, and a series; not a screen token"),
+    ("smoke",    "#829AA1", "derived mid; muted detail"),
     ("mist",     "#DEEAEE", "raised cool surface on white"),
     ("duckegg",  "#9ABCC6", "first chart series on the dark grounds"),
     ("drafting", "#1D3E47", "raised surface on the tools ground"),
 ]
+
+# The audit: every name this file shares with the token source must mean the
+# same hex, and every hex it shares must be called by a token-side name for
+# that hex (sumi and night share a value upstream; either name is honest).
+# Colours print carries that the screen does not — the mark facets — must
+# not reuse a token name for something else.
+def _audit_against_tokens():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "tokens_build", os.path.join(HERE, "build.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    tokens = {name: hexstr.upper() for name, (hexstr, _) in mod.PALETTE.items()}
+    by_hex = {}
+    for name, hexstr in tokens.items():
+        by_hex.setdefault(hexstr, set()).add(name)
+    problems = []
+    for name, hexstr, _ in PALETTE:
+        hexstr = hexstr.upper()
+        if name in tokens and tokens[name] != hexstr:
+            problems.append(f"{name}: print says {hexstr}, tokens say {tokens[name]}")
+        if hexstr in by_hex and name not in by_hex[hexstr]:
+            problems.append(
+                f"{hexstr}: print calls it {name}, tokens call it "
+                f"{'/'.join(sorted(by_hex[hexstr]))}")
+    if problems:
+        raise SystemExit("print.py disagrees with build.py:\n  " + "\n  ".join(problems))
+
+_audit_against_tokens()
 
 
 def lab(hexstr, space="lab-d65"):

@@ -128,7 +128,7 @@
       ]
     },
     {
-      "token": "ink",
+      "token": "sumi",
       "hex": "#05192B",
       "role": "the dark ground, and the ink on light grounds",
       "lab_d65": [
@@ -292,7 +292,7 @@
       ]
     },
     {
-      "token": "apricot",
+      "token": "peach",
       "hex": "#FFCDAA",
       "role": "derived; the dark cut's hot facet, and a series",
       "lab_d65": [
@@ -333,7 +333,7 @@
       ]
     },
     {
-      "token": "slate",
+      "token": "smoke",
       "hex": "#829AA1",
       "role": "derived mid; muted detail",
       "lab_d65": [

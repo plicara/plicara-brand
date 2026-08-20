@@ -287,7 +287,7 @@ PAL = {
     "ink": "#05192B", "hteal": "#31606D", "cream2": "#FAEBD3",
     "horange": "#EE8B33", "rust": "#6A2A12",
     # derived in LCh from the card above, never picked by eye.
-    "paleteal": "#C3D5DA", "sand": "#E2C6BC", "apricot": "#FFCDAA",
+    "paleteal": "#C3D5DA", "sand": "#E2C6BC", "peach": "#FFCDAA",
     "hslate": "#829AA1",
     # --- paper-process palettes, proposed 2026-08-10 ---------------------
     # Not mood boards. Each set is the native ink palette of a real process
@@ -353,7 +353,7 @@ COLOURWAYS = {
             back="sand", light="ink", dark="cream2",
             note="all warm, no cool facet at all"),
     "beacon": dict(f=["hteal", "rust", "horange", "hteal"],
-              f_dark=["hslate", "horange", "apricot", "hslate"],
+              f_dark=["hslate", "horange", "peach", "hslate"],
               back="paleteal", back_dark="paleteal",
               light="ink", dark="cream2",
               note="ADOPTED 2026-08-10. The heat climbs left to right and "
@@ -367,7 +367,7 @@ COLOURWAYS = {
              back="sand", light="ink", dark="cream2",
              note="strict alternation, maximum temperature swing"),
     "saffron": dict(f=["horange", "horange", "hteal", "horange"],
-               back="apricot", light="ink", dark="cream2",
+               back="peach", light="ink", dark="cream2",
                note="orange-dominant, teal the single cool note"),
     "quay": dict(f=["hslate", "horange", "rust", "hslate"],
             back="paleteal", light="ink", dark="cream2",
@@ -375,14 +375,14 @@ COLOURWAYS = {
     "ballast": dict(f=["hteal", "hslate", "hteal", "hslate"],
                back="paleteal", light="ink", dark="cream2",
                note="cool only: the control, no heat anywhere"),
-    "ochre": dict(f=["rust", "horange", "apricot", "rust"],
+    "ochre": dict(f=["rust", "horange", "peach", "rust"],
              back="sand", light="ink", dark="cream2",
              note="one warm family in three values"),
     "dusk": dict(f=["ink", "horange", "hteal", "ink"],
             back="paleteal", light="ink", dark="cream2",
             note="deliberate knockout: ink facets vanish into the dark ground, outlined only"),
     "signal": dict(f=["cream2", "horange", "hteal", "cream2"],
-              back="apricot", light="ink", dark="cream2",
+              back="peach", light="ink", dark="cream2",
               note="deliberate knockout the other way: cream facets read as bare paper on light"),
     # --- paper-process ways, proposed 2026-08-10 ------------------------
     "riso": dict(f=["risopink", "risoyellow", "risoblue", "risopink"],
