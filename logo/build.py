@@ -54,9 +54,28 @@ COLOUR_SRC = os.path.join(HERE, "candidates", "mark-foothills-beacon.svg")
 COLOUR_SRC_DARK = os.path.join(HERE, "candidates",
                                "mark-foothills-beacon-dark.svg")
 
-FONT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
-    HERE, "..", "..", "node_modules", "@fontsource-variable", "archivo",
-    "files", "archivo-latin-wdth-normal.woff2")
+def _find_font():
+    """Archivo from npm, wherever node_modules landed.
+
+    This directory is `assets/logo/` in foundation_lab and `logo/` in the
+    split-out brand repo, so node_modules sits either two levels up or one.
+    An explicit path as argv[1] wins over both."""
+    if len(sys.argv) > 1:
+        return sys.argv[1]
+    rel = os.path.join("node_modules", "@fontsource-variable", "archivo",
+                       "files", "archivo-latin-wdth-normal.woff2")
+    for up in ("..", os.path.join("..", "..")):
+        candidate = os.path.join(HERE, up, rel)
+        if os.path.exists(candidate):
+            return candidate
+    # Nothing found: report the near miss rather than a bare ENOENT.
+    raise SystemExit(
+        "Archivo not found. Run `npm install @fontsource-variable/archivo` "
+        "at the repository root, or pass the .woff2 path as the first "
+        "argument.")
+
+
+FONT = _find_font()
 
 C = {
     "orange": "#EE8B33",
