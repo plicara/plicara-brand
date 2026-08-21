@@ -1,6 +1,6 @@
 # Logo files
 
-**The house mark is Foothills Refolded, in the beacon colourway** — two
+**The house mark is The Pleats (born Foothills Refolded), in the beacon colourway** — two
 pleated-paper ranges (the duck-egg one peeks through the front valleys; ranges
 recede, crowns cannot), teal/rust/orange facets under the line on light grounds — lifted to
 slate/orange/apricot on dark ones, because no facet colour in this palette
@@ -70,7 +70,7 @@ again.
 
 Lockup suffixes: `-dark` (colour mark, cream wordmark), `-light` (colour
 mark, sumi wordmark), `-mono` (all orange, monoline — for a dark panel or
-single-colour reproduction). The wordmark is **lowercase**: `foothills labs`.
+single-colour reproduction). The wordmark is **lowercase**: `plicara labs`.
 
 ## Rasters
 

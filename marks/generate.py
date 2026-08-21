@@ -1,4 +1,4 @@
-"""Generate the paper-plane glyphs for the Foothills Labs model family.
+"""Generate the paper-plane glyphs for the Plicara Labs model family.
 
 The rule, and the whole point of the system:
 
@@ -219,7 +219,7 @@ def glyph(name, plane, ink, with_fill=True, small=False):
     fw = STROKE_SMALL * 0.62 if small else STROKE_FOLD
     for d in keep:
         parts.append(f'  <path d="{d}" {_stroke_attrs(fw, ink)}/>')
-    title = f"{name} — Foothills Labs model glyph"
+    title = f"{name} — Plicara Labs model glyph"
     return _svg("\n".join(parts), title)
 
 
