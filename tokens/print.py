@@ -1,4 +1,4 @@
-"""Match the Foothills Labs palette to print: CIELAB, process CMYK, Pantone.
+"""Match the Plicara Labs palette to print: CIELAB, process CMYK, Pantone.
 
 Screen is the source of truth for this brand — the palette was chosen in sRGB
 and the tokens are hex. This script derives the print side of it, and it is

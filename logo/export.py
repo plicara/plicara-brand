@@ -58,7 +58,7 @@ def social():
     """1200x630 Open Graph card: lockup on night, centred, generous margin."""
     lockup = open(os.path.join(HERE, "lockup-horizontal-dark.svg")).read()
     inner = lockup[lockup.index(">", lockup.index("<svg")) + 1:lockup.rindex("</svg>")]
-    inner = inner.replace("<title>Foothills Labs</title>", "")
+    inner = inner.replace("<title>Plicara Labs</title>", "")
     vb = lockup.split('viewBox="')[1].split('"')[0].split()
     w, h = float(vb[2]), float(vb[3])
 

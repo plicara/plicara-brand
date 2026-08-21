@@ -1,0 +1,49 @@
+{
+  "family": "paper planes",
+  "order": "tier \u2014 glider < delta < canard < hammer",
+  "regional_axis": "a specialised model takes the plane's name in the language of its specialisation: hammer -> martillo (Spanish)",
+  "checkpoints": "pre-release checkpoints are {name}-preview",
+  "style": "thick sumi outline, orange fill set off-register; drawn by this script, never by hand",
+  "glyphs": {
+    "glider": {
+      "tier": 1,
+      "note": "wide span, gentle sweep \u2014 the plane that stays up",
+      "files": [
+        "plane-glider-dark.svg",
+        "plane-glider-mono.svg",
+        "plane-glider-small.svg",
+        "plane-glider.svg"
+      ]
+    },
+    "delta": {
+      "tier": 2,
+      "note": "one triangle, no waste \u2014 nearly all wing",
+      "files": [
+        "plane-delta-dark.svg",
+        "plane-delta-mono.svg",
+        "plane-delta-small.svg",
+        "plane-delta.svg"
+      ]
+    },
+    "canard": {
+      "tier": 3,
+      "note": "small wings forward, big wing aft \u2014 steers before it glides",
+      "files": [
+        "plane-canard-dark.svg",
+        "plane-canard-mono.svg",
+        "plane-canard-small.svg",
+        "plane-canard.svg"
+      ]
+    },
+    "hammer": {
+      "tier": 4,
+      "note": "a locked, weighted nose \u2014 the most folds, the longest throw",
+      "files": [
+        "plane-hammer-dark.svg",
+        "plane-hammer-mono.svg",
+        "plane-hammer-small.svg",
+        "plane-hammer.svg"
+      ]
+    }
+  }
+}

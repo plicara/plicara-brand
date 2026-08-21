@@ -2,12 +2,12 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="logo/mark-colour-dark.svg" />
-  <img src="logo/mark-colour.svg" alt="Foothills Labs" width="96" />
+  <img src="logo/mark-colour.svg" alt="Plicara Labs" width="96" />
 </picture>
 
-# foothills-brand
+# plicara-brand
 
-**The Foothills Labs brand, as code.**
+**The Plicara Labs brand, as code.**
 
 </div>
 
@@ -34,7 +34,7 @@ this way.
 This repo is a **producer**. Consumers copy files out of it and check the
 copies:
 
-- [`foothills-labs.github.io`](https://github.com/foothills-labs/foothills-labs.github.io)
+- [`plicara.github.io`](https://github.com/plicara/plicara.github.io)
   vendors the tokens, the mark set and the plane glyphs via its
   `tools/vendor.py`; its `vendor-parity` CI job fails when the copies drift
   from this repo. If a vendored file needs to change, change it **here** and
@@ -70,6 +70,6 @@ contradict a rule, the notebook wins and the fix lands here second.
 
 ## License
 
-All rights reserved. These are trademarks-in-use of Foothills Labs; the
+All rights reserved. These are trademarks-in-use of Plicara Labs; the
 repository is public so that consumers can vendor and verify, not so the
 identity can be reused.
