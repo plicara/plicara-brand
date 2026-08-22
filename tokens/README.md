@@ -1,7 +1,7 @@
 # Design tokens
 
 The palette, the four schemes and the two typesets, as code. The prose that
-explains them is [`../../docs/brand.md`](../../docs/brand.md) — change a
+explains them is `docs/brand.md` in the foundation_lab repo — change a
 decision there first, then here, then regenerate.
 
 ```
@@ -13,7 +13,7 @@ build.py      python3 build.py
 
 ## How a change flows
 
-1. Decide it in `docs/brand.md` and add a decision-log line.
+1. Decide it in `docs/brand.md` (foundation_lab) and add a decision-log line.
 2. Edit `tokens.css` and the tables in `build.py` to match.
 3. `python3 build.py` — regenerates `tokens.json`, including every contrast
    ratio. If a pairing drops below AA it shows up here first.

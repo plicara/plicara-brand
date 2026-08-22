@@ -3,7 +3,7 @@
 One glyph per model, each a **stylised drawing of its paper plane** — a top
 view with a thick sumi outline and a orange fill set deliberately
 off-register, the loose screen-print look of the illustration style
-([`../../docs/brand.md` § Illustration](../../docs/brand.md#illustration-and-imagery)).
+(see `docs/brand.md` § Illustration in the foundation_lab repo).
 
 The canon, by tier:
 
@@ -50,7 +50,7 @@ No dependencies beyond the standard library.
   glyph as the org mark, and never use the house mark on a model card where a
   glyph belongs.
 - Outline is sumi on light grounds, cream on dark. Orange is the only fill,
-  and it never carries text ([`brand.md` § Colour](../../docs/brand.md#colour)).
+  and it never carries text (see `brand.md` § Colour in foundation_lab).
 - Keep the tilt. Every plane sits at the same slight nose-up angle; a glyph
   straightened to the grid reads as a different system.
 - New models get new common plane designs (bulldog, swallow, …) by a decision
