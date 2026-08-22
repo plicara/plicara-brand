@@ -14,7 +14,7 @@ revision: **the paper-plane silhouette in side view is Telegram's mark** (no
 candidate was ever one, by construction), and **the mark must never be
 composed as a skyline over horizontal colour bands, nor set in a rectangular
 label lockup** — those are the configurations Patagonia enforces. Full
-reasoning: [`../../next_steps/trademark.md`](../../next_steps/trademark.md).
+reasoning: `next_steps/trademark.md` in the foundation_lab repo.
 
 Everything here is generated. The candidate drawings come from
 `candidates/generate.py` (same deterministic wobble as the model glyphs);
@@ -31,7 +31,7 @@ python3 export.py
 
 The faceted two-layer construction lives in `build.py` and the device screen
 has been run against this mark (v2,
-[`../../next_steps/trademark.md`](../../next_steps/trademark.md)).
+`next_steps/trademark.md` in the foundation_lab repo).
 
 **Every cut draws the same mountains**: three peaks in front, two behind. The
 small cut — `mark-small*.svg`, `mark-colour-small*.svg` and the **favicon** —
@@ -136,4 +136,4 @@ Orange is the accent colour. On dark grounds it is also an ink (7.1:1); on
 the cream paper it manages 2.1:1, so there it is a fill and nothing else, and
 text on it is always `--fh-on-orange`. Rust is the light-ground accent
 ink. Full palette, misuse rules and the reasoning:
-[`../../docs/brand.md`](../../docs/brand.md).
+`docs/brand.md` in the foundation_lab repo.
