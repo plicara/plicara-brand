@@ -171,7 +171,7 @@
     {
       "token": "cream",
       "hex": "#FAEBD3",
-      "role": "the warm paper \u2014 the light ground",
+      "role": "the identity warm \u2014 text on dark grounds, and the avatar ground",
       "lab_d65": [
         93.64,
         1.23,
@@ -210,50 +210,91 @@
       ]
     },
     {
-      "token": "warmwhite",
-      "hex": "#FFF9EF",
-      "role": "raised surface on the cream ground",
+      "token": "paper",
+      "hex": "#FDF5E6",
+      "role": "the light ground \u2014 the cream calmed for page duty",
       "lab_d65": [
-        98.13,
-        0.3,
-        5.5
+        96.78,
+        0.17,
+        8.17
       ],
       "lab_d50": [
-        98.19,
-        0.81,
-        5.56
+        96.87,
+        0.91,
+        8.25
       ],
       "cmyk": [
         0,
-        2,
-        5,
+        3,
+        9,
         0
       ],
-      "cmyk_roundtrip_hex": "#FFF9F0",
-      "cmyk_delta_e_2000": 0.46,
+      "cmyk_roundtrip_hex": "#FEF6E7",
+      "cmyk_delta_e_2000": 0.2,
       "in_process_gamut": true,
       "pantone_candidates": [
         {
-          "name": "PANTONE COOL GRAY 1 C",
-          "approx_hex": "#D9D9D6",
-          "delta_e_2000": 7.97
+          "name": "PANTONE 7527 C",
+          "approx_hex": "#D6D2C4",
+          "delta_e_2000": 8.07
         },
         {
           "name": "PANTONE WARM GRAY 1 C",
           "approx_hex": "#D7D2CB",
-          "delta_e_2000": 8.58
+          "delta_e_2000": 8.37
         },
         {
-          "name": "PANTONE 7527 C",
-          "approx_hex": "#D6D2C4",
-          "delta_e_2000": 8.98
+          "name": "PANTONE COOL GRAY 1 C",
+          "approx_hex": "#D9D9D6",
+          "delta_e_2000": 8.42
+        }
+      ]
+    },
+    {
+      "token": "warmwhite",
+      "hex": "#FFFDF9",
+      "role": "raised surface on the paper ground",
+      "lab_d65": [
+        99.36,
+        -0.03,
+        2.14
+      ],
+      "lab_d50": [
+        99.38,
+        0.17,
+        2.16
+      ],
+      "cmyk": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "cmyk_roundtrip_hex": "#FFFDFA",
+      "cmyk_delta_e_2000": 0.51,
+      "in_process_gamut": true,
+      "pantone_candidates": [
+        {
+          "name": "PANTONE 663 C",
+          "approx_hex": "#E5E1E6",
+          "delta_e_2000": 7.6
+        },
+        {
+          "name": "PANTONE COOL GRAY 1 C",
+          "approx_hex": "#D9D9D6",
+          "delta_e_2000": 7.82
+        },
+        {
+          "name": "PANTONE 7541 C",
+          "approx_hex": "#D9E1E2",
+          "delta_e_2000": 7.88
         }
       ]
     },
     {
       "token": "paleteal",
       "hex": "#C3D5DA",
-      "role": "the back range of the mark",
+      "role": "the back range of the mark; not a screen token",
       "lab_d65": [
         84.1,
         -5.04,
@@ -294,7 +335,7 @@
     {
       "token": "peach",
       "hex": "#FFCDAA",
-      "role": "derived; the dark cut's hot facet, and a series",
+      "role": "the dark cut's hot facet, and a series; not a screen token",
       "lab_d65": [
         85.92,
         12.92,
