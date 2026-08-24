@@ -18,24 +18,30 @@ import re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# The CREAM palette. Descended from the founder's pastel card, with two
+# The HARBOUR palette. Descended from the founder's pastel card, with two
 # deliberate moves away from Anthropic's identity, which pairs a warm cream
-# ground with a terracotta accent:
+# ground with a terracotta accent (docs/brand.md logs the measurements):
 #
-#   1. The paper is COOL. Cream sits at b* 0.0 on the yellow-blue axis;
-#      the warm cream it replaces sat at +4.8, against Anthropic's +4.1 —
-#      close enough (dE2000 2.0) that no viewer could separate them.
-#   2. The warm accent is RUST, not coral. Rust is dE2000 20 from
-#      terracotta; the coral it replaces was 11.5, the same family.
+#   1. The IDENTITY WARM is a golden cream, not a bone: b* +13.5 against
+#      their +4.1, dE2000 7.2 from their bone where the pastel card's cream
+#      was 2.0 — below what a viewer can resolve. Page-ground duty moved to
+#      PAPER (2026-08-23): the same cast at 60% of the saturation and 3 L*
+#      lighter, after the full-strength cream proved a glaring reading
+#      surface. Paper is dE2000 3.8 from their bone — nearer than cream,
+#      still resolvable, and the accent and artwork that made the pastel
+#      adjacency an accident no longer travel with it.
+#   2. The warm accent is RUST, not coral. Rust is dE2000 14.9 from
+#      terracotta; the coral it replaces was 12.4, the same family.
 #
 # Orange, duck egg and smoke came through from the card unchanged —
 # none of them is anywhere near Anthropic's palette. Night/slate,
 # print/drafting and apricot are DERIVED: dark grounds and a light-ground
 # series ink a six-pastel card cannot supply.
 PALETTE = {
-    "orange": ("#EE8B33", "The one hot colour, and the accent INK of the dark schemes only. On the cream paper it manages 2.1:1, so on light grounds it is a fill and nothing else — that asymmetry is the reason the guard token exists."),
-    "rust":         ("#6A2A12", "Burnt rust. The accent ink on light grounds (9.2:1 on cream) and a facet of the mark. Keeps the token name so nothing downstream has to move."),
-    "cream":        ("#FAEBD3", "Warm paper. The light ground, and text on the dark ones. b* +13.5 — a golden cream, deliberately not a bone: Anthropic's is +4.1."),
+    "orange": ("#EE8B33", "The one hot colour, and the accent INK of the dark schemes only. On the paper ground it manages 2.3:1, so on light grounds it is a fill and nothing else — that asymmetry is the reason the guard token exists."),
+    "rust":         ("#6A2A12", "Burnt rust. The accent ink on light grounds (9.9:1 on paper) and a facet of the mark. Keeps the token name so nothing downstream has to move."),
+    "cream":        ("#FAEBD3", "The identity warm, b* +13.5 — a golden cream, deliberately not a bone: Anthropic's is +4.1. Text on the dark grounds, the guard on rust, and the avatar ground. No longer the page ground; that is paper."),
+    "paper":        ("#FDF5E6", "The light ground: the cream's cast at 60% of the saturation (b* +8.2) and 3 L* lighter. Took over page duty from the full-strength cream, which glared at page size (2026-08-23). dE2000 3.8 from Anthropic's bone — above the 2.0 a viewer can resolve."),
     "white":        ("#FFFFFF", "Ground of notepad."),
     "mist":         ("#DEEAEE", "Raised cool surface on white. Tiles, table rows, code blocks."),
     "duckegg":      ("#9ABCC6", "Pale teal. First chart series on the dark grounds."),
@@ -47,7 +53,7 @@ PALETTE = {
     "slate":        ("#132538", "Raised surface on night."),
     "print":        ("#082C35", "Deep teal. Dark ground for benchmarks and tools."),
     "drafting":     ("#1D3E47", "Raised surface on print. Sits at L*24 and no higher: the accent has to clear 4.5 on top of it."),
-    "warmwhite":    ("#FFF9EF", "Raised surface on the cream ground. Lighter than the paper, not whiter than it."),
+    "warmwhite":    ("#FFFDF9", "Raised surface on the paper ground. Lighter than the paper, not whiter than it — retuned with the ground, or the two would sit 1 L* apart and every tile would vanish."),
 }
 
 # Four schemes, paired by area of the lab. Twilight/Cel carry the lab and the
@@ -59,7 +65,7 @@ SCHEMES = {
                       accent_on="#05192B", series_1="#9ABCC6", series_2="#FFB881",
                       panels=["teal", "rust"]),
     "cel":       dict(mode="light", area="lab, models", typeset="warm",
-                      bg="#FAEBD3", surface="#FFF9EF", text="#05192B",
+                      bg="#FDF5E6", surface="#FFFDF9", text="#05192B",
                       text_muted="#436974", rule="#E5D5BB", accent="#6A2A12",
                       accent_on="#FAEBD3", series_1="#31606D", series_2="#6A2A12"),
     "blueprint": dict(mode="dark", area="benchmarks, tools", typeset="technical",
@@ -95,14 +101,14 @@ TYPESETS = {
     },
 }
 
-GROUNDS = ["night", "slate", "print", "drafting", "cream", "white", "mist",
+GROUNDS = ["night", "slate", "print", "drafting", "paper", "cream", "white", "mist",
            "duckegg", "teal", "rust", "orange"]
 
 # Hot fills and their text guards. A fill is a colour that holds text but must
 # never set it; the on-colour is the only ink allowed on top of it. The
 # orange fill is also the standing exception to "one accent per scheme" —
 # it stays constant in every scheme, including Cel and Notepad, whose accent
-# ink is teal.
+# ink is rust.
 FILLS = {
     "orange": {"on": "sumi", "standing_exception": True},
     "rust":         {"on": "cream", "standing_exception": False},
@@ -192,7 +198,7 @@ def build():
         "meta": {
             "name": "Plicara Labs",
             "source": "docs/brand.md",
-            "note": "Generated by assets/tokens/build.py. Edit docs/brand.md, then regenerate.",
+            "note": "Generated by tokens/build.py. Edit docs/brand.md, then regenerate.",
             "palette": "harbour",
             "colourway": "beacon",
         },
