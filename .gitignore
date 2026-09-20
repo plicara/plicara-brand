@@ -1,3 +1,8 @@
 .DS_Store
 ._*
 __pycache__/
+
+# Local environments and disposable lab views
+.plicara/generated/
+.venv/
+__pycache__/
