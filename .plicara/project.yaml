@@ -1,0 +1,16 @@
+schema_version: 1
+id: plicara-brand
+name: "Plicara brand assets"
+description: "Brand tokens, marks, logos, and their reproducible generators."
+kind: tool
+status: maintained
+repository: https://github.com/plicara/plicara-brand
+python:
+  - .
+artifacts:
+  - kind: reference
+    path: tokens
+  - kind: reference
+    path: marks
+  - kind: reference
+    path: logo
