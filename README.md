@@ -52,12 +52,13 @@ Two audits keep this repo honest on its own:
 
 ```
 make setup
-npm ci --ignore-scripts
 make build
 ```
 
+`make setup` also runs `npm ci --ignore-scripts`. `node_modules/` is committed on purpose: it vendors the two font packages the build draws from, so a rebuild needs no network and cannot drift with an upstream release. The lockfile pins them; `npm ci` restores the same tree.
+
 Outputs are byte-reproducible; a clean rebuild that changes any committed
-file is a bug in the scripts or an intended design change, never noise.
+file is a bug in the scripts or an intended design change, never noise. The `Build and audit` workflow enforces this: it rebuilds on every push and fails on any diff. One exception: `logo/png/social-card-1200x630.png` sets its caption in the system monospace font, so it is excluded from the check until the caption is drawn as outlines.
 
 ## What this is not
 

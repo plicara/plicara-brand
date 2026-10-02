@@ -1,0 +1,27 @@
+name: Build and audit
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: make setup
+      - name: Audit tokens
+        run: make check
+      - name: Rebuild and fail if any committed file changes
+        run: |
+          make build
+          # The social card's caption is set in the system monospace font, so
+          # its pixels depend on the machine. Everything else must match.
+          git checkout -- logo/png/social-card-1200x630.png
+          git diff --exit-code
+          test -z "$(git status --porcelain)" || { git status --short; exit 1; }
