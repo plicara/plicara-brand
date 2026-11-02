@@ -20,8 +20,7 @@ jobs:
       - name: Rebuild and fail if any committed file changes
         run: |
           make build
-          # The social card's caption is set in the system monospace font, so
-          # its pixels depend on the machine. Everything else must match.
-          git checkout -- logo/png/social-card-1200x630.png
+          # Every glyph, the social card's included, is drawn as outlines,
+          # so nothing depends on the machine's fonts. Everything must match.
           git diff --exit-code
           test -z "$(git status --porcelain)" || { git status --short; exit 1; }

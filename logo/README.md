@@ -25,7 +25,7 @@ output.
 
 ```
 python3 candidates/generate.py
-python3 build.py [path/to/archivo-latin-wdth-normal.woff2]
+python3 build.py [path/to/figtree-latin-wght-normal.woff2]
 python3 export.py
 ```
 
@@ -68,8 +68,8 @@ again.
 | Centred: README hero, title slide, print | `lockup-vertical-*.svg` |
 | Anywhere SVG is not accepted | `png/` — see below |
 
-Lockup suffixes: `-dark` (colour mark, cream wordmark), `-light` (colour
-mark, sumi wordmark), `-mono` (all orange, monoline — for a dark panel or
+Lockup suffixes: `-dark` (colour mark, lamplight `#F1EADB` wordmark),
+`-light` (colour mark, ink `#171512` wordmark), `-mono` (all orange, monoline — for a dark panel or
 single-colour reproduction). The wordmark is **lowercase**: `plicara labs`.
 
 ## Rasters
@@ -85,9 +85,9 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
 | `avatar-cream-512.png`, `avatar-orange-512.png` | Alternate grounds |
 | `mark-colour-512.png`, `mark-colour-dark-512.png` | Transparent colour mark, decks and docs |
 | `favicon-16.png`, `favicon-32.png`, `favicon-64.png` | Browser tab fallback where SVG is not supported |
-| `touch-icon.svg` | Source for the apple-touch icon: square ground (iOS rounds it), pre-rounded border so the mask does not clip it |
+| `touch-icon.svg` | Source for the apple-touch icon: the colour mark on a square kraft ground (iOS rounds it), no border |
 | `apple-touch-icon-180.png` | iOS home screen |
-| `social-card-1200x630.png` | Open Graph and Twitter card |
+| `social-card-1200x630.png` | Open Graph and Twitter card: kraft ground, a torn fired block with the site's question in Hedvig, the mark and the wordmark. All outlines, so it rebuilds byte-for-byte |
 
 `favicon.svg` is preferred over the PNGs wherever the browser will take it.
 
@@ -124,9 +124,11 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
   cut-paper system that face is Figtree for the header lockup and Hedvig
   Letters Serif for display. In-page, the mark carries the identity; the
   letterforms follow the page.
-- The wordmark is Archivo (Omnibus-Type) at `wght` 800, `wdth` 125, converted
-  to paths. Archivo is SIL Open Font Licence 1.1; the OFL covers the baked
-  outlines and does not extend to the rest of this repository.
+- The wordmark is Figtree (Erik Kennedy) at `wght` 700, lowercase, tracked
+  -0.015em, converted to paths: the same face the site sets its header in. The
+  social card's headline is Hedvig Letters Serif (Kristian Möller). Both are SIL
+  Open Font Licence 1.1; the OFL covers the baked outlines and does not extend
+  to the rest of this repository.
 
 ## Colours
 
