@@ -15,15 +15,18 @@ dark and light lockups) embed that construction; the monoline variants
 survive for CSS-tinted and single-colour uses. The wordmark is converted to
 outlines so the SVGs carry no font dependency.
 
-Requires fontTools, uharfbuzz, and the Archivo variable font:
+Requires fontTools, uharfbuzz, and the Figtree variable font (the wordmark)
+plus Hedvig Letters Serif (the social card's headline, set in export.py):
 
-    npm install @fontsource-variable/archivo
+    npm ci --ignore-scripts
     pip install fonttools brotli uharfbuzz
-    python3 build.py [path/to/archivo-latin-wdth-normal.woff2]
+    python3 build.py [path/to/figtree-latin-wght-normal.woff2]
 
-Archivo is SIL Open Font Licence 1.1 (Omnibus-Type). Outlines baked into these
-files are covered by it; the OFL permits this and does not extend to the rest of
-the repository.
+The wordmark is Figtree Bold, lowercase, the face the site sets its header in,
+so the logo and the page around it are one hand. Figtree (Erik Kennedy) and
+Hedvig Letters Serif (Kristian Möller) are SIL Open Font Licence 1.1. Outlines
+baked into these files are covered by it; the OFL permits this and does not
+extend to the rest of the repository.
 """
 
 import io
@@ -59,28 +62,29 @@ COLOUR_SRC = os.path.join(HERE, "candidates", "mark-foothills-beacon.svg")
 COLOUR_SRC_DARK = os.path.join(HERE, "candidates",
                                "mark-foothills-beacon-dark.svg")
 
-def _find_font():
-    """Archivo from npm, wherever node_modules landed.
+def _find_font(pkg, name, argv_index=None):
+    """A font file from npm, wherever node_modules landed.
 
     This directory is `assets/logo/` in foundation_lab and `logo/` in the
     split-out brand repo, so node_modules sits either two levels up or one.
-    An explicit path as argv[1] wins over both."""
-    if len(sys.argv) > 1:
-        return sys.argv[1]
-    rel = os.path.join("node_modules", "@fontsource-variable", "archivo",
-                       "files", "archivo-latin-wdth-normal.woff2")
+    An explicit path on the command line wins over both."""
+    if argv_index is not None and len(sys.argv) > argv_index:
+        return sys.argv[argv_index]
+    rel = os.path.join("node_modules", *pkg.split("/"), "files", name)
     for up in ("..", os.path.join("..", "..")):
         candidate = os.path.join(HERE, up, rel)
         if os.path.exists(candidate):
             return candidate
     # Nothing found: report the near miss rather than a bare ENOENT.
     raise SystemExit(
-        "Archivo not found. Run `npm install @fontsource-variable/archivo` "
-        "at the repository root, or pass the .woff2 path as the first "
-        "argument.")
+        f"{name} not found. Run `npm ci --ignore-scripts` at the repository "
+        "root, or pass the .woff2 path as the first argument.")
 
 
-FONT = _find_font()
+FONT = _find_font("@fontsource-variable/figtree",
+                  "figtree-latin-wght-normal.woff2", argv_index=1)
+SERIF = _find_font("@fontsource/hedvig-letters-serif",
+                   "hedvig-letters-serif-latin-400-normal.woff2")
 
 C = {
     "orange": "#EE8B33",
@@ -89,9 +93,14 @@ C = {
     "night": "#05192B",
     "teal": "#31606D",
     "rust": "#6A2A12",
+    # Cut paper (tokens/tokens.css): the ground, its ink, and the dark text.
+    "kraft": "#F4EFE4",
+    "ink": "#171512",
+    "lamp": "#F1EADB",
+    "fired": "#EE6A26",
 }
 
-TRACKING = 0.004  # em; the lowercase wordmark needs almost none
+TRACKING = -0.015  # em; Figtree Bold lowercase sets a touch tight, as on the site
 
 
 # --- the mark ---------------------------------------------------------------
@@ -197,16 +206,25 @@ def mark_group(ds, stroke, colour):
 
 # --- the wordmark -----------------------------------------------------------
 
-def static_archivo(wght=800, wdth=125):
-    f = TTFont(FONT)
-    inst = instancer.instantiateVariableFont(f, {"wght": wght, "wdth": wdth})
+def static_face(path, axes=None):
+    """A static sfnt from a (variable) woff2, ready for harfbuzz."""
+    f = TTFont(path)
+    inst = instancer.instantiateVariableFont(f, axes) if axes else f
     # Drop the woff2 wrapper — harfbuzz reads sfnt, and a compressed face parses
     # as empty, which shapes every character to .notdef.
     inst.flavor = None
     return inst
 
 
-def shape(font, text, size):
+def static_figtree(wght=700):
+    return static_face(FONT, {"wght": wght})
+
+
+def static_hedvig():
+    return static_face(SERIF)
+
+
+def shape(font, text, size, tracking=None):
     """Harfbuzz-shaped outline path for `text`, plus its advance width."""
     buf = io.BytesIO()
     font.save(buf)
@@ -223,7 +241,7 @@ def shape(font, text, size):
     order = font.getGlyphOrder()
     glyphset = font.getGlyphSet()
     scale = size / upem
-    track = TRACKING * upem
+    track = (TRACKING if tracking is None else tracking) * upem
 
     d, x = [], 0.0
     for info, pos in zip(buf2.glyph_infos, buf2.glyph_positions):
@@ -238,7 +256,7 @@ def shape(font, text, size):
     return " ".join(d), (x - track) * scale
 
 
-def bbox_of(font, text, size):
+def bbox_of(font, text, size, tracking=None):
     order = font.getGlyphOrder()
     glyphset = font.getGlyphSet()
     buf = io.BytesIO()
@@ -252,7 +270,7 @@ def bbox_of(font, text, size):
     b2.guess_segment_properties()
     hb.shape(hbfont, b2, {"kern": True, "liga": True})
     scale = size / upem
-    track = TRACKING * upem
+    track = (TRACKING if tracking is None else tracking) * upem
     bp = BoundsPen(glyphset)
     x = 0.0
     for info, pos in zip(b2.glyph_infos, b2.glyph_positions):
@@ -347,27 +365,25 @@ def main():
           f'<rect x="1.8" y="1.8" width="60.4" height="60.4" rx="12.2" '
           f'fill="none" stroke="{C["orange"]}" stroke-width="3.6"/>'
           + fav_mark + "</svg>")
-    # Apple touch icon: the GROUND stays square — iOS applies its own corner
-    # mask, and pre-rounding it leaves dark notches — but the BORDER is
-    # pre-rounded to sit just inside iOS's ~22.5% mask radius, or the mask
-    # clips its corners mid-line.
-    # Same full drawing and framing as the favicon — these two used to differ,
-    # which is precisely how the mark drifted into two logos.
-    touch_mark = colour_group(inner_d, cbb_d, 64, 9)
+    # Apple touch icon: the mark on kraft, the site's paper ground, so the
+    # home-screen tile matches the page it opens. The ground stays square —
+    # iOS applies its own corner mask, and pre-rounding it leaves notches.
+    # No border: on paper the mark's own colour carries the tile, and the
+    # orange rule was there to lift it off navy. Same full drawing as the
+    # favicon, framed a little looser since nothing rings it.
+    touch_mark = colour_group(inner_l, cbb_l, 64, 8)
     write("touch-icon.svg",
           '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" '
           'width="64" height="64" role="img" aria-label="Plicara Labs">'
           '<title>Plicara Labs</title>'
-          f'<rect width="64" height="64" fill="{C["night"]}"/>'
-          f'<rect x="1.8" y="1.8" width="60.4" height="60.4" rx="12.6" '
-          f'fill="none" stroke="{C["orange"]}" stroke-width="3.6"/>'
+          f'<rect width="64" height="64" fill="{C["kraft"]}"/>'
           + touch_mark + "</svg>")
 
     # Lockups. Cap height drives the optical match between mark and wordmark.
-    font = static_archivo()
+    font = static_figtree()
     print("lockups")
-    THEMES = (("dark", (inner_d, cbb_d), C["cream"]),
-              ("light", (inner_l, cbb_l), C["sumi"]),
+    THEMES = (("dark", (inner_d, cbb_d), C["lamp"]),
+              ("light", (inner_l, cbb_l), C["ink"]),
               ("mono", C["orange"], C["orange"]))
     for kind, lines, mark_px in (("horizontal", ["plicara labs"], 64.0),
                                  ("compact", ["plicara", "labs"], 78.0)):
