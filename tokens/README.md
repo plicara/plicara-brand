@@ -1,6 +1,6 @@
 # Design tokens
 
-The palette, the four schemes and the two typesets, as code. The prose that
+The palette, the cut-paper scheme and its typeset, as code. The prose that
 explains them is `docs/brand.md` in the foundation_lab repo — change a
 decision there first, then here, then regenerate.
 
@@ -21,24 +21,26 @@ build.py      python3 build.py
    (`plicara.github.io`) keeps a copy at `assets/tokens.css` and treats
    it as read-only.
 
-## The shape of the system
+### The shape of the system
 
-- **Four schemes, paired by area.** `glacier`/`atlas` carry the lab and the
-  models; `signal`/`field` carry benchmarks and tools. Apply with `data-scheme`
-  on any element; schemes nest and paint their own ground.
-- **Two typesets, keyed to the scheme.** Warm (Fraunces + Newsreader) on the
-  lab pair, technical (Archivo) on the tools pair, JetBrains Mono shared by
-  both. Style through `--pl-face-display` / `--pl-face-body`, never by naming a
-  font family directly — that is what lets a section switch register by
-  changing one attribute.
-- **Hot fills carry `--pl-on-*` guards.** Lichen and ochre hold text but must
-  never set it; `--pl-on-lichen` (12.30:1) and `--pl-on-ochre` (7.61:1) are the
-  only inks allowed on top of them, and the `fill` section of `tokens.json`
-  records both, generated. Any new hot fill gets its guard before first use.
-- **The lichen fill is the standing exception to "one accent."** It stays
-  constant in every scheme, including Atlas — one accent means one accent ink.
-  The accent *ink* on light schemes is a different colour entirely (shadow
-  violet on Atlas, moss on Field); use `--pl-accent` and the swap is mechanical.
-- **A scheme that paints a ground must be full-bleed** — apply `data-scheme` to
-  the section, not to a padded inner wrapper, or the ground stops short of the
-  viewport edge. (Learned on the site; recorded here so it is not relearned.)
+Since 2026-11 there is **one scheme and one type system**, so the lab, the
+essays, the benchmarks and the tools read as one brand. The four area schemes
+and the two typesets they carried are retired.
+
+- **Cut paper, in two lights.** `daylight` (kraft ground, ink text, pine
+  accent) is the default; `lamplight` (umber ground, cream text, orange
+  accent) follows the reader's OS into dark mode. `data-scheme="daylight"` or
+  `"lamplight"` pins one on any element. The retired names still resolve to
+  the matching light so an old page does not break. Do not use them in new
+  work.
+- **One typeset.** Hedvig Letters Serif for display, Figtree for body, labels
+  and UI, and JetBrains Mono for figures and code. Display and label roles
+  are lowercase; body text keeps its capitals. Style through
+  `--pl-face-display` / `--pl-face-body`, never by naming a family.
+- **Colour arrives as blocks.** Fired, pine, pink and butter are flat paper
+  fills for tiles and stickers, each with an `--pl-on-*` guard: fired, pink
+  and butter hold ink; pine holds cream. Fired never holds cream (2.9:1).
+  `tokens.json` records every guard ratio, generated.
+- **The drawings keep harbour.** The house mark and the plane glyphs are
+  outlined in sumi and filled with orange; the harbour palette stays in the
+  file for them.

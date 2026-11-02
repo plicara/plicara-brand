@@ -120,9 +120,10 @@ SVG is the source of truth. `png/` covers the places that cannot take one:
   social, print, README heroes, anywhere the name appears without page
   context. The lockups carry outlines, so nothing needs the font installed.
 - **In-page headers are the exception**: a page header may set the name in
-  the surface's display face beside the mark — Fraunces on warm pages,
-  Archivo on technical ones, lowercase either way. In-page, the mark carries
-  the identity; the letterforms follow the register the page is already in.
+  the surface's display face beside the mark, lowercase. Since the 2026-11
+  cut-paper system that face is Figtree for the header lockup and Hedvig
+  Letters Serif for display. In-page, the mark carries the identity; the
+  letterforms follow the page.
 - The wordmark is Archivo (Omnibus-Type) at `wght` 800, `wdth` 125, converted
   to paths. Archivo is SIL Open Font Licence 1.1; the OFL covers the baked
   outlines and does not extend to the rest of this repository.

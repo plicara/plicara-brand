@@ -1,5 +1,9 @@
 """Generate tokens.json, including the full contrast matrix.
 
+Since 2026-11 the system is one scheme, cut paper, in two lights (daylight
+and lamplight), with one typeset. The harbour palette stays: the drawings
+are outlined in its sumi and filled with its orange.
+
 The palette lives here and in tokens.css; docs/brand.md is the prose that
 explains it. Change all three together.
 
@@ -53,55 +57,56 @@ PALETTE = {
     "slate":        ("#132538", "Raised surface on night."),
     "print":        ("#082C35", "Deep teal. Dark ground for benchmarks and tools."),
     "drafting":     ("#1D3E47", "Raised surface on print. Sits at L*24 and no higher: the accent has to clear 4.5 on top of it."),
+    # --- cut paper (2026-11) -------------------------------------------------
+    # The single scheme the site now uses everywhere. Flat, bold paper colours
+    # on a kraft ground: the colour arrives as cut-paper blocks and the plane
+    # glyphs, not as a second scheme for half the lab.
+    "kraft":   ("#F4EFE4", "Cut paper's light ground: an unbleached sheet, warmer and greyer than paper."),
+    "linen":   ("#FBF8F1", "Raised surface on kraft. Code blocks, table tiles."),
+    "ink":     ("#171512", "Warm near-black. Text on kraft and the guard on every light fill."),
+    "umber":   ("#1A1714", "Cut paper's dark ground: the same sheet under lamplight."),
+    "bark":    ("#2A2520", "Raised surface on umber."),
+    "fired":   ("#EE6A26", "The hot block colour: orange fired a step toward vermilion. A fill only (2.7:1 on kraft), and it holds ink, never cream (2.9:1)."),
+    "ember":   ("#C9531A", "Fired, darkened until it reads as a chart series on kraft (3.9:1)."),
+    "pine":    ("#0E5E50", "Deep green. The accent ink on kraft (6.7:1) and a block colour that holds cream."),
+    "sage":    ("#4FB39E", "Pine lifted for the dark ground. First chart series under lamplight."),
+    "pink":    ("#EBAAB9", "Soft pink block. Holds ink; second chart series under lamplight."),
+    "butter":  ("#F2CF5B", "Butter yellow block. Holds ink."),
+    "stone":   ("#CFC8B8", "Neutral paper grey for the not-counted marks in a chart. Never text."),
     "warmwhite":    ("#FFFDF9", "Raised surface on the paper ground. Lighter than the paper, not whiter than it — retuned with the ground, or the two would sit 1 L* apart and every tile would vanish."),
 }
 
-# Four schemes, paired by area of the lab. Twilight/Cel carry the lab and the
-# models; Blueprint/Notepad carry benchmarks and tools.
+# ONE scheme, cut paper, in two lights (2026-11). The four area schemes and
+# their two typesets made the site read as two brands; the lab, the essays and
+# the benchmarks now share one ground, one ink and one type system. Daylight is
+# the default; lamplight follows the reader's OS into dark mode.
 SCHEMES = {
-    "twilight":  dict(mode="dark", area="lab, models", typeset="warm",
-                      bg="#05192B", surface="#132538", text="#FAEBD3",
-                      text_muted="#9CB5BC", rule="#25364A", accent="#EE8B33",
-                      accent_on="#05192B", series_1="#9ABCC6", series_2="#FFB881",
-                      panels=["teal", "rust"]),
-    "cel":       dict(mode="light", area="lab, models", typeset="warm",
-                      bg="#FDF5E6", surface="#FFFDF9", text="#05192B",
-                      text_muted="#436974", rule="#E5D5BB", accent="#6A2A12",
-                      accent_on="#FAEBD3", series_1="#31606D", series_2="#6A2A12"),
-    "blueprint": dict(mode="dark", area="benchmarks, tools", typeset="technical",
-                      bg="#082C35", surface="#1D3E47", text="#FFFFFF",
-                      text_muted="#9CB5BC", rule="#395760", accent="#EE8B33",
-                      accent_on="#05192B", series_1="#FFB881", series_2="#9ABCC6"),
-    "notepad":   dict(mode="light", area="benchmarks, tools", typeset="technical",
-                      bg="#FFFFFF", surface="#DEEAEE", text="#05192B",
-                      text_muted="#436974", rule="#CADADF", accent="#6A2A12",
-                      accent_on="#FAEBD3", series_1="#31606D", series_2="#6A2A12"),
+    "daylight":  dict(mode="light", area="everything", typeset="cutpaper",
+                      bg="#F4EFE4", surface="#FBF8F1", text="#171512",
+                      text_muted="#5C554A", rule="#DDD5C4", accent="#0E5E50",
+                      accent_on="#FAEBD3", series_1="#0E5E50", series_2="#C9531A"),
+    "lamplight": dict(mode="dark", area="everything", typeset="cutpaper",
+                      bg="#1A1714", surface="#2A2520", text="#F1EADB",
+                      text_muted="#B3A994", rule="#3A332B", accent="#EE8B33",
+                      accent_on="#171512", series_1="#4FB39E", series_2="#EBAAB9"),
 }
 
-# Both typesets set headings in lowercase; uppercase belongs to the mono
-# label role alone. Both declare "case" explicitly — one declaring and one
-# silent is how this drifted the first time.
+# One typeset. Display and label roles are lowercase; body text keeps its
+# capitals. JetBrains Mono stays for figures and code only.
 TYPESETS = {
-    "warm": {
-        "display": {"family": "Fraunces", "weight": 600,
-                    "settings": {"opsz": 96, "SOFT": 24, "WONK": 1},
-                    "case": "lower"},
-        "body":    {"family": "Newsreader", "weight": 400, "opsz": 18},
+    "cutpaper": {
+        "display": {"family": "Hedvig Letters Serif", "weight": 400,
+                    "settings": {"opsz": 24}, "case": "lower"},
+        "body":    {"family": "Figtree", "weight": 400},
+        "label":   {"family": "Figtree", "weight": 600, "case": "lower"},
         "data":    {"family": "JetBrains Mono", "weight": 400,
                     "numeric": "tabular-nums"},
-        "use": "the lab and the models",
-    },
-    "technical": {
-        "display": {"family": "Archivo", "weight": 800,
-                    "settings": {"wght": 800, "wdth": 125}, "case": "lower"},
-        "body":    {"family": "Archivo", "weight": 400, "width": 100},
-        "data":    {"family": "JetBrains Mono", "weight": 400,
-                    "numeric": "tabular-nums"},
-        "use": "benchmarks and tools",
+        "use": "the whole site",
     },
 }
 
-GROUNDS = ["night", "slate", "print", "drafting", "paper", "cream", "white", "mist",
+GROUNDS = ["kraft", "linen", "umber", "bark", "fired", "pine", "pink", "butter",
+           "night", "slate", "print", "drafting", "paper", "cream", "white", "mist",
            "duckegg", "teal", "rust", "orange"]
 
 # Hot fills and their text guards. A fill is a colour that holds text but must
@@ -112,6 +117,10 @@ GROUNDS = ["night", "slate", "print", "drafting", "paper", "cream", "white", "mi
 FILLS = {
     "orange": {"on": "sumi", "standing_exception": True},
     "rust":         {"on": "cream", "standing_exception": False},
+    "fired":   {"on": "ink", "standing_exception": False},
+    "pine":    {"on": "cream", "standing_exception": False},
+    "pink":    {"on": "ink", "standing_exception": False},
+    "butter":  {"on": "ink", "standing_exception": False},
 }
 
 # Pairings the brand sanctions for text, checked per scheme. The accent is
@@ -199,20 +208,21 @@ def build():
             "name": "Plicara Labs",
             "source": "docs/brand.md",
             "note": "Generated by tokens/build.py. Edit docs/brand.md, then regenerate.",
-            "palette": "harbour",
+            "palette": "harbour + cut paper",
+            "scheme": "cut paper (daylight / lamplight)",
             "colourway": "beacon",
         },
         "color": {k: {"value": v[0], "comment": v[1]} for k, v in PALETTE.items()},
         "contrast": {},
         "font": {
-            "display": {"value": "Fraunces",
-                        "comment": "Variable: opsz 9-144, wght 100-900, SOFT, WONK. SIL OFL."},
-            "body": {"value": "Newsreader",
-                     "comment": "Variable: wght 200-800, opsz 6-72. SIL OFL."},
-            "sans": {"value": "Archivo",
-                     "comment": "Variable: wght 100-900, wdth 62-125. SIL OFL."},
+            "display": {"value": "Hedvig Letters Serif",
+                        "comment": "Variable: opsz 12-24, wght 400. A soft, bookish serif. SIL OFL."},
+            "body": {"value": "Figtree",
+                     "comment": "Variable: wght 300-900. Geometric sans for body, labels and UI. SIL OFL."},
+            "sans": {"value": "Figtree",
+                     "comment": "Alias of body, kept so older consumers of --pl-font-sans resolve."},
             "mono": {"value": "JetBrains Mono",
-                     "comment": "Apache-2.0. Shared by both typesets — the through-line."},
+                     "comment": "Apache-2.0. Figures and code only."},
         },
         "scheme": SCHEMES,
         "typeset": TYPESETS,
